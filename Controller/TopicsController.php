@@ -32,8 +32,8 @@ class TopicsController extends AppController {
 /**
  * view method
  *
+ * @param string $id id
  * @throws NotFoundException
- * @param string $id
  * @return void
  */
 	public function view($id = null) {
@@ -68,8 +68,8 @@ class TopicsController extends AppController {
 /**
  * edit method
  *
+ * @param string $id id
  * @throws NotFoundException
- * @param string $id
  * @return void
  */
 	public function edit($id = null) {
@@ -96,8 +96,8 @@ class TopicsController extends AppController {
 /**
  * delete method
  *
+ * @param string $id id
  * @throws NotFoundException
- * @param string $id
  * @return void
  */
 	public function delete($id = null) {
@@ -112,4 +112,5 @@ class TopicsController extends AppController {
 			$this->Session->setFlash(__('The topic could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
-	}}
+	}
+}

@@ -32,8 +32,8 @@ class TopicBlockSettingShowPluginsController extends AppController {
 /**
  * view method
  *
+ * @param string $id id
  * @throws NotFoundException
- * @param string $id
  * @return void
  */
 	public function view($id = null) {
@@ -67,8 +67,8 @@ class TopicBlockSettingShowPluginsController extends AppController {
 /**
  * edit method
  *
+ * @param string $id id
  * @throws NotFoundException
- * @param string $id
  * @return void
  */
 	public function edit($id = null) {
@@ -94,8 +94,8 @@ class TopicBlockSettingShowPluginsController extends AppController {
 /**
  * delete method
  *
+ * @param string $id id
  * @throws NotFoundException
- * @param string $id
  * @return void
  */
 	public function delete($id = null) {
@@ -110,4 +110,5 @@ class TopicBlockSettingShowPluginsController extends AppController {
 			$this->Session->setFlash(__('The topic block setting show plugin could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
-	}}
+	}
+}
