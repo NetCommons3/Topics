@@ -12,7 +12,7 @@ App::uses('TopicSelectedRoom', 'Model');
 /**
  * Summary for TopicSelectedRoom Test Case
  */
-class TopicSelectedRoomTest extends CakeTestCase {
+class TopicSelectedRoomTest extends YACakeTestCase {
 
 /**
  * Fixtures
@@ -20,22 +20,22 @@ class TopicSelectedRoomTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.topic_selected_room',
-		'app.room',
-		'app.group',
-		'app.user',
-		'app.role',
-		'app.groups_user',
-		'app.user_attribute',
-		'app.user_attributes_user',
-		'app.user_select_attribute',
-		'app.user_select_attributes_user',
-		'app.language',
-		'app.groups_language',
-		'app.space',
-		'app.box',
-		'app.block',
-		'app.page'
+		'plugin.topics.topic_selected_room',
+		'plugin.topics.room',
+		'plugin.topics.group',
+		'plugin.topics.user',
+		'plugin.topics.role',
+		'plugin.topics.groups_user',
+		'plugin.topics.user_attribute',
+		'plugin.topics.user_attributes_user',
+		'plugin.topics.user_select_attribute',
+		'plugin.topics.user_select_attributes_user',
+		'plugin.topics.language',
+		'plugin.topics.groups_language',
+		'plugin.topics.space',
+		'plugin.topics.box',
+		'plugin.topics.block',
+		'plugin.topics.page'
 	);
 
 /**

@@ -12,7 +12,7 @@ App::uses('TopicBlockSetting', 'Model');
 /**
  * Summary for TopicBlockSetting Test Case
  */
-class TopicBlockSettingTest extends CakeTestCase {
+class TopicBlockSettingTest extends YACakeTestCase {
 
 /**
  * Fixtures
@@ -20,22 +20,22 @@ class TopicBlockSettingTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.topic_block_setting',
-		'app.block',
-		'app.user',
-		'app.role',
-		'app.group',
-		'app.room',
-		'app.space',
-		'app.box',
-		'app.page',
-		'app.language',
-		'app.groups_language',
-		'app.groups_user',
-		'app.user_attribute',
-		'app.user_attributes_user',
-		'app.user_select_attribute',
-		'app.user_select_attributes_user'
+		'plugin.topics.topic_block_setting',
+		'plugin.topics.block',
+		'plugin.topics.user',
+		'plugin.topics.role',
+		'plugin.topics.group',
+		'plugin.topics.room',
+		'plugin.topics.space',
+		'plugin.topics.box',
+		'plugin.topics.page',
+		'plugin.topics.language',
+		'plugin.topics.groups_language',
+		'plugin.topics.groups_user',
+		'plugin.topics.user_attribute',
+		'plugin.topics.user_attributes_user',
+		'plugin.topics.user_select_attribute',
+		'plugin.topics.user_select_attributes_user'
 	);
 
 /**

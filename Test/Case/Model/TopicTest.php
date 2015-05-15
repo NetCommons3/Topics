@@ -12,7 +12,7 @@ App::uses('Topic', 'Model');
 /**
  * Summary for Topic Test Case
  */
-class TopicTest extends CakeTestCase {
+class TopicTest extends YACakeTestCase {
 
 /**
  * Fixtures
@@ -20,22 +20,22 @@ class TopicTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.topic',
-		'app.block',
-		'app.user',
-		'app.role',
-		'app.group',
-		'app.room',
-		'app.space',
-		'app.box',
-		'app.page',
-		'app.language',
-		'app.groups_language',
-		'app.groups_user',
-		'app.user_attribute',
-		'app.user_attributes_user',
-		'app.user_select_attribute',
-		'app.user_select_attributes_user'
+		'plugin.blocks.block',
+		'plugin.boxes.box',
+		'plugin.m17n.language',
+		'plugin.groups.group',
+		'plugin.groups.groups_language',
+		'plugin.groups.groups_user',
+		'plugin.pages.page',
+		'plugin.pages.space',
+		'plugin.roles.role',
+		'plugin.rooms.room',
+		'plugin.topics.topic',
+		'plugin.users.user',
+		'plugin.users.user_attribute',
+		'plugin.users.user_attributes_user',
+		'plugin.users.user_select_attribute',
+		'plugin.users.user_select_attributes_user'
 	);
 
 /**

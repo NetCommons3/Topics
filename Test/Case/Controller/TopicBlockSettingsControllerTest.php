@@ -12,7 +12,7 @@ App::uses('TopicBlockSettingsController', 'Controller');
 /**
  * Summary for TopicBlockSettingsController Test Case
  */
-class TopicBlockSettingsControllerTest extends ControllerTestCase {
+class TopicBlockSettingsControllerTest extends YAControllerTestCase {
 
 /**
  * Fixtures
@@ -20,25 +20,26 @@ class TopicBlockSettingsControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.topic_block_setting',
-		'app.block',
-		'app.user',
-		'app.role',
-		'app.group',
-		'app.room',
-		'app.space',
-		'app.box',
-		'app.page',
-		'app.language',
-		'app.groups_language',
-		'app.groups_user',
-		'app.user_attribute',
-		'app.user_attributes_user',
-		'app.user_select_attribute',
-		'app.user_select_attributes_user',
-		'app.site_setting',
-		'app.frame',
-		'app.plugin'
+		'plugin.blocks.block',
+		'plugin.boxes.box',
+		'plugin.frames.frame',
+		'plugin.groups.group',
+		'plugin.groups.groups_language',
+		'plugin.groups.groups_user',
+		'plugin.m17n.language',
+		'plugin.net_commons.plugin',
+		'plugin.net_commons.site_setting',
+		'plugin.pages.page',
+		'plugin.pages.space',
+		'plugin.roles.role',
+		'plugin.rooms.room',
+		'plugin.topics.topic',
+		'plugin.topics.topic_block_setting',
+		'plugin.users.user',
+		'plugin.users.user_attribute',
+		'plugin.users.user_attributes_user',
+		'plugin.users.user_select_attribute',
+		'plugin.users.user_select_attributes_user',
 	);
 
 /**
