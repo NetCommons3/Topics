@@ -32,9 +32,9 @@ class TopicAppModelTest extends YACakeTestCase {
 		'plugin.blocks.block',
 		'plugin.boxes.box',
 		'plugin.m17n.language',
-		'plugin.groups.group',
-		'plugin.groups.groups_language',
-		'plugin.groups.groups_user',
+		/* 'plugin.groups.group', */
+		/* 'plugin.groups.groups_language', */
+		/* 'plugin.groups.groups_user', */
 		'plugin.pages.page',
 		'plugin.pages.space',
 		'plugin.roles.role',

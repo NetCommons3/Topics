@@ -31,9 +31,9 @@ class TopicsAppControllerTest extends YAControllerTestCase {
 		'plugin.blocks.block',
 		'plugin.boxes.box',
 		'plugin.frames.frame',
-		'plugin.groups.group',
-		'plugin.groups.groups_language',
-		'plugin.groups.groups_user',
+		/* 'plugin.groups.group', */
+		/* 'plugin.groups.groups_language', */
+		/* 'plugin.groups.groups_user', */
 		'plugin.m17n.language',
 		'plugin.net_commons.plugin',
 		'plugin.net_commons.site_setting',

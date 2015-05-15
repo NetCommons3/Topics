@@ -16,35 +16,6 @@ App::uses('TopicBlockSettingShowPluginsController', 'Topics.Controller');
 class TopicBlockSettingShowPluginsControllerTest extends TopicsAppControllerTest {
 
 /**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array(
-		'plugin.blocks.block',
-		'plugin.boxes.box',
-		'plugin.frames.frame',
-		'plugin.groups.group',
-		'plugin.groups.groups_language',
-		'plugin.groups.groups_user',
-		'plugin.m17n.language',
-		'plugin.net_commons.plugin',
-		'plugin.net_commons.site_setting',
-		'plugin.pages.page',
-		'plugin.pages.space',
-		'plugin.roles.role',
-		'plugin.rooms.room',
-		'plugin.topics.topic',
-		'plugin.topics.topic_block_setting',
-		'plugin.topics.topic_block_setting_show_plugin',
-		'plugin.users.user',
-		'plugin.users.user_attribute',
-		'plugin.users.user_attributes_user',
-		'plugin.users.user_select_attribute',
-		'plugin.users.user_select_attributes_user',
-	);
-
-/**
  * testIndex method
  *
  * @return void
