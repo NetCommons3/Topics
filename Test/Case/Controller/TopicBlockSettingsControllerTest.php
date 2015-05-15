@@ -7,12 +7,13 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('TopicBlockSettingsController', 'Controller');
+App::uses('TopicsAppControllerTest', 'Topics.Test/Case/Controller');
+App::uses('TopicBlockSettingsController', 'Topics.Controller');
 
 /**
  * Summary for TopicBlockSettingsController Test Case
  */
-class TopicBlockSettingsControllerTest extends YAControllerTestCase {
+class TopicBlockSettingsControllerTest extends TopicsAppControllerTest {
 
 /**
  * Fixtures

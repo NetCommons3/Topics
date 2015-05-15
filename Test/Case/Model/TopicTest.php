@@ -7,36 +7,13 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
+App::uses('TopicAppModel', 'Model');
 App::uses('Topic', 'Model');
 
 /**
  * Summary for Topic Test Case
  */
-class TopicTest extends YACakeTestCase {
-
-/**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array(
-		'plugin.blocks.block',
-		'plugin.boxes.box',
-		'plugin.m17n.language',
-		'plugin.groups.group',
-		'plugin.groups.groups_language',
-		'plugin.groups.groups_user',
-		'plugin.pages.page',
-		'plugin.pages.space',
-		'plugin.roles.role',
-		'plugin.rooms.room',
-		'plugin.topics.topic',
-		'plugin.users.user',
-		'plugin.users.user_attribute',
-		'plugin.users.user_attributes_user',
-		'plugin.users.user_select_attribute',
-		'plugin.users.user_select_attributes_user'
-	);
+class TopicTest extends TopicAppModelTest {
 
 /**
  * setUp method
@@ -58,5 +35,4 @@ class TopicTest extends YACakeTestCase {
 
 		parent::tearDown();
 	}
-
 }

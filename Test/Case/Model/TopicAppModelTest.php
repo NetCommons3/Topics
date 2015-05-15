@@ -1,19 +1,27 @@
 <?php
 /**
- * TopicsController Test Case
+ * Topic App Model Test Case
+ *
+ * @property Topic $Topic
  *
  * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('TopicsAppControllerTest', 'Topics.Test/Case/Controller');
-App::uses('TopicsController', 'Topics.Controller');
+App::uses('Topic', 'Topics.Model');
+App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
+App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
+App::uses('YACakeTestCase', 'NetCommons.TestSuite');
 
 /**
- * Summary for TopicsController Test Case
+ * Topic App Model Test Case
+ *
+ * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
+ * @package NetCommons\Topics\Test\Case\Model
  */
-class TopicsControllerTest extends TopicsAppControllerTest {
+class TopicAppModelTest extends YACakeTestCase {
 
 /**
  * Fixtures
@@ -23,13 +31,10 @@ class TopicsControllerTest extends TopicsAppControllerTest {
 	public $fixtures = array(
 		'plugin.blocks.block',
 		'plugin.boxes.box',
-		'plugin.frames.frame',
+		'plugin.m17n.language',
 		'plugin.groups.group',
 		'plugin.groups.groups_language',
 		'plugin.groups.groups_user',
-		'plugin.m17n.language',
-		'plugin.net_commons.plugin',
-		'plugin.net_commons.site_setting',
 		'plugin.pages.page',
 		'plugin.pages.space',
 		'plugin.roles.role',
@@ -46,43 +51,30 @@ class TopicsControllerTest extends TopicsAppControllerTest {
 	);
 
 /**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		$this->Topic = ClassRegistry::init('Topics.Topic');
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		unset($this->Topic);
+		parent::tearDown();
+	}
+
+/**
  * testIndex method
  *
  * @return void
  */
 	public function testIndex() {
 	}
-
-/**
- * testView method
- *
- * @return void
- */
-	public function testView() {
-	}
-
-/**
- * testAdd method
- *
- * @return void
- */
-	public function testAdd() {
-	}
-
-/**
- * testEdit method
- *
- * @return void
- */
-	public function testEdit() {
-	}
-
-/**
- * testDelete method
- *
- * @return void
- */
-	public function testDelete() {
-	}
-
 }

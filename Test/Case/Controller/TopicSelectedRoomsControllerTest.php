@@ -7,12 +7,13 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('TopicSelectedRoomsController', 'Controller');
+App::uses('TopicsAppControllerTest', 'Topics.Test/Case/Controller');
+App::uses('TopicSelectedRoomsController', 'Topics.Controller');
 
 /**
  * Summary for TopicSelectedRoomsController Test Case
  */
-class TopicSelectedRoomsControllerTest extends YAControllerTestCase {
+class TopicSelectedRoomsControllerTest extends TopicsAppControllerTest {
 
 /**
  * Fixtures

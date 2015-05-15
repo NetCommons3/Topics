@@ -2,17 +2,18 @@
 /**
  * TopicBlockSettingShowPluginsController Test Case
  *
- * @author   Jun Nishikawa <topaz2@m0n0m0n0.com>
- * @link     http://www.netcommons.org NetCommons Project
- * @license  http://www.netcommons.org/license.txt NetCommons License
+ * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('TopicBlockSettingShowPluginsController', 'Controller');
+App::uses('TopicsAppControllerTest', 'Topics.Test/Case/Controller');
+App::uses('TopicBlockSettingShowPluginsController', 'Topics.Controller');
 
 /**
  * Summary for TopicBlockSettingShowPluginsController Test Case
  */
-class TopicBlockSettingShowPluginsControllerTest extends YAControllerTestCase {
+class TopicBlockSettingShowPluginsControllerTest extends TopicsAppControllerTest {
 
 /**
  * Fixtures
