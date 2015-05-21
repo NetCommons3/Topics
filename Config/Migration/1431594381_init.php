@@ -98,7 +98,7 @@ class Init extends CakeMigration {
 						'fk_flexible_database_blocks1_idx' => array('column' => 'block_id', 'unique' => 0),
 						'fk_topics_plugins1_idx' => array('column' => 'plugin_key', 'unique' => 0),
 					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Moroonga', 'comment' => 'engine "InnoDB"'),
 				),
 			),
 		),

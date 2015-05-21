@@ -17,11 +17,13 @@ App::uses('AppModel', 'Model');
 class Topic extends AppModel {
 
 /**
- * Use database config
+ * Behaviors
  *
- * @var string
+ * @var array
  */
-	public $useDbConfig = 'master';
+	public $actsAs = array(
+		'NetCommons.OriginalKey',
+	);
 
 /**
  * Validation rules
@@ -170,11 +172,23 @@ class Topic extends AppModel {
  */
 	public $belongsTo = array(
 		'Block' => array(
-			'className' => 'Block',
+			'className' => 'Blocks.Block',
 			'foreignKey' => 'block_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		)
 	);
+
+/**
+ * validate topic
+ *
+ * @param array $data received post data
+ * @return bool True on success, false on error
+ */
+	public function validateTopic($data) {
+		$this->set($data);
+		$this->validates();
+		return $this->validationErrors ? false : true;
+	}
 }
