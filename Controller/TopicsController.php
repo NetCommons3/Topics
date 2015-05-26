@@ -25,7 +25,19 @@ class TopicsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Topic->recursive = 0;
+		/* $this->Topic->recursive = 0; */
+		var_dump($this->request->query);
+		$this->Paginator->settings = array(
+			'Topic' => array(
+				'order' => array('FaqQuestionOrder.weight' => 'asc'),
+				'conditions' => array(
+					'Topic.status' => 1,
+					/* 'Topic.is_latest' => true, */
+					sprintf('MATCH (`Topic`.`title`, `Topic`.`contents`) AGAINST (\'%s\' IN BOOLEAN MODE)', $this->request->query['keyword']),
+				),
+				/* 'limit' => -1 */
+			)
+		);
 		$this->set('topics', $this->Paginator->paginate());
 	}
 

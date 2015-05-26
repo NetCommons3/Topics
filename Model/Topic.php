@@ -181,6 +181,41 @@ class Topic extends AppModel {
 	);
 
 /**
+ * Available plugins
+ *
+ * @var array
+ */
+	public static $AVAILABLE_PLUGINS = array(
+		'announcements',
+		'bbses',
+		'blogs',
+		'cabinets',
+		'calendars',
+		'circular_notices',
+		'facility_manager',
+		'flexible_databases',
+		'photo_albums',
+		'questionnaires',
+		'reports',
+		'tasks',
+		'workbooks',
+	);
+
+/**
+ * get content data
+ *
+ * @param array $conditions conditions
+ * @return array
+ */
+	public function search($conditions) {
+		return $this->find('all', array(
+				'conditions' => $conditions,
+				'order' => 'Topic.id DESC',
+			)
+		);
+	}
+
+/**
  * validate topic
  *
  * @param array $data received post data

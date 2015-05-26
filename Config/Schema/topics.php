@@ -86,6 +86,7 @@ class TopicSchema extends CakeSchema {
 		'counts' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'path' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'from' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'to' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'created_user' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => null),
@@ -93,8 +94,9 @@ class TopicSchema extends CakeSchema {
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'fk_flexible_database_blocks1_idx' => array('column' => 'block_id', 'unique' => 0),
-			'fk_topics_plugins1_idx' => array('column' => 'plugin_key', 'unique' => 0)
+			'fk_topics_plugins1_idx' => array('column' => 'plugin_key', 'unique' => 0),
+			'title_content' => array('column' => array('title', 'contents'), 'type' => 'fulltext'),
 		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Mroonga', 'comment' => 'engine "InnoDB"')
 	);
 }

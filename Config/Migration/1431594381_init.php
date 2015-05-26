@@ -89,6 +89,7 @@ class Init extends CakeMigration {
 					'counts' => array('type' => 'integer', 'null' => true, 'default' => null),
 					'path' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'from' => array('type' => 'datetime', 'null' => true, 'default' => null),
+					'to' => array('type' => 'datetime', 'null' => true, 'default' => null),
 					'created_user' => array('type' => 'integer', 'null' => false, 'default' => null),
 					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => null),
@@ -96,15 +97,55 @@ class Init extends CakeMigration {
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 						'fk_flexible_database_blocks1_idx' => array('column' => 'block_id', 'unique' => 0),
-						'fk_topics_plugins1_idx' => array('column' => 'plugin_key', 'unique' => 0),
+						'title_content' => array('column' => array('title', 'contents'), 'type' => 'fulltext'),
 					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Moroonga', 'comment' => 'engine "InnoDB"'),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Mroonga', 'comment' => 'engine "InnoDB"'),
 				),
 			),
 		),
 		'down' => array(
 			'drop_table' => array(
 				'topic_block_setting_show_plugins', 'topic_block_settings', 'topic_selected_rooms', 'topics',
+			),
+		),
+	);
+
+/**
+ * records
+ *
+ * @var array $records
+ */
+	public $records = array(
+		'Plugin' => array(
+			array(
+				'language_id' => 1,
+				'key' => 'topics',
+				'namespace' => 'netcommons/topics',
+				'default_action' => 'topics/view',
+				'name' => 'Topics',
+				'type' => 1,
+			),
+			array(
+				'language_id' => 2,
+				'key' => 'topics',
+				'namespace' => 'netcommons/topics',
+				'default_action' => 'topics/view',
+				'name' => '新着',
+				'type' => 1,
+			),
+		),
+
+		'PluginsRole' => array(
+			array(
+				'role_key' => 'room_administrator',
+				'plugin_key' => 'topics'
+			),
+		),
+
+		'PluginsRoom' => array(
+			array(
+				'room_id' => 1,
+				'plugin_key' => 'topics'
 			),
 		),
 	);
@@ -126,6 +167,36 @@ class Init extends CakeMigration {
  * @return bool Should process continue
  */
 	public function after($direction) {
+		if ($direction === 'down') {
+			return true;
+		}
+
+		foreach ($this->records as $model => $records) {
+			if (!$this->updateRecords($model, $records)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+/**
+ * Update model records
+ *
+ * @param string $model model name to update
+ * @param string $records records to be stored
+ * @param string $scope ?
+ * @return bool Should process continue
+ */
+	public function updateRecords($model, $records, $scope = null) {
+		$Model = $this->generateModel($model);
+		foreach ($records as $record) {
+			$Model->create();
+			if (!$Model->save($record, false)) {
+				return false;
+			}
+		}
+
 		return true;
 	}
 }
