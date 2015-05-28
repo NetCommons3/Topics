@@ -1,5 +1,4 @@
 <?php
-App::uses('AppController', 'Controller');
 /**
  * Topics Controller
  *
@@ -10,6 +9,13 @@ App::uses('AppController', 'Controller');
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
+
+App::uses('AppController', 'Controller');
+App::uses('Search', 'Search.Utility');
+
+/**
+ * Summary for Topics Controller
+ */
 class TopicsController extends AppController {
 
 /**
@@ -17,14 +23,31 @@ class TopicsController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator');
+	public $components = array(
+		'Paginator',
+		'NetCommons.NetCommonsFrame',
+		'NetCommons.NetCommonsWorkflow',
+		/* 'NetCommons.NetCommonsRoomRole' => array( */
+		/* 	//コンテンツの権限設定 */
+		/* 	'allowedActions' => array( */
+		/* 		'contentEditable' => array('edit') */
+		/* 	), */
+		/* ), */
+	);
 
 /**
  * index method
  *
+ * @param string $frameId frameId
  * @return void
  */
-	public function index() {
+	public function index($frameId = null) {
+		if (!$this->request->query['keyword']) {
+			$this->view($frameId);
+			
+			/* throw new NotFoundException(__('Invalid topic')); */
+		} else {
+		
 		/* $this->Topic->recursive = 0; */
 		var_dump($this->request->query);
 		$this->Paginator->settings = array(
@@ -33,28 +56,34 @@ class TopicsController extends AppController {
 				'conditions' => array(
 					'Topic.status' => 1,
 					/* 'Topic.is_latest' => true, */
-					sprintf('MATCH (`Topic`.`title`, `Topic`.`contents`) AGAINST (\'%s\' IN BOOLEAN MODE)', $this->request->query['keyword']),
+					sprintf(
+						'MATCH (`Topic`.`title`, `Topic`.`contents`) AGAINST (\'%s\' IN BOOLEAN MODE)',
+						Search::prepareKeyword($this->request->query['keyword'], (int)$this->request->query['type'])
+					),
 				),
 				/* 'limit' => -1 */
 			)
 		);
 		$this->set('topics', $this->Paginator->paginate());
+		}
 	}
 
 /**
  * view method
  *
- * @param string $id id
+ * @param string $frameId frameId
  * @throws NotFoundException
  * @return void
  */
-	public function view($id = null) {
-		if (!$this->Topic->exists($id)) {
-			throw new NotFoundException(__('Invalid topic'));
-		}
-		$options = array('conditions' => array('Topic.' . $this->Topic->primaryKey => $id));
+	public function view($frameId = null) {
+		/* var_dump($this->NetCommonsFrame->data['Frame']); */
+		$options = array('conditions' => array('Block.id' => $this->NetCommonsFrame->data['Frame']['block_id']));
 		$this->set('topic', $this->Topic->find('first', $options));
-	}
+
+		/* $options = array('conditions' => array('language_id' => 2, 'key' => Topic::$AVAILABLE_PLUGINS)); */
+		/* $plugins = $this->Plugin->getForOptions($options); */
+		/* $this->set('plugins', $plugins); */
+}
 
 /**
  * add method
