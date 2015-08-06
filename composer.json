@@ -33,6 +33,7 @@
         "netcommons/auth-general":      "dev-master",
         "netcommons/boxes":             "dev-master",
         "netcommons/blocks":            "dev-master",
+        "netcommons/comments":          "dev-master",
         "netcommons/frames":            "dev-master",
         "netcommons/install":           "dev-master",
         "netcommons/m17n":              "dev-master",
