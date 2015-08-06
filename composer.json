@@ -42,6 +42,8 @@
         "netcommons/roles":             "dev-master",
         "netcommons/rooms":             "dev-master",
         "netcommons/pages":             "dev-master",
+        "netcommons/search":            "dev-master",
+        "netcommons/search-boxes":      "dev-master",
         "netcommons/users":             "dev-master"
     },
     "config": {
