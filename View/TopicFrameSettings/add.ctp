@@ -1,7 +1,7 @@
-<div class="topicBlockSettings form">
-<?php echo $this->Form->create('TopicBlockSetting'); ?>
+<div class="topicFrameSettings form">
+<?php echo $this->Form->create('TopicFrameSetting'); ?>
 	<fieldset>
-		<legend><?php echo __('Add Topic Block Setting'); ?></legend>
+		<legend><?php echo __('Add Topic Frame Setting'); ?></legend>
 	<?php
 		echo $this->Form->input('block_id');
 		echo $this->Form->input('key');
@@ -27,7 +27,7 @@
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 
-		<li><?php echo $this->Html->link(__('List Topic Block Settings'), array('action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link(__('List Topic Frame Settings'), array('action' => 'index')); ?></li>
 		<li><?php echo $this->Html->link(__('List Blocks'), array('controller' => 'blocks', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Block'), array('controller' => 'blocks', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>

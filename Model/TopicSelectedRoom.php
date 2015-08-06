@@ -29,7 +29,7 @@ class TopicSelectedRoom extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'topic_block_setting_key' => array(
+		'topic_frame_setting_key' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
 				//'message' => 'Your custom message here',

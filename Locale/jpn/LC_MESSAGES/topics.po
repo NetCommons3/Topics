@@ -1,0 +1,110 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"PO-Revision-Date: 2015-07-28 18:27+0000\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:22
+msgid "Display style"
+msgstr "表示方法"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:25
+msgid "Search Type"
+msgstr "検索方法"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:28
+msgid "Treat latest x days as new"
+msgstr "最新x日分を新着とする"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:29
+msgid "Treat latest x topics as new"
+msgstr "最新x件分を新着とする"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:47
+msgid "%d days"
+msgstr "%d日分"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:58
+msgid "%d topics"
+msgstr "%d件分"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:65
+msgid "Select rooms"
+msgstr "ルームを選択する"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:88
+msgid "Show my room"
+msgstr "プライベートルームの新着を表示する"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:92
+msgid "Display fields"
+msgstr "表示項目"
+
+msgid "Display filter"
+msgstr "表示対象"
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:116
+msgid "Target Plugins"
+msgstr "表示プラグイン"
+
+#: /var/www/app//View/Topics/index.ctp:30;36
+msgid "Latest %d days"
+msgstr "最新%d日分"
+
+msgid "Latest %d topics"
+msgstr "最新%d件分"
+
+#: /var/www/app//View/Topics/index.ctp:30;36
+msgid "Today"
+msgstr "今日"
+
+msgid "Title"
+msgstr "タイトル"
+
+msgid "Room Name"
+msgstr "ルーム名"
+
+msgid "Plugin Name"
+msgstr "プラグイン名"
+
+msgid "Created User"
+msgstr "作成者"
+
+msgid "Created"
+msgstr "作成日"
+
+msgid "Description"
+msgstr "詳細"
+
+msgid "All Plugins"
+msgstr "全てのプラグイン"
+
+msgid "All Statuses"
+msgstr "全てのステータス"
+
+msgid "All Durations"
+msgstr "全ての期間"
+
+msgid "All Topics"
+msgstr "全ての新着"
+
+msgid "Updated: %s"
+msgstr "更新日: %s"
+
+msgid "Search Results"
+msgstr "検索結果"
+
+msgid "No results found."
+msgstr "条件に一致するデータはありませんでした。"
+
+msgid "Unspecified"
+msgstr "指定しない"

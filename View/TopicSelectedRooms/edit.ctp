@@ -4,7 +4,7 @@
 		<legend><?php echo __('Edit Topic Selected Room'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('topic_block_setting_key');
+		echo $this->Form->input('topic_frame_setting_key');
 		echo $this->Form->input('room_id');
 		echo $this->Form->input('created_user');
 		echo $this->Form->input('modified_user');

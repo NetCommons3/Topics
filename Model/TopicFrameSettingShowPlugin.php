@@ -1,6 +1,6 @@
 <?php
 /**
- * TopicBlockSettingShowPlugin Model
+ * TopicFrameSettingShowPlugin Model
  *
  * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -10,9 +10,9 @@
 App::uses('AppModel', 'Model');
 
 /**
- * Summary for TopicBlockSettingShowPlugin Model
+ * Summary for TopicFrameSettingShowPlugin Model
  */
-class TopicBlockSettingShowPlugin extends AppModel {
+class TopicFrameSettingShowPlugin extends AppModel {
 
 /**
  * Use database config
@@ -27,7 +27,7 @@ class TopicBlockSettingShowPlugin extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'topic_block_setting_key' => array(
+		'topic_frame_setting_key' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
 				//'message' => 'Your custom message here',

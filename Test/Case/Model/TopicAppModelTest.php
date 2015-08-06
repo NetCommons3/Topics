@@ -39,9 +39,10 @@ class TopicAppModelTest extends YACakeTestCase {
 		'plugin.pages.space',
 		'plugin.roles.role',
 		'plugin.rooms.room',
+		'plugin.topics.searchable_model',
 		'plugin.topics.topic',
-		'plugin.topics.topic_block_setting',
-		'plugin.topics.topic_block_setting_show_plugin',
+		'plugin.topics.topic_frame_setting',
+		'plugin.topics.topic_frame_setting_show_plugin',
 		'plugin.topics.topic_selected_room',
 		'plugin.users.user',
 		'plugin.users.user_attribute',
@@ -58,6 +59,7 @@ class TopicAppModelTest extends YACakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->Topic = ClassRegistry::init('Topics.Topic');
+		$this->TopicFrameSetting = ClassRegistry::init('Topics.TopicFrameSetting');
 	}
 
 /**
@@ -67,6 +69,7 @@ class TopicAppModelTest extends YACakeTestCase {
  */
 	public function tearDown() {
 		unset($this->Topic);
+		unset($this->TopicFrameSetting);
 		parent::tearDown();
 	}
 

@@ -3,7 +3,7 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<th><?php echo $this->Paginator->sort('topic_block_setting_key'); ?></th>
+			<th><?php echo $this->Paginator->sort('topic_frame_setting_key'); ?></th>
 			<th><?php echo $this->Paginator->sort('room_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('created_user'); ?></th>
 			<th><?php echo $this->Paginator->sort('created'); ?></th>
@@ -14,7 +14,7 @@
 	<?php foreach ($topicSelectedRooms as $topicSelectedRoom): ?>
 	<tr>
 		<td><?php echo h($topicSelectedRoom['TopicSelectedRoom']['id']); ?>&nbsp;</td>
-		<td><?php echo h($topicSelectedRoom['TopicSelectedRoom']['topic_block_setting_key']); ?>&nbsp;</td>
+		<td><?php echo h($topicSelectedRoom['TopicSelectedRoom']['topic_frame_setting_key']); ?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($topicSelectedRoom['Room']['id'], array('controller' => 'rooms', 'action' => 'view', $topicSelectedRoom['Room']['id'])); ?>
 		</td>

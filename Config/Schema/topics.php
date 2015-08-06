@@ -1,18 +1,52 @@
-<?php 
+<?php
+/**
+ * Schema file
+ *
+ * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
+ */
+
+/**
+ * Schema file
+ *
+ * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
+ * @package NetCommons\Topics\Config\Schema
+ * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
 class TopicSchema extends CakeSchema {
 
 	public $connection = 'master';
 
+/**
+ * before
+ *
+ * @param array $event savent
+ * @return bool
+ */
 	public function before($event = array()) {
 		return true;
 	}
 
+/**
+ * after
+ *
+ * @param array $event event
+ * @return void
+ */
 	public function after($event = array()) {
 	}
 
-	public $topic_block_setting_show_plugins = array(
+/**
+ * topics table
+ *
+ * @var array
+ */
+	public $topic_frame_setting_show_plugins = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-		'topic_block_setting_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'topic_frame_setting_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'plugin_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -20,15 +54,15 @@ class TopicSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'fk_topic_block_setting_show_plugins_topic_block_settings1_idx' => array('column' => 'topic_block_setting_key', 'unique' => 0),
-			'fk_topic_block_setting_show_plugins_plugins1_idx' => array('column' => 'plugin_key', 'unique' => 0)
+			'fk_topic_frame_setting_show_plugins_topic_frame_settings1_idx' => array('column' => 'topic_frame_setting_key', 'unique' => 0),
+			'fk_topic_frame_setting_show_plugins_plugins1_idx' => array('column' => 'plugin_key', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	public $topic_block_settings = array(
+	public $topic_frame_settings = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
+		'frame_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
 		'key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'display_type' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'unit_type' => array('type' => 'boolean', 'null' => false, 'default' => null, 'comment' => 'Whether to handle (n days / n counts) as new topics.'),
@@ -48,15 +82,15 @@ class TopicSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'fk_topic_block_settings_blocks1_idx' => array('column' => 'block_id', 'unique' => 0),
-			'fk_topic_block_settings_topic_selected_rooms1_idx' => array('column' => 'key', 'unique' => 0)
+			'fk_topic_frame_settings_frames1_idx' => array('column' => 'frame_id', 'unique' => 0),
+			'fk_topic_frame_settings_topic_selected_rooms1_idx' => array('column' => 'key', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
 	public $topic_selected_rooms = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-		'topic_block_setting_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'topic_frame_setting_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'room_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
 		'created_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -64,7 +98,7 @@ class TopicSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'fk_topic_selected_rooms_topic_block_settings1_idx' => array('column' => 'topic_block_setting_key', 'unique' => 0),
+			'fk_topic_selected_rooms_topic_frame_settings1_idx' => array('column' => 'topic_frame_setting_key', 'unique' => 0),
 			'fk_topic_selected_rooms_rooms1_idx' => array('column' => 'room_id', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')

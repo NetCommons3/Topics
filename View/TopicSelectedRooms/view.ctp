@@ -6,9 +6,9 @@
 			<?php echo h($topicSelectedRoom['TopicSelectedRoom']['id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Topic Block Setting Key'); ?></dt>
+		<dt><?php echo __('Topic Frame Setting Key'); ?></dt>
 		<dd>
-			<?php echo h($topicSelectedRoom['TopicSelectedRoom']['topic_block_setting_key']); ?>
+			<?php echo h($topicSelectedRoom['TopicSelectedRoom']['topic_frame_setting_key']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Room'); ?></dt>

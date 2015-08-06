@@ -1,9 +1,9 @@
-<div class="topicBlockSettingShowPlugins form">
-<?php echo $this->Form->create('TopicBlockSettingShowPlugin'); ?>
+<div class="topicFrameSettingShowPlugins form">
+<?php echo $this->Form->create('TopicFrameSettingShowPlugin'); ?>
 	<fieldset>
-		<legend><?php echo __('Add Topic Block Setting Show Plugin'); ?></legend>
+		<legend><?php echo __('Add Topic Frame Setting Show Plugin'); ?></legend>
 	<?php
-		echo $this->Form->input('topic_block_setting_key');
+		echo $this->Form->input('topic_frame_setting_key');
 		echo $this->Form->input('plugin_key');
 		echo $this->Form->input('created_user');
 		echo $this->Form->input('modified_user');
@@ -15,7 +15,7 @@
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 
-		<li><?php echo $this->Html->link(__('List Topic Block Setting Show Plugins'), array('action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link(__('List Topic Frame Setting Show Plugins'), array('action' => 'index')); ?></li>
 		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Trackable Creator'), array('controller' => 'users', 'action' => 'add')); ?> </li>
 	</ul>

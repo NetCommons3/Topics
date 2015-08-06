@@ -16,9 +16,9 @@ class Init extends CakeMigration {
 	public $migration = array(
 		'up' => array(
 			'create_table' => array(
-				'topic_block_setting_show_plugins' => array(
+				'topic_frame_setting_show_plugins' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-					'topic_block_setting_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'topic_frame_setting_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'plugin_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'created_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
 					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -26,14 +26,14 @@ class Init extends CakeMigration {
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_topic_block_setting_show_plugins_topic_block_settings1_idx' => array('column' => 'topic_block_setting_key', 'unique' => 0),
-						'fk_topic_block_setting_show_plugins_plugins1_idx' => array('column' => 'plugin_key', 'unique' => 0),
+						'fk_topic_frame_setting_show_plugins_topic_frame_settings1_idx' => array('column' => 'topic_frame_setting_key', 'unique' => 0),
+						'fk_topic_frame_setting_show_plugins_plugins1_idx' => array('column' => 'plugin_key', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
-				'topic_block_settings' => array(
+				'topic_frame_settings' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
+					'frame_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
 					'key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'display_type' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'unit_type' => array('type' => 'boolean', 'null' => false, 'default' => null, 'comment' => 'Whether to handle (n days / n counts) as new topics.'),
@@ -41,7 +41,7 @@ class Init extends CakeMigration {
 					'display_number' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 3),
 					'display_title' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'display_room_name' => array('type' => 'boolean', 'null' => false, 'default' => null),
-					'display_module_name' => array('type' => 'boolean', 'null' => false, 'default' => null),
+					'display_plugin_name' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'display_created_user' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'display_created' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'display_description' => array('type' => 'boolean', 'null' => false, 'default' => null),
@@ -53,14 +53,14 @@ class Init extends CakeMigration {
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_topic_block_settings_blocks1_idx' => array('column' => 'block_id', 'unique' => 0),
-						'fk_topic_block_settings_topic_selected_rooms1_idx' => array('column' => 'key', 'unique' => 0),
+						'fk_topic_frame_settings_frames1_idx' => array('column' => 'frame_id', 'unique' => 0),
+						'fk_topic_frame_settings_topic_selected_rooms1_idx' => array('column' => 'key', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
 				'topic_selected_rooms' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-					'topic_block_setting_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'topic_frame_setting_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'room_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
 					'created_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
 					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -68,7 +68,7 @@ class Init extends CakeMigration {
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_topic_selected_rooms_topic_block_settings1_idx' => array('column' => 'topic_block_setting_key', 'unique' => 0),
+						'fk_topic_selected_rooms_topic_frame_settings1_idx' => array('column' => 'topic_frame_setting_key', 'unique' => 0),
 						'fk_topic_selected_rooms_rooms1_idx' => array('column' => 'room_id', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
@@ -105,7 +105,7 @@ class Init extends CakeMigration {
 		),
 		'down' => array(
 			'drop_table' => array(
-				'topic_block_setting_show_plugins', 'topic_block_settings', 'topic_selected_rooms', 'topics',
+				'topic_frame_setting_show_plugins', 'topic_frame_settings', 'topic_selected_rooms', 'topics',
 			),
 		),
 	);
@@ -122,7 +122,7 @@ class Init extends CakeMigration {
 				'key' => 'topics',
 				'namespace' => 'netcommons/topics',
 				'default_action' => 'topics/index',
-				'default_setting_action' => 'topic_block_settings/edit',
+				'default_setting_action' => 'topic_frame_settings/edit',
 				'name' => 'Topics',
 				'type' => 1,
 			),
@@ -131,7 +131,7 @@ class Init extends CakeMigration {
 				'key' => 'topics',
 				'namespace' => 'netcommons/topics',
 				'default_action' => 'topics/index',
-				'default_setting_action' => 'topic_block_settings/edit',
+				'default_setting_action' => 'topic_frame_settings/edit',
 				'name' => '新着',
 				'type' => 1,
 			),

@@ -11,29 +11,43 @@
  */
 
 App::uses('AppController', 'Controller');
-App::uses('Search', 'Search.Utility');
 
 /**
  * Summary for Topics Controller
  */
-class TopicsController extends AppController {
+class TopicsController extends TopicsAppController {
 
 /**
- * Components
+ * uses
  *
  * @var array
  */
-	public $components = array(
-		'Paginator',
-		'NetCommons.NetCommonsFrame',
-		'NetCommons.NetCommonsWorkflow',
-		/* 'NetCommons.NetCommonsRoomRole' => array( */
-		/* 	//コンテンツの権限設定 */
-		/* 	'allowedActions' => array( */
-		/* 		'contentEditable' => array('edit') */
-		/* 	), */
-		/* ), */
+	public $uses = array(
+		'Topics.Topic',
 	);
+
+/**
+ * default limit
+ *
+ * @var int
+ */
+	const
+		INDEX_LIMIT = 10,
+		SEARCH_LIMIT = 10,
+		FEED_LIMIT = 100;
+
+/**
+ * beforeFilter
+ *
+ * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
+ * @throws NotFoundException
+ * @return void
+ **/
+	public function beforeFilter() {
+		$this->Auth->allow('index', 'search', 'feed');
+		parent::beforeFilter();
+		ClassRegistry::flush();
+	}
 
 /**
  * index method
@@ -42,116 +56,114 @@ class TopicsController extends AppController {
  * @return void
  */
 	public function index($frameId = null) {
-		if (!$this->request->query['keyword']) {
-			$this->view($frameId);
-			
-			/* throw new NotFoundException(__('Invalid topic')); */
-		} else {
-		
-		/* $this->Topic->recursive = 0; */
-		var_dump($this->request->query);
+		$options = array('conditions' => array('frame_id' => $frameId));
+		$this->TopicFrameSetting->recursive = -1;
+		$topicFrameSetting = $this->TopicFrameSetting->find('first', $options);
+		$roomIds = [];
+		if ($topicFrameSetting) {
+			$options = array('conditions' => array('topic_frame_setting_key' => $topicFrameSetting['TopicFrameSetting']['key']));
+			$topicSelectedRooms = $this->TopicSelectedRoom->find('all', $options);
+			$roomIds = array_map(function ($topicSelectedRoom) {
+				return $topicSelectedRoom['TopicSelectedRoom']['room_id'];
+			}, $topicSelectedRooms);
+			$rooms = $this->Room->getReadableRooms();
+		}
+
+		$this->Topic->recursive = 0;
 		$this->Paginator->settings = array(
 			'Topic' => array(
-				'order' => array('FaqQuestionOrder.weight' => 'asc'),
-				'conditions' => array(
-					'Topic.status' => 1,
-					/* 'Topic.is_latest' => true, */
-					sprintf(
-						'MATCH (`Topic`.`title`, `Topic`.`contents`) AGAINST (\'%s\' IN BOOLEAN MODE)',
-						Search::prepareKeyword($this->request->query['keyword'], (int)$this->request->query['type'])
-					),
+				'order' => array('Topic.modified' => 'asc'),
+				'group' => array('Topic.path HAVING max(Topic.modified)'),
+				'conditions' => $this->Topic->buildConditions(
+					array_merge($this->request->query, ['room_id' => $roomIds]),
+					$this->Auth->user('id'),
+					$this->viewVars
 				),
-				/* 'limit' => -1 */
+				'limit' => self::INDEX_LIMIT,
 			)
 		);
 		$this->set('topics', $this->Paginator->paginate());
-		}
+
+		$this->__setUnitTypeVars($topicFrameSetting);
+		$options = array('conditions' => array('language_id' => 2, 'key' => Topic::$availablePlugins));
+		$plugins = $this->Plugin->getKeyIndexedHash($options);
+		$options = array('conditions' => array('Frame.key' => $this->current['Frame']['key']));
+		$searchBox = $this->SearchBox->find('first', $options);
+		$this->set(compact('plugins', 'rooms', 'topicFrameSetting', 'searchBox'));
 	}
 
 /**
- * view method
+ * set unit type vars
+ *
+ * @param array $topicFrameSetting Topic Frame Setting
+ * @return void
+ */
+	private function __setUnitTypeVars($topicFrameSetting = null) {
+		$displayDays = $displayNumber = 0;
+
+		if (isset($this->request->query['latest_days']) && is_numeric($this->request->query['latest_days'])) {
+			$displayDays = $this->request->query['latest_days'];
+		} elseif ($topicFrameSetting && $topicFrameSetting['TopicFrameSetting']['display_days']) {
+			$displayDays = $topicFrameSetting['TopicFrameSetting']['display_days'];
+		}
+		if (isset($this->request->query['latest_topics']) && is_numeric($this->request->query['latest_topics'])) {
+			$displayNumber = $this->request->query['latest_topics'];
+		} elseif ($topicFrameSetting && $topicFrameSetting['TopicFrameSetting']['display_number']) {
+			$displayNumber = $topicFrameSetting['TopicFrameSetting']['display_number'];
+		}
+
+		$this->set(compact('displayDays', 'displayNumber'));
+	}
+
+/**
+ * search method
  *
  * @param string $frameId frameId
- * @throws NotFoundException
  * @return void
  */
-	public function view($frameId = null) {
-		/* var_dump($this->NetCommonsFrame->data['Frame']); */
-		$options = array('conditions' => array('Block.id' => $this->NetCommonsFrame->data['Frame']['block_id']));
-		$this->set('topic', $this->Topic->find('first', $options));
+	public function search($frameId = null) {
+		$this->Topic->recursive = 0;
+		$this->Paginator->settings = array(
+			'Topic' => array(
+				'order' => array('Topic.modified' => 'asc'),
+				'group' => array('Topic.path'),
+				'conditions' => $this->Topic->buildConditions(
+					$this->request->query,
+					$this->Auth->user('id'),
+					$this->viewVars
+				),
+				'limit' => self::SEARCH_LIMIT,
+			)
+		);
+		$this->set('topics', $this->Paginator->paginate());
 
-		/* $options = array('conditions' => array('language_id' => 2, 'key' => Topic::$AVAILABLE_PLUGINS)); */
-		/* $plugins = $this->Plugin->getForOptions($options); */
-		/* $this->set('plugins', $plugins); */
-}
-
-/**
- * add method
- *
- * @return void
- */
-	public function add() {
-		if ($this->request->is('post')) {
-			$this->Topic->create();
-			if ($this->Topic->save($this->request->data)) {
-				$this->Session->setFlash(__('The topic has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The topic could not be saved. Please, try again.'));
-			}
-		}
-		$blocks = $this->Topic->Block->find('list');
-		$trackableCreators = $this->Topic->TrackableCreator->find('list');
-		$trackableUpdaters = $this->Topic->TrackableUpdater->find('list');
-		$this->set(compact('blocks', 'trackableCreators', 'trackableUpdaters'));
+		$options = array('conditions' => array('language_id' => 2, 'key' => Topic::$availablePlugins));
+		$plugins = $this->Plugin->getForOptions($options);
+		$rooms = $this->Room->getReadableRooms();
+		$options = array('conditions' => array('Frame.key' => $this->current['Frame']['key']));
+		$searchBox = $this->SearchBox->find('first', $options);
+		$this->set(compact('plugins', 'rooms', 'searchBox'));
 	}
 
 /**
- * edit method
+ * feed method
  *
- * @param string $id id
- * @throws NotFoundException
  * @return void
  */
-	public function edit($id = null) {
-		if (!$this->Topic->exists($id)) {
-			throw new NotFoundException(__('Invalid topic'));
-		}
-		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Topic->save($this->request->data)) {
-				$this->Session->setFlash(__('The topic has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The topic could not be saved. Please, try again.'));
-			}
-		} else {
-			$options = array('conditions' => array('Topic.' . $this->Topic->primaryKey => $id));
-			$this->request->data = $this->Topic->find('first', $options);
-		}
-		$blocks = $this->Topic->Block->find('list');
-		$trackableCreators = $this->Topic->TrackableCreator->find('list');
-		$trackableUpdaters = $this->Topic->TrackableUpdater->find('list');
-		$this->set(compact('blocks', 'trackableCreators', 'trackableUpdaters'));
-	}
-
-/**
- * delete method
- *
- * @param string $id id
- * @throws NotFoundException
- * @return void
- */
-	public function delete($id = null) {
-		$this->Topic->id = $id;
-		if (!$this->Topic->exists()) {
-			throw new NotFoundException(__('Invalid topic'));
-		}
-		$this->request->onlyAllow('post', 'delete');
-		if ($this->Topic->delete()) {
-			$this->Session->setFlash(__('The topic has been deleted.'));
-		} else {
-			$this->Session->setFlash(__('The topic could not be deleted. Please, try again.'));
-		}
-		return $this->redirect(array('action' => 'index'));
+	public function feed() {
+		$this->Topic->recursive = 0;
+		$this->Paginator->settings = array(
+			'Topic' => array(
+				'order' => array('Topic.modified' => 'asc'),
+				'group' => array('Topic.path HAVING max(Topic.modified)'),
+				'conditions' => $this->Topic->buildConditions(
+					array_merge($this->request->query, ['status' => NetCommonsBlockComponent::STATUS_PUBLISHED]),
+					$this->Auth->user('id'),
+					$this->viewVars
+				),
+				'limit' => self::FEED_LIMIT,
+			)
+		);
+		$this->set('topics', $this->Paginator->paginate());
 	}
 }
