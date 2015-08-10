@@ -19,7 +19,7 @@ echo $this->Html->css(
 	<?php if ($topicFrameSetting && (int)$topicFrameSetting['TopicFrameSetting']['unit_type'] === TopicFrameSetting::UNIT_TYPE_DAYS): ?>
 		<span class="btn-group">
 			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-				<?php $label = (isset($this->request->query['latest_days']) && $this->request->query['latest_days']) ? __d('topics', 'Latest %d days', [$this->request->query['latest_days']]) : __d('topics', 'All Durations') ?>
+				<?php $label = $displayDays ? __d('topics', 'Latest %d days', [$displayDays]) : __d('topics', 'All Durations') ?>
 				<?php echo h($label) ?>
 				<span class="caret"></span>
 			</button>
@@ -127,8 +127,8 @@ echo $this->Html->css(
 					<?php if ($topicFrameSetting && $topicFrameSetting['TopicFrameSetting']['display_description']): ?>
 					<div class="topics_entry_body1">
 						<?php
-							$contents = preg_replace('/[\s　]/', '', strip_tags($topic['Topic']['contents'])) ? mb_strimwidth($topic['Topic']['contents'], 0, 100, '...') : __d('topics', 'No contents');
-							echo h(strip_tags($topic['Topic']['contents']));
+							$contents = preg_replace('/[\s　]/', '', strip_tags($topic['Topic']['contents'])) ? mb_strimwidth(strip_tags($topic['Topic']['contents']), 0, 300, '...') : __d('topics', 'No contents');
+							echo h($contents);
 						?>
 					</div>
 					<?php endif; ?>

@@ -112,3 +112,13 @@ msgstr "指定しない"
 #: /var/www/app//View/Topics/search.ctp:31
 msgid "(%d total %d - %d)"
 msgstr "(%d件中 %d - %d)"
+
+#: /var/www/app//View/Topics/index.ctp:121
+#: /var/www/app//View/Topics/search.ctp:51
+msgid "No title"
+msgstr "タイトル無し"
+
+#: /var/www/app//View/Topics/index.ctp:131
+#: /var/www/app//View/Topics/search.ctp:59
+msgid "No contents"
+msgstr "本文無し"

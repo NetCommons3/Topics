@@ -207,7 +207,7 @@ class Topic extends AppModel {
 
 		if (isset($query['keyword']) && $query['keyword'] !== '') {
 			$conditions[] = sprintf(
-				'MATCH (`Topic`.`title`, `Topic`.`contents`) AGAINST (\'%s\' IN BOOLEAN MODE)',
+				'MATCH (`Topic`.`title`, `Topic`.`contents`) AGAINST (\'*D+ %s\' IN BOOLEAN MODE)',
 				$query['keyword']
 			);
 		}

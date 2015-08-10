@@ -68,23 +68,28 @@ class TopicsController extends TopicsAppController {
 			}, $topicSelectedRooms);
 			$rooms = $this->Room->getReadableRooms();
 		}
+		$this->__setUnitTypeVars($topicFrameSetting);
 
 		$this->Topic->recursive = 0;
 		$this->Paginator->settings = array(
 			'Topic' => array(
-				'order' => array('Topic.modified' => 'asc'),
+				'order' => array('Topic.modified' => 'desc'),
 				'group' => array('Topic.path HAVING max(Topic.modified)'),
 				'conditions' => $this->Topic->buildConditions(
-					array_merge($this->request->query, ['room_id' => $roomIds]),
+					array_merge([
+						'latest_days' => $this->viewVars['displayDays'] ? $this->viewVars['displayDays'] : null,
+					],
+					$this->request->query, [
+						'room_id' => $roomIds
+					]),
 					$this->Auth->user('id'),
 					$this->viewVars
 				),
-				'limit' => self::INDEX_LIMIT,
+				'limit' => $this->viewVars['displayNumber'] ? $this->viewVars['displayNumber'] : self::INDEX_LIMIT,
 			)
 		);
 		$this->set('topics', $this->Paginator->paginate());
 
-		$this->__setUnitTypeVars($topicFrameSetting);
 		$options = array('conditions' => array('language_id' => 2, 'key' => Topic::$availablePlugins));
 		$plugins = $this->Plugin->getKeyIndexedHash($options);
 		$options = array('conditions' => array('Frame.key' => $this->current['Frame']['key']));
@@ -111,7 +116,6 @@ class TopicsController extends TopicsAppController {
 		} elseif ($topicFrameSetting && $topicFrameSetting['TopicFrameSetting']['display_number']) {
 			$displayNumber = $topicFrameSetting['TopicFrameSetting']['display_number'];
 		}
-
 		$this->set(compact('displayDays', 'displayNumber'));
 	}
 
@@ -125,7 +129,7 @@ class TopicsController extends TopicsAppController {
 		$this->Topic->recursive = 0;
 		$this->Paginator->settings = array(
 			'Topic' => array(
-				'order' => array('Topic.modified' => 'asc'),
+				'order' => array('Topic.modified' => 'desc'),
 				'group' => array('Topic.path'),
 				'conditions' => $this->Topic->buildConditions(
 					$this->request->query,
@@ -160,7 +164,7 @@ class TopicsController extends TopicsAppController {
 		$this->Topic->recursive = 0;
 		$this->Paginator->settings = array(
 			'Topic' => array(
-				'order' => array('Topic.modified' => 'asc'),
+				'order' => array('Topic.modified' => 'desc'),
 				'group' => array('Topic.path HAVING max(Topic.modified)'),
 				'conditions' => $this->Topic->buildConditions(
 					array_merge($this->request->query, ['status' => NetCommonsBlockComponent::STATUS_PUBLISHED]),
