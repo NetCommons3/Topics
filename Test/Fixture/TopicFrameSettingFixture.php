@@ -72,6 +72,27 @@ class TopicFrameSettingFixture extends CakeTestFixture {
 			'modified_user' => 1,
 			'modified' => '2015-05-14 09:43:51'
 		),
+		array(
+			'id' => 2,
+			'frame_id' => 192,
+			'key' => 'topic_frame_setting_2',
+			'display_type' => 1,
+			'unit_type' => 1,
+			'display_days' => 1,
+			'display_number' => 1,
+			'display_title' => 1,
+			'display_room_name' => 1,
+			'display_plugin_name' => 1,
+			'display_created_user' => 1,
+			'display_created' => 1,
+			'display_description' => 1,
+			'select_room' => 1,
+			'show_my_room' => 1,
+			'created_user' => 1,
+			'created' => '2015-05-14 09:43:51',
+			'modified_user' => 1,
+			'modified' => '2015-05-14 09:43:51'
+		),
 	);
 
 }

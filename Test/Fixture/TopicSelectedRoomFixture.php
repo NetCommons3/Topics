@@ -48,6 +48,15 @@ class TopicSelectedRoomFixture extends CakeTestFixture {
 			'modified_user' => 1,
 			'modified' => '2015-05-14 09:44:22'
 		),
+		array(
+			'id' => 2,
+			'topic_frame_setting_key' => 'topic_frame_setting_2',
+			'room_id' => 1,
+			'created_user' => 1,
+			'created' => '2015-05-14 09:44:22',
+			'modified_user' => 1,
+			'modified' => '2015-05-14 09:44:22'
+		),
 	);
 
 }

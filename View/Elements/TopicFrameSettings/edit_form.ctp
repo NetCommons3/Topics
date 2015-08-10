@@ -31,7 +31,7 @@
 		echo $this->Form->input('display_days', [
 			'label' => false,
 			'type' => 'select',
-			'options' => array_map(function($v){ return __d('topics', '%d days', [$v]); }, range(1, 31)),
+			'options' => TopicFrameSetting::getLatestDurationChoices(),
 			'class' => 'form-control',
 			'disabled' => (int)$this->Form->request->data['TopicFrameSetting']['unit_type'] !== TopicFrameSetting::UNIT_TYPE_DAYS,
 		]);

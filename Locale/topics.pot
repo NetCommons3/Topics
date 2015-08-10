@@ -13,51 +13,98 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:22
+#: /var/www/app//Model/TopicFrameSetting.php:235
+#: /var/www/app//View/Topics/index.ctp:41
+msgid "All Topics"
+msgstr ""
+
+#: /var/www/app//Model/TopicFrameSetting.php:237
+#: /var/www/app//View/Topics/index.ctp:41
+msgid "Latest %d topics"
+msgstr ""
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:11
 msgid "Display style"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:25
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:14
 msgid "Search Type"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:28
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:17
 msgid "Treat latest x days as new"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:29
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:18
 msgid "Treat latest x topics as new"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:47
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:34
 msgid "%d days"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:58
-msgid "%d topics"
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:37
+#: /var/www/app//View/Topics/index.ctp:22;28
+msgid "All Durations"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:65
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:53
+msgid "Display filter"
+msgstr ""
+
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:60
 msgid "Select rooms"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:88
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:83
 msgid "Show my room"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:92
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:88
 msgid "Display fields"
 msgstr ""
 
-#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:116
+#: /var/www/app//View/Elements/TopicFrameSettings/edit_form.ctp:106
 msgid "Target Plugins"
 msgstr ""
 
-#: /var/www/app//View/Topics/index.ctp:30;36
+#: /var/www/app//View/Topics/index.ctp:22;28
 msgid "Latest %d days"
 msgstr ""
 
-#: /var/www/app//View/Topics/index.ctp:30;36
-msgid "Today"
+#: /var/www/app//View/Topics/index.ctp:63;70
+msgid "All Statuses"
+msgstr ""
+
+#: /var/www/app//View/Topics/index.ctp:87;94
+msgid "All Plugins"
+msgstr ""
+
+#: /var/www/app//View/Topics/index.ctp:111
+#: /var/www/app//View/Topics/search.ctp:42
+msgid "No results found."
+msgstr ""
+
+#: /var/www/app//View/Topics/index.ctp:121
+#: /var/www/app//View/Topics/search.ctp:51
+msgid "No title"
+msgstr ""
+
+#: /var/www/app//View/Topics/index.ctp:131
+#: /var/www/app//View/Topics/search.ctp:59
+msgid "No contents"
+msgstr ""
+
+#: /var/www/app//View/Topics/index.ctp:150
+#: /var/www/app//View/Topics/search.ctp:70
+msgid "Updated: %s"
+msgstr ""
+
+#: /var/www/app//View/Topics/search.ctp:28
+msgid "Search Results"
+msgstr ""
+
+#: /var/www/app//View/Topics/search.ctp:31
+msgid "(%d total %d - %d)"
 msgstr ""
 

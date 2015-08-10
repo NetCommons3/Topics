@@ -244,24 +244,6 @@ class TopicsControllerTest extends TopicsAppControllerTest {
 	}
 
 /**
- * Expect visitor can search with past to
- *
- * @return void
- */
-	/* public function testSearchWithPastTo() { */
-	/* 	$this->testAction( */
-	/* 		'/topics/topics/search/192', */
-	/* 		array( */
-	/* 			'method' => 'get', */
-	/* 			'data' => array( */
-	/* 				'to' => '1999-01-01 00:00:00', */
-	/* 			), */
-	/* 		) */
-	/* 	); */
-	/* 	$this->assertEmpty($this->vars['topics']); */
-	/* } */
-
-/**
  * Expect visitor can search with username
  *
  * @return void
@@ -316,7 +298,7 @@ class TopicsControllerTest extends TopicsAppControllerTest {
 	}
 
 /**
- * Expect visitor can search with plugin key
+ * Expect visitor can search with unknown plugin key
  *
  * @return void
  */
@@ -351,28 +333,8 @@ class TopicsControllerTest extends TopicsAppControllerTest {
 		$this->assertNotEmpty($this->vars['topics']);
 	}
 
-/* /\** */
-/*  * Expect visitor can search with status */
-/*  * */
-/*  * @return void */
-/*  *\/ */
-/* 	public function testSearchWithStatus() { */
-/* 		RolesControllerTest::login($this); */
-/* 		$this->testAction( */
-/* 			'/topics/topics/search/191', */
-/* 			array( */
-/* 				'method' => 'get', */
-/* 				'data' => array( */
-/* 					'status' => 1, */
-/* 				), */
-/* 			) */
-/* 		); */
-/* 		$this->assertNotEmpty($this->vars['topics']); */
-/* 		AuthGeneralControllerTest::logout($this); */
-/* 	} */
-
 /**
- * Expect authenticated user can search latest contents
+ * Expect admin can search latest contents
  *
  * @return void
  */
@@ -392,7 +354,7 @@ class TopicsControllerTest extends TopicsAppControllerTest {
 	}
 
 /**
- * Expect authenticated user can search latest contents
+ * Expect editor can search latest contents
  *
  * @return void
  */
@@ -412,11 +374,11 @@ class TopicsControllerTest extends TopicsAppControllerTest {
 	}
 
 /**
- * Expect authenticated user can search latest contents
+ * Expect visitor can search latest contents
  *
  * @return void
  */
-	public function testEditorSearchLatest2() {
+	public function testVisitorSearchLatest() {
 		RolesControllerTest::login($this, Role::ROLE_KEY_VISITOR);
 		$this->testAction(
 			'/topics/topics/search/191',
@@ -429,5 +391,20 @@ class TopicsControllerTest extends TopicsAppControllerTest {
 		);
 		$this->assertNotEmpty($this->vars['topics']);
 		AuthGeneralControllerTest::logout($this);
+	}
+
+/**
+ * Expect visitor can access topics w/ room id specified
+ *
+ * @return void
+ */
+	public function testIndexWithRoomSpecified() {
+		$this->testAction(
+			'/topics/topics/index/192',
+			array(
+				'method' => 'get',
+			)
+		);
+		$this->assertNotEmpty($this->vars['topics']);
 	}
 }

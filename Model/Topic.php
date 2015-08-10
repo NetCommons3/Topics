@@ -186,27 +186,18 @@ class Topic extends AppModel {
 			return $conditions;
 		}
 
-		if ($privileges['contentCreatable']) {
-			$conditions['OR'] = array(
-				'Topic.is_active' => 1,
-				'Topic.created_user' => $userId,
-			);
-			return $conditions;
-		}
-
 		if ($privileges['contentReadable']) {
 			$conditions = array_merge(
 				$conditions,
 				['Topic.is_active' => 1]
 			);
-			return $conditions;
 		}
 
 		return $conditions;
 	}
 
 /**
- * build query from query
+ * build conditions from query
  *
  * @param array $query query
  * @return array condition
@@ -233,15 +224,15 @@ class Topic extends AppModel {
 
 		$conditions = array_merge($conditions, $this->__buildDurationConditions($query));
 
-		if (isset($query['username'])) {
+		if (isset($query['username']) && $query['username'] !== '') {
 			$conditions['TrackableUpdater.username'] = $query['username'];
 		}
 
-		if (isset($query['room_id'])) {
+		if (isset($query['room_id']) && is_numeric($query['room_id'])) {
 			$conditions['Block.room_id'] = $query['room_id'];
 		}
 
-		if (isset($query['block_id'])) {
+		if (isset($query['block_id']) && is_numeric($query['block_id'])) {
 			$conditions['Block.id'] = $query['block_id'];
 		}
 

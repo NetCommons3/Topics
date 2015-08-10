@@ -3,7 +3,8 @@ $statuses = NetCommonsBlockComponent::getStatuses();
 $params = array_filter([
 	'status' => isset($this->request->query['status']) && $statuses[(int)$this->request->query['status']] ? (int)$this->request->query['status'] : null,
 	'latest_days' => isset($this->request->query['latest_days']) ? (int)$this->request->query['latest_days'] : null,
-	'plugin_key' => isset($this->request->query['plugin_key']) ? (int)$this->request->query['plugin_key'] : null,
+	'latest_topics' => isset($this->request->query['latest_topics']) ? (int)$this->request->query['latest_topics'] : null,
+	'plugin_key' => isset($this->request->query['plugin_key']) ? $this->request->query['plugin_key'] : null,
 ]);
 
 echo $this->Html->css(
@@ -23,8 +24,7 @@ echo $this->Html->css(
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<?php foreach (range(0, 31) as $count) : ?>
-					<?php $label = ($count === 0) ? __d('topics', 'All Durations') : __d('topics', 'Latest %d days', [$count]) ?>
+				<?php foreach (TopicFrameSetting::getLatestDurationChoices() as $count => $label) : ?>
 					<li<?php echo isset($this->request->query['latest_days']) && (int)$this->request->query['latest_days'] === $count ? ' class="active"' : ''; ?>>
 						<?php echo $this->Html->link(
 							$label,

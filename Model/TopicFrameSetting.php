@@ -238,4 +238,17 @@ class TopicFrameSetting extends AppModel {
 		}
 		return $choices;
 	}
+
+/**
+ * Return latest duration choices
+ *
+ * @return array Latest duration choices
+ */
+	public static function getLatestDurationChoices() {
+		$choices = [__d('topics', 'All Durations')];
+		foreach (range(1, 31) as $num) {
+			$choices[$num] = __d('topics', '%d days', [$num]);
+		}
+		return $choices;
+	}
 }

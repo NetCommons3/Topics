@@ -3,7 +3,11 @@ $statuses = NetCommonsBlockComponent::getStatuses();
 $params = array_filter([
 	'status' => isset($this->request->query['status']) && $statuses[(int)$this->request->query['status']] ? (int)$this->request->query['status'] : null,
 	'latest_days' => isset($this->request->query['latest_days']) ? (int)$this->request->query['latest_days'] : null,
+	'latest_topics' => isset($this->request->query['latest_topics']) ? (int)$this->request->query['latest_topics'] : null,
 	'plugin_key' => isset($this->request->query['plugin_key']) ? $this->request->query['plugin_key'] : null,
+	'keyword' => isset($this->request->query['keyword']) ? $this->request->query['keyword'] : null,
+	'room_id' => isset($this->request->query['room_id']) ? $this->request->query['room_id'] : null,
+	'block_id' => isset($this->request->query['block_id']) ? $this->request->query['block_id'] : null,
 ]);
 
 echo $this->Html->css(

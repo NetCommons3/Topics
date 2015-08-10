@@ -24,6 +24,7 @@ class TopicsAppController extends AppController {
  * @var array
  */
 	public $uses = array(
+		'Blocks.Block',
 		'PluginManager.Plugin',
 		'Rooms.Room',
 		'SearchBoxes.SearchBox',

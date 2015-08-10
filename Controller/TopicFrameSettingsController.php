@@ -60,12 +60,11 @@ class TopicFrameSettingsController extends TopicsAppController {
 		}
 
 		if ($this->request->is(array('post', 'put'))) {
-			if ($this->TopicFrameSetting->saveSettings($this->request->data)) {
-				$this->Session->setFlash(__('The topic frame setting has been saved.'));
-				return $this->redirectByFrameId();
-			} else {
-				$this->Session->setFlash(__('The topic frame setting could not be saved. Please, try again.'));
+			$this->TopicFrameSetting->saveSettings($this->request->data);
+			if (!$this->handleValidationError($this->TopicFrameSetting->validationErrors)) {
+				return;
 			}
+			return $this->redirectByFrameId();
 		} else {
 			$this->request->data = $topicFrameSetting;
 			$options = array('conditions' => array('topic_frame_setting_key' => $this->request->data['TopicFrameSetting']['key']));

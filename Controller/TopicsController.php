@@ -140,9 +140,15 @@ class TopicsController extends TopicsAppController {
 		$options = array('conditions' => array('language_id' => 2, 'key' => Topic::$availablePlugins));
 		$plugins = $this->Plugin->getForOptions($options);
 		$rooms = $this->Room->getReadableRooms();
+		$blocks = $this->Block->find('list', array(
+			'recursive' => -1,
+			'conditions' => array(
+				'public_type' => [Block::TYPE_PUBLIC, Block::TYPE_LIMITED],
+			),
+		));
 		$options = array('conditions' => array('Frame.key' => $this->current['Frame']['key']));
 		$searchBox = $this->SearchBox->find('first', $options);
-		$this->set(compact('plugins', 'rooms', 'searchBox'));
+		$this->set(compact('plugins', 'rooms', 'blocks', 'searchBox'));
 	}
 
 /**
