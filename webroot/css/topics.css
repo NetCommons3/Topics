@@ -6,6 +6,7 @@ h2.header {
 
 .plugins > div.form-input {
   width: 8em;
+  padding-right: 10px;
 }
 
 .search-header {

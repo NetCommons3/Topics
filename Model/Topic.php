@@ -56,11 +56,14 @@ class Topic extends AppModel {
 		'calendars',
 		'circular_notices',
 		'facility_manager',
+		'faqs',
 		'flexible_databases',
+		'links',
 		'photo_albums',
 		'questionnaires',
 		'reports',
 		'tasks',
+		'videos',
 		'workbooks',
 	);
 
