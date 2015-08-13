@@ -122,3 +122,6 @@ msgstr "タイトル無し"
 #: /var/www/app//View/Topics/search.ctp:59
 msgid "No contents"
 msgstr "本文無し"
+
+msgid "Search"
+msgstr "検索"
