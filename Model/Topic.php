@@ -201,6 +201,9 @@ class Topic extends AppModel {
  *
  * @param array $query query
  * @return array condition
+ *
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 	private function __buildQueryBasedConditions($query) {
 		$conditions = [];
