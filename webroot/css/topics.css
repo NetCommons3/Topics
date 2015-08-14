@@ -4,11 +4,6 @@ h2.header {
   margin-top: 0;
 }
 
-.plugins > div.form-input {
-  width: 8em;
-  padding-right: 10px;
-}
-
 .search-header {
   margin-bottom: 1em;
   border-bottom: 1px solid #ccc;

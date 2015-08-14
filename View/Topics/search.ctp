@@ -56,8 +56,8 @@ echo $this->Html->css(
 					</h2>
 					<div class="topics_entry_body1">
 						<?php
-							$contents = preg_replace('/[\s　]/', '', strip_tags($topic['Topic']['contents'])) ? mb_strimwidth($topic['Topic']['contents'], 0, 100, '...') : __d('topics', 'No contents');
-							echo h(strip_tags($topic['Topic']['contents']));
+							$contents = preg_replace('/[\s　]/', '', strip_tags($topic['Topic']['contents'])) ? mb_strimwidth(strip_tags($topic['Topic']['contents']), 0, 300, '...') : __d('topics', 'No contents');
+							echo h($contents);
 						?>
 					</div>
 					<div class="topics_entry_status">

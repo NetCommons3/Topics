@@ -59,6 +59,12 @@ class TopicFrameSettingsController extends TopicsAppController {
 			throw new NotFoundException(__('Invalid topic frame setting'));
 		}
 
+		App::uses('Topic', 'Topics.Model');
+		$options = array('conditions' => array('language_id' => 2, 'key' => Topic::$availablePlugins));
+		$plugins = $this->Plugin->getForOptions($options);
+		$rooms = $this->Room->getReadableRooms();
+		$this->set(compact('plugins', 'rooms'));
+
 		if ($this->request->is(array('post', 'put'))) {
 			$this->TopicFrameSetting->saveSettings($this->request->data);
 			if (!$this->handleValidationError($this->TopicFrameSetting->validationErrors)) {
@@ -70,11 +76,5 @@ class TopicFrameSettingsController extends TopicsAppController {
 			$options = array('conditions' => array('topic_frame_setting_key' => $this->request->data['TopicFrameSetting']['key']));
 			$this->request->data['TopicFrameSettingShowPlugin'] = $this->TopicFrameSettingShowPlugin->find('all', $options);
 		}
-
-		App::uses('Topic', 'Topics.Model');
-		$options = array('conditions' => array('language_id' => 2, 'key' => Topic::$availablePlugins));
-		$plugins = $this->Plugin->getForOptions($options);
-		$rooms = $this->Room->getReadableRooms();
-		$this->set(compact('plugins', 'rooms'));
 	}
 }

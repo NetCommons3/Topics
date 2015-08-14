@@ -400,7 +400,7 @@ class TopicsControllerTest extends TopicsAppControllerTest {
  */
 	public function testIndexWithRoomSpecified() {
 		$this->testAction(
-			'/topics/topics/index/192',
+			'/topics/topics/index/193',
 			array(
 				'method' => 'get',
 			)
