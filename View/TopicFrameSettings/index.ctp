@@ -56,7 +56,7 @@
 			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $topicFrameSetting['TopicFrameSetting']['id']), null, __('Are you sure you want to delete # %s?', $topicFrameSetting['TopicFrameSetting']['id'])); ?>
 		</td>
 	</tr>
-<?php endforeach; ?>
+	<?php endforeach; ?>
 	</table>
 	<p>
 	<?php

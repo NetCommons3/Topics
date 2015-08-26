@@ -8,6 +8,12 @@ $channel = [
 $this->set('channel', $channel);
 echo $this->Rss->items($topics, 'transformRSS');
 
+/**
+ * transformRSS function
+ *
+ * @param array $topics Topics data
+ * @return $topics Rss feed array
+ */
 function transformRSS($topics) {
 	return array(
 		'title' => h($topics['Topic']['title']), //投稿のタイトル
