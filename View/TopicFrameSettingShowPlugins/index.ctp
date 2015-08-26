@@ -30,7 +30,7 @@
 			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $topicFrameSettingShowPlugin['TopicFrameSettingShowPlugin']['id']), null, __('Are you sure you want to delete # %s?', $topicFrameSettingShowPlugin['TopicFrameSettingShowPlugin']['id'])); ?>
 		</td>
 	</tr>
-<?php endforeach; ?>
+	<?php endforeach; ?>
 	</table>
 	<p>
 	<?php
