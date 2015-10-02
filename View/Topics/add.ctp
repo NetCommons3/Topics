@@ -8,9 +8,6 @@
 		echo $this->Form->input('status');
 		echo $this->Form->input('is_active');
 		echo $this->Form->input('is_latest');
-		echo $this->Form->input('is_auto_translated');
-		echo $this->Form->input('is_first_auto_translation');
-		echo $this->Form->input('translation_engine');
 		echo $this->Form->input('plugin_key');
 		echo $this->Form->input('title');
 		echo $this->Form->input('contents');

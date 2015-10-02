@@ -108,18 +108,6 @@ class Topic extends AppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
-			'is_auto_translated' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
-			'is_first_auto_translation' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
 			'plugin_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
