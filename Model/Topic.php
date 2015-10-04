@@ -209,7 +209,7 @@ class Topic extends AppModel {
 		if (isset($query['status'])) {
 			$conditions['Topic.status'] = $query['status'];
 		} else {
-			$conditions['Topic.status'] = array_keys(NetCommonsBlockComponent::getStatuses());
+			$conditions['Topic.status'] = array_keys(WorkflowComponent::getStatuses());
 		}
 
 		if (isset($query['plugin_key'])) {

@@ -13,7 +13,7 @@ App::uses('TopicsController', 'Topics.Controller');
 /**
  * Summary for TopicsController Test Case
  *
- * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class TopicsControllerTest extends TopicsAppControllerTest {
 

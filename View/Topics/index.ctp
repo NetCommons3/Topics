@@ -1,5 +1,5 @@
 <?php
-$statuses = NetCommonsBlockComponent::getStatuses();
+$statuses = WorkflowComponent::getStatuses();
 $params = array_filter([
 	'status' => isset($this->request->query['status']) && $statuses[(int)$this->request->query['status']] ? (int)$this->request->query['status'] : null,
 	'latest_days' => isset($this->request->query['latest_days']) ? (int)$this->request->query['latest_days'] : null,

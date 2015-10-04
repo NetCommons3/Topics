@@ -88,7 +88,7 @@ class TopicTest extends TopicAppModelTest {
 		$expectCount = $this->Topic->find('count', ['recursive' => -1]) + 1;
 		$this->SearchableModel->saveTopic([
 			'block_id' => 191,
-			'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
+			'status' => WorkflowComponent::STATUS_PUBLISHED,
 			'is_active' => true,
 			'is_latest' => true,
 			'title' => 'title',
@@ -111,7 +111,7 @@ class TopicTest extends TopicAppModelTest {
 		$this->SearchableModel = ClassRegistry::init('SearchablePlugin.SearchableModel');
 		$this->SearchableModel->saveTopic([
 			'block_id' => '',
-			'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
+			'status' => WorkflowComponent::STATUS_PUBLISHED,
 			'is_active' => true,
 			'is_latest' => true,
 			'title' => 'title',
@@ -143,7 +143,7 @@ class TopicTest extends TopicAppModelTest {
 		$expectCount = $this->Topic->find('count', ['recursive' => -1]) + 1;
 		$this->SearchableModel->saveTopic([
 			'block_id' => 191,
-			'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
+			'status' => WorkflowComponent::STATUS_PUBLISHED,
 			'is_active' => true,
 			'is_latest' => true,
 			'title' => 'title',

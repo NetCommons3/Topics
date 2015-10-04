@@ -11,8 +11,9 @@
  */
 
 App::uses('Topic', 'Topics.Model');
-App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
-App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
+//App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
+//App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
+App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 App::uses('YACakeTestCase', 'NetCommons.TestSuite');
 
 /**
