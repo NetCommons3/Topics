@@ -40,16 +40,16 @@ class TopicsAppController extends AppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsFrame',
+		//'NetCommons.NetCommonsFrame',
 		'Pages.PageLayout',
 		'Security',
-		'NetCommons.NetCommonsBlock',
-		'NetCommons.NetCommonsWorkflow',
-		'NetCommons.NetCommonsRoomRole' => array(
-			'allowedActions' => array(
-				'blockEditable' => array('index', 'search', 'feed', 'add', 'edit', 'delete')
-			),
-		),
+		//'NetCommons.NetCommonsBlock',
+		//'NetCommons.NetCommonsWorkflow',
+		//'NetCommons.NetCommonsRoomRole' => array(
+		//	'allowedActions' => array(
+		//		'blockEditable' => array('index', 'search', 'feed', 'add', 'edit', 'delete')
+		//	),
+		//),
 		'Paginator',
 	);
 

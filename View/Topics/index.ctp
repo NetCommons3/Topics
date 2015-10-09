@@ -1,5 +1,5 @@
 <?php
-$statuses = NetCommonsBlockComponent::getStatuses();
+$statuses = WorkflowComponent::getStatuses();
 $params = array_filter([
 	'status' => isset($this->request->query['status']) && $statuses[(int)$this->request->query['status']] ? (int)$this->request->query['status'] : null,
 	'latest_days' => isset($this->request->query['latest_days']) ? (int)$this->request->query['latest_days'] : null,
@@ -53,13 +53,13 @@ echo $this->Html->css(
 			</ul>
 		</span>
 	<?php endif; ?>
-	<?php if ($user = AuthComponent::user()): ?>
+	<?php if (AuthComponent::user()): ?>
 		<span class="btn-group">
 			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 				<?php if (isset($this->request->query['status']) && $statuses[(int)$this->request->query['status']]): ?>
-				<?php echo $statuses[(int)$this->request->query['status']] ?>
+					<?php echo $statuses[(int)$this->request->query['status']]; ?>
 				<?php else: ?>
-				<?php echo __d('topics', 'All Statuses') ?>
+					<?php echo __d('topics', 'All Statuses'); ?>
 				<?php endif; ?>
 				<span class="caret"></span>
 			</button>

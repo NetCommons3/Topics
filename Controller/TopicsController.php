@@ -161,7 +161,7 @@ class TopicsController extends TopicsAppController {
 				'order' => array('Topic.modified' => 'desc'),
 				'group' => array('Topic.path HAVING max(Topic.modified)'),
 				'conditions' => $this->Topic->buildConditions(
-					array_merge($this->request->query, ['status' => NetCommonsBlockComponent::STATUS_PUBLISHED]),
+					array_merge($this->request->query, ['status' => WorkflowComponent::STATUS_PUBLISHED]),
 					$this->Auth->user('id'),
 					$this->viewVars
 				),

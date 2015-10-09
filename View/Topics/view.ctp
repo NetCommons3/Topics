@@ -31,21 +31,6 @@
 			<?php echo h($topic['Topic']['is_latest']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Is Auto Translated'); ?></dt>
-		<dd>
-			<?php echo h($topic['Topic']['is_auto_translated']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Is First Auto Translation'); ?></dt>
-		<dd>
-			<?php echo h($topic['Topic']['is_first_auto_translation']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Translation Engine'); ?></dt>
-		<dd>
-			<?php echo h($topic['Topic']['translation_engine']); ?>
-			&nbsp;
-		</dd>
 		<dt><?php echo __('Plugin Key'); ?></dt>
 		<dd>
 			<?php echo h($topic['Topic']['plugin_key']); ?>
