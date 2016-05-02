@@ -6,29 +6,34 @@
 			<?php echo h($topic['Topic']['id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Block'); ?></dt>
+		<dt><?php echo __('Language Id'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($topic['Block']['name'], array('controller' => 'blocks', 'action' => 'view', $topic['Block']['id'])); ?>
+			<?php echo h($topic['Topic']['language_id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Key'); ?></dt>
+		<dt><?php echo __('Room Id'); ?></dt>
 		<dd>
-			<?php echo h($topic['Topic']['key']); ?>
+			<?php echo h($topic['Topic']['room_id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Status'); ?></dt>
+		<dt><?php echo __('Block Id'); ?></dt>
 		<dd>
-			<?php echo h($topic['Topic']['status']); ?>
+			<?php echo h($topic['Topic']['block_id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Is Active'); ?></dt>
+		<dt><?php echo __('Frame Id'); ?></dt>
 		<dd>
-			<?php echo h($topic['Topic']['is_active']); ?>
+			<?php echo h($topic['Topic']['frame_id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Is Latest'); ?></dt>
+		<dt><?php echo __('Content Id'); ?></dt>
 		<dd>
-			<?php echo h($topic['Topic']['is_latest']); ?>
+			<?php echo h($topic['Topic']['content_id']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Category Id'); ?></dt>
+		<dd>
+			<?php echo h($topic['Topic']['category_id']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Plugin Key'); ?></dt>
@@ -56,9 +61,34 @@
 			<?php echo h($topic['Topic']['path']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('From'); ?></dt>
+		<dt><?php echo __('Public Type'); ?></dt>
 		<dd>
-			<?php echo h($topic['Topic']['from']); ?>
+			<?php echo h($topic['Topic']['public_type']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Publish Start'); ?></dt>
+		<dd>
+			<?php echo h($topic['Topic']['publish_start']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Publish End'); ?></dt>
+		<dd>
+			<?php echo h($topic['Topic']['publish_end']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Is Active'); ?></dt>
+		<dd>
+			<?php echo h($topic['Topic']['is_active']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Is Latest'); ?></dt>
+		<dd>
+			<?php echo h($topic['Topic']['is_latest']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Status'); ?></dt>
+		<dd>
+			<?php echo h($topic['Topic']['status']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Trackable Creator'); ?></dt>
@@ -90,8 +120,6 @@
 		<li><?php echo $this->Form->postLink(__('Delete Topic'), array('action' => 'delete', $topic['Topic']['id']), null, __('Are you sure you want to delete # %s?', $topic['Topic']['id'])); ?> </li>
 		<li><?php echo $this->Html->link(__('List Topics'), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Topic'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Blocks'), array('controller' => 'blocks', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Block'), array('controller' => 'blocks', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Trackable Creator'), array('controller' => 'users', 'action' => 'add')); ?> </li>
 	</ul>

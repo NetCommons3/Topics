@@ -1,6 +1,6 @@
 <?php
 /**
- * TopicsApp Controller
+ * TopicsApp Model
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -9,22 +9,14 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AppController', 'Controller');
+App::uses('AppModel', 'Model');
 
 /**
- * TopicsApp Controller
+ * TopicsApp Model
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Topics\Controller
+ * @package NetCommons\Topics\Model
  */
-class TopicsAppController extends AppController {
+class TopicsAppModel extends AppModel {
 
-/**
- * use component
- *
- * @var array
- */
-	public $components = array(
-		'Security'
-	);
 }
