@@ -9,13 +9,16 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+
+App::uses('NetCommonsMigration', 'NetCommons.Config/Migration');
+
 /**
  * Init migration
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Config\Migration
  */
-class Init extends CakeMigration {
+class Init extends NetCommonsMigration {
 
 /**
  * Migration description
@@ -169,6 +172,48 @@ class Init extends CakeMigration {
  * @return bool Should process continue
  */
 	public function before($direction) {
+		$Model = ClassRegistry::init('SiteManager.SiteSetting');
+		$dataSource = $Model->getDataSource();
+
+		$searchType = 'like';
+		$hasMroonga = false;
+
+		if ($dataSource->config['datasource'] === 'Database/Mysql') {
+			$result = $Model->query('SELECT * FROM information_schema.ENGINES');
+			$engines = Hash::extract($result, '{n}.ENGINES.ENGINE');
+			$mysql56 = (bool)version_compare($dataSource->getVersion(), '5.6', '>=');
+			if ($mysql56) {
+				$searchType = 'match_against';
+			} elseif (in_array('Mroonga', $engines, true)) {
+				//$searchType = 'match_against';
+				//$hasMroonga = true;
+			}
+		}
+		if ($searchType === 'like') {
+			//インデックスが使われないため、検索用のインデックス(FullText)は削除する
+			$this->migration = Hash::remove(
+				$this->migration, 'up.create_table.topics.indexes.search'
+			);
+		}
+		if (! $hasMroonga) {
+			$this->migration = Hash::insert(
+				$this->migration, 'up.create_table.topics.tableParameters.engine', 'InnoDB'
+			);
+			$this->migration = Hash::remove(
+				$this->migration, 'up.create_table.topics.tableParameters.comment', null
+			);
+		}
+
+		$record = array(
+			'language_id' => 0,
+			'key' => 'Search.type',
+			'value' => $searchType,
+		);
+		$Model->create();
+		if (!$Model->save($record, false)) {
+			return false;
+		}
+
 		return true;
 	}
 
