@@ -33,6 +33,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			'content_id' => 'id',
 			'path' => '/:plugin_key/:plugin_key/view/:block_id/:content_key',
 			'title_icon' => null,
+			'category_id' => null,
 			'public_type' => null,
 			'publish_start' => null,
 			'publish_end' => null,
@@ -255,7 +256,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 		);
 
 		$fields1 = array(
-			'title_icon', 'public_type', 'publish_start', 'publish_end', 'status'
+			'category_id', 'title_icon', 'public_type', 'publish_start', 'publish_end', 'status'
 		);
 		foreach ($fields1 as $field) {
 			if (! Hash::get($model->data, $setting[$field])) {
