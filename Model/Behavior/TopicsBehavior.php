@@ -17,7 +17,136 @@ App::uses('ModelBehavior', 'Model');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Model\Behavior
  */
-class TopicsBehavior extends ModelBehavior {
+class TopicsBehavior extends TopicsBaseBehavior {
+
+/**
+ * ビヘイビアの設定
+ *
+ * @var array
+ * @see ModelBehavior::$settings
+ */
+	public $settings = array(
+		'fields' => array(
+			'title' => '', //必須項目
+			'contents' => '', //必須項目
+			'content_key' => 'key',
+			'content_id' => 'id',
+			'path' => '/:plugin_key/:plugin_key/view/:block_id/:content_key',
+			'title_icon' => null,
+			'public_type' => null,
+			'publish_start' => null,
+			'publish_end' => null,
+			'is_active' => null,
+			'is_latest' => null,
+			'status' => null,
+		),
+		'search_contents' => array(
+			//ここにフィールドを追加、デフォルトでfields.contentsの内容が含まれる
+		),
+		'users' => array('0')
+	);
+
+/**
+ * Setup this behavior with the specified configuration settings.
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param array $config Configuration settings for $model
+ * @return void
+ */
+	public function setup(Model $model, $config = array()) {
+		parent::setup($model, $config);
+		$this->settings = Hash::merge($this->settings, $config);
+
+		//コンテンツは配列とする
+		if (is_string(Hash::get($this->settings, 'fields.contents'))) {
+			$this->settings['fields']['contents'] = array(Hash::get($this->settings, 'fields.contents'));
+		}
+
+		//モデル名を付与する
+		$this->_setupFields($model);
+
+		//検索項目にfields.contentsの内容を含む
+		$this->_setupSearchContents($model);
+	}
+
+/**
+ * afterSave is called after a model is saved.
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param bool $created True if this save created a new record
+ * @param array $options Options passed from Model::save().
+ * @return bool
+ * @see Model::save()
+ */
+	public function afterSave(Model $model, $created, $options = array()) {
+		if (! Hash::check($model->data, $this->settings['fields']['title'])) {
+			return true;
+		}
+		$model->loadModels([
+			'Topic' => 'Topics.Topic',
+			'TopicUserStatus' => 'Topics.TopicUserStatus',
+			'TopicReadable' => 'Topics.TopicReadable',
+		]);
+
+		//新着データの登録
+		$this->_saveTopic($model);
+
+		//既読データのクリア
+		$this->_deleteTopicUserStatus($model);
+
+		//新着に表示させる会員のリスト登録
+		$topicIds = Hash::extract($model->data, $model->Topic->alias . '.{n}.id');
+		foreach ($topicIds as $topicId) {
+			$this->_saveTopicReadable($model, $topicId);
+		}
+
+		return parent::afterSave($model, $created, $options);
+	}
+
+/**
+ *  既読データの登録
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param array $content コンテンツ
+ * @return array
+ * @throws InternalErrorException
+ */
+	public function saveTopicUserStatus(Model $model, $content) {
+		$model->loadModels([
+			'Topic' => 'Topics.Topic',
+			'TopicUserStatus' => 'Topics.TopicUserStatus',
+		]);
+
+		$topicAlias = $model->Topic->alias;
+		$conditions = array(
+			$topicAlias . '.plugin_key' => Current::read('Plugin.key'),
+			$topicAlias . '.language_id' => Current::read('Language.id'),
+			$topicAlias . '.block_id' => Current::read('Block.id', '0'),
+			$topicAlias . '.content_id' => Hash::get($content, $this->settings['fields']['content_id'], '0'),
+		);
+		if ($model->Behaviors->loaded('Workflow.Workflow')) {
+			if ($model->canEditWorkflowContent($content)) {
+				$conditions[$topicAlias . '.is_latest'] = true;
+			} else {
+				$conditions[$topicAlias . '.is_active'] = true;
+			}
+		}
+
+		//既読データ登録
+		$model->TopicUserStatus->saveTopicUserStatus($content, $conditions);
+
+		return true;
+	}
+
+}
+
+/**
+ * Topics Behavior
+ *
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @package NetCommons\Topics\Model\Behavior
+ */
+class TopicsBaseBehavior extends ModelBehavior {
 
 /**
  * タイトルの最大文字数
@@ -41,70 +170,17 @@ class TopicsBehavior extends ModelBehavior {
 	public $delimiter = ' ';
 
 /**
- * ビヘイビアの設定
- *
- * @var array
- * @see ModelBehavior::$settings
- */
-	public $settings = array(
-		'fields' => array(
-			'title' => '', //必須項目
-			'contents' => '', //必須項目
-			'content_key' => 'key',
-			'content_id' => 'id',
-			'path' => '/:plugin_key/:plugin_key/view/:block_id/:content_key',
-			'title_icon' => null,
-			'category_id' => null,
-			'public_type' => null,
-			'publish_start' => null,
-			'publish_end' => null,
-			'is_active' => null,
-			'is_latest' => null,
-			'status' => null,
-		),
-		'search_contents' => array(
-			//ここにフィールドを追加、デフォルトでfields.contentsの内容が含まれる
-		),
-		'users' => array('0')
-	);
-
-/**
- * Setup this behavior with the specified configuration settings.
- *
- * @param Model $model 呼び出し元のモデル
- * @param array $config Configuration settings for $model
- * @return void
- */
-	public function setup(Model $model, $config = array()) {
-		parent::setup($model, $config);
-
-		$this->settings = Hash::merge($this->settings, $config);
-
-		//コンテンツは配列とする
-		if (is_string(Hash::get($this->settings, 'fields.contents'))) {
-			$this->settings['fields']['contents'] = array(Hash::get($this->settings, 'fields.contents'));
-		}
-
-		//モデル名を付与する
-		$this->__setupFields($model);
-
-		//検索項目にfields.contentsの内容を含む
-		$this->settings['search_contents'] = array_merge(
-			$this->settings['search_contents'], $this->settings['fields']['contents']
-		);
-	}
-
-/**
  * $this->settings['fields']のセットアップ
  *
  * @param Model $model 呼び出し元のモデル
  * @return void
  */
-	private function __setupFields(Model $model) {
+	protected function _setupFields(Model $model) {
 		//モデル名を付与する
 		$fields = $this->settings['fields'];
 		$fields = Hash::remove($fields, 'path');
 		$fields = Hash::remove($fields, 'contents');
+		$fields = Hash::remove($fields, 'search_contents');
 
 		$fieldKeys = array_keys($fields);
 		foreach ($fieldKeys as $field) {
@@ -116,49 +192,35 @@ class TopicsBehavior extends ModelBehavior {
 				$this->settings['fields'][$field] = $model->alias . '.' . $field;
 			}
 			$value = Hash::get($this->settings['fields'], $field);
-			if (strpos($value, '.') === false) {
+			if ($value && strpos($value, '.') === false) {
 				$this->settings['fields'][$field] = $model->alias . '.' . $value;
 			}
 		}
 		foreach ($this->settings['fields']['contents'] as $i => $field) {
-			if (strpos($value, '.') === false) {
+			if (strpos($field, '.') === false) {
 				$this->settings['fields']['contents'][$i] = $model->alias . '.' . $field;
 			}
 		}
 	}
 
 /**
- * afterSave is called after a model is saved.
+ * $this->settings['fields']のセットアップ
  *
  * @param Model $model 呼び出し元のモデル
- * @param bool $created True if this save created a new record
- * @param array $options Options passed from Model::save().
- * @return bool
- * @see Model::save()
+ * @return void
  */
-	public function afterSave(Model $model, $created, $options = array()) {
-		if (! Hash::check($model->data, $this->settings['fields']['title'])) {
-			return true;
+	protected function _setupSearchContents(Model $model) {
+		//モデル名を付与する
+		$this->settings['search_contents'] = array_merge(
+			$this->settings['fields']['contents'],
+			$this->settings['search_contents']
+		);
+
+		foreach ($this->settings['search_contents'] as $i => $field) {
+			if (strpos($field, '.') === false) {
+				$this->settings['search_contents'][$i] = $model->alias . '.' . $field;
+			}
 		}
-		$model->loadModels([
-			'Topic' => 'Topics.Topic',
-			'TopicUserStatus' => 'Topics.TopicUserStatus',
-			'TopicReadable' => 'Topics.TopicReadable',
-		]);
-
-		//新着データの登録
-		$this->__saveTopic($model);
-
-		//既読データのクリア
-		$this->__deleteTopicUserStatus($model);
-
-		//新着に表示させる会員のリスト登録
-		$topicIds = Hash::extract($model->data, $model->Topic->alias . '.{n}.id');
-		foreach ($topicIds as $topicId) {
-			$this->__saveTopicReadable($model, $topicId);
-		}
-
-		return parent::afterSave($model, $created, $options);
 	}
 
 /**
@@ -170,12 +232,12 @@ class TopicsBehavior extends ModelBehavior {
  * @return array
  * @throws InternalErrorException
  */
-	private function __saveTopic(Model $model) {
+	protected function _saveTopic(Model $model) {
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 		]);
 
-		$topic = $this->__getTopicForSave($model);
+		$topic = $this->_getTopicForSave($model);
 
 		if (Current::read('Frame.block_id') !== Current::read('Block.id')) {
 			$topic = Hash::remove($topic, '{n}.{s}.frame_id');
@@ -187,13 +249,13 @@ class TopicsBehavior extends ModelBehavior {
 		$merge = array(
 			'content_key' => Hash::get($model->data, $setting['content_key']),
 			'content_id' => Hash::get($model->data, $setting['content_id']),
-			'title' => $this->__parseTitle($model),
-			'contents' => $this->__parseContents($model),
-			'search_contents' => $this->__parseSearchContents($model),
+			'title' => $this->_parseTitle($model),
+			'contents' => $this->_parseContents($model),
+			'search_contents' => $this->_parseSearchContents($model),
 		);
 
 		$fields1 = array(
-			'category_id', 'public_type', 'publish_start', 'publish_end', 'status'
+			'title_icon', 'public_type', 'publish_start', 'publish_end', 'status'
 		);
 		foreach ($fields1 as $field) {
 			if (! Hash::get($model->data, $setting[$field])) {
@@ -215,7 +277,7 @@ class TopicsBehavior extends ModelBehavior {
 		//登録処理
 		foreach ($topic as $data) {
 			$saveData = Hash::merge($data[$model->Topic->alias], $merge);
-			$saveData['path'] = $this->__parsePath($model, $saveData);
+			$saveData['path'] = $this->_parsePath($model, $saveData);
 
 			$model->Topic->create(false);
 			$result = $model->Topic->save($saveData);
@@ -232,12 +294,12 @@ class TopicsBehavior extends ModelBehavior {
 /**
  * 新着のタイトルにパースする
  *
- * self::__saveTopic()から実行される
+ * self::_saveTopic()から実行される
  *
  * @param Model $model 呼び出し元のモデル
  * @return string
  */
-	private function __parseTitle(Model $model) {
+	protected function _parseTitle(Model $model) {
 		$setting = $this->settings['fields'];
 
 		$title = Hash::get($model->data, $setting['title'], $setting['title']);
@@ -253,12 +315,12 @@ class TopicsBehavior extends ModelBehavior {
 /**
  * 新着のコンテンツにパースする
  *
- * self::__saveTopic()から実行される
+ * self::_saveTopic()から実行される
  *
  * @param Model $model 呼び出し元のモデル
  * @return string
  */
-	private function __parseContents(Model $model) {
+	protected function _parseContents(Model $model) {
 		$setting = $this->settings['fields'];
 		$result = '';
 
@@ -274,13 +336,13 @@ class TopicsBehavior extends ModelBehavior {
 /**
  * リンク先のPathにパースする
  *
- * self::__saveTopic()から実行される
+ * self::_saveTopic()から実行される
  *
  * @param Model $model 呼び出し元のモデル
  * @param array $saveData 登録するデータ
  * @return string
  */
-	private function __parsePath(Model $model, $saveData) {
+	protected function _parsePath(Model $model, $saveData) {
 		$setting = $this->settings['fields'];
 		$result = $setting['path'];
 
@@ -294,12 +356,12 @@ class TopicsBehavior extends ModelBehavior {
 /**
  * 検索対象データにパースする
  *
- * self::__saveTopic()から実行される
+ * self::_saveTopic()から実行される
  *
  * @param Model $model 呼び出し元のモデル
  * @return string
  */
-	private function __parseSearchContents(Model $model) {
+	protected function _parseSearchContents(Model $model) {
 		$result = array();
 
 		foreach ($this->settings['search_contents'] as $field) {
@@ -313,27 +375,27 @@ class TopicsBehavior extends ModelBehavior {
 /**
  * 保存する新着データの取得
  *
- * self::__saveTopic()から実行される
+ * self::_saveTopic()から実行される
  *
  * @param Model $model 呼び出し元のモデル
  * @return array
  */
-	private function __getTopicForSave(Model $model) {
+	protected function _getTopicForSave(Model $model) {
 		$topic = array();
 
 		$setting = $this->settings['fields'];
 		if ($model->hasField('is_latest') && Hash::get($model->data, $setting['is_latest'])) {
-			$topic[] = $this->__getTopic($model,
+			$topic[] = $this->_getTopic($model,
 				['is_latest' => Hash::get($model->data, $setting['is_latest'])]
 			);
 		}
 		if ($model->hasField('is_active') && Hash::get($model->data, $setting['is_active'])) {
-			$topic[] = $this->__getTopic($model,
+			$topic[] = $this->_getTopic($model,
 				['is_active' => Hash::get($model->data, $setting['is_active'])]
 			);
 		}
 		if (! $topic) {
-			$topic[] = $this->__getTopic($model);
+			$topic[] = $this->_getTopic($model);
 		}
 
 		return $topic;
@@ -342,13 +404,13 @@ class TopicsBehavior extends ModelBehavior {
 /**
  * 保存する新着データの取得
  *
- * self::__getTopicForSave()から実行される
+ * self::_getTopicForSave()から実行される
  *
  * @param Model $model 呼び出し元のモデル
  * @param array $addConditions 追加条件
  * @return array
  */
-	private function __getTopic(Model $model, $addConditions = array()) {
+	protected function _getTopic(Model $model, $addConditions = array()) {
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 		]);
@@ -388,7 +450,7 @@ class TopicsBehavior extends ModelBehavior {
  * @return array
  * @throws InternalErrorException
  */
-	private function __deleteTopicUserStatus(Model $model) {
+	protected function _deleteTopicUserStatus(Model $model) {
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 			'TopicUserStatus' => 'Topics.TopicUserStatus',
@@ -412,7 +474,7 @@ class TopicsBehavior extends ModelBehavior {
  * @return array
  * @throws InternalErrorException
  */
-	private function __saveTopicReadable(Model $model, $topicId) {
+	protected function _saveTopicReadable(Model $model, $topicId) {
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 			'TopicReadable' => 'Topics.TopicReadable',
@@ -435,40 +497,4 @@ class TopicsBehavior extends ModelBehavior {
 
 		return true;
 	}
-
-/**
- *  既読データの登録
- *
- * @param Model $model 呼び出し元のモデル
- * @param array $content コンテンツ
- * @return array
- * @throws InternalErrorException
- */
-	public function saveTopicUserStatus(Model $model, $content) {
-		$model->loadModels([
-			'Topic' => 'Topics.Topic',
-			'TopicUserStatus' => 'Topics.TopicUserStatus',
-		]);
-
-		$topicAlias = $model->Topic->alias;
-		$conditions = array(
-			$topicAlias . '.plugin_key' => Current::read('Plugin.key'),
-			$topicAlias . '.language_id' => Current::read('Language.id'),
-			$topicAlias . '.block_id' => Current::read('Block.id', '0'),
-			$topicAlias . '.content_id' => Hash::get($content, $this->settings['fields']['content_id'], '0'),
-		);
-		if ($model->Behaviors->loaded('Workflow.Workflow')) {
-			if ($model->canEditWorkflowContent($content)) {
-				$conditions[$topicAlias . '.is_latest'] = true;
-			} else {
-				$conditions[$topicAlias . '.is_active'] = true;
-			}
-		}
-
-		//既読データ登録
-		$model->TopicUserStatus->saveTopicUserStatus($content, $conditions);
-
-		return true;
-	}
-
 }
