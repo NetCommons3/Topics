@@ -10,7 +10,10 @@
  */
 
 /**
- * Summary for TopicFixture
+ * TopicFixture
+ *
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @package NetCommons\Topics\Test\Fixture
  */
 class TopicFixture extends CakeTestFixture {
 

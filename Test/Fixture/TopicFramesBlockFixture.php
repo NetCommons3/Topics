@@ -10,7 +10,10 @@
  */
 
 /**
- * Summary for TopicFramesBlockFixture
+ * TopicFramesBlockFixture
+ *
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @package NetCommons\Topics\Test\Fixture
  */
 class TopicFramesBlockFixture extends CakeTestFixture {
 
