@@ -153,8 +153,6 @@ class TopicsBehavior extends ModelBehavior {
 		$this->__deleteTopicUserStatus($model);
 
 		//新着に表示させる会員のリスト登録
-		CakeLog::debug(var_export($model->data, true));
-
 		$topicIds = Hash::extract($model->data, $model->Topic->alias . '.{n}.id');
 		foreach ($topicIds as $topicId) {
 			$this->__saveTopicReadable($model, $topicId);
