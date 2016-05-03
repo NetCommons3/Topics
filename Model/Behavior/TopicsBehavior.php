@@ -78,14 +78,6 @@ class TopicsBehavior extends ModelBehavior {
 	public function setup(Model $model, $config = array()) {
 		parent::setup($model, $config);
 
-		//fields.title及びfields.contentsの必須チェック
-		if (! Hash::get($config, 'fields.title')) {
-			trigger_error('The "title" field in $this->settings has not been set.', E_USER_WARNING);
-		}
-		if (! Hash::get($config, 'fields.contents')) {
-			trigger_error('The "contents" field in $this->settings has not been set.', E_USER_WARNING);
-		}
-
 		$this->settings = Hash::merge($this->settings, $config);
 
 		//コンテンツは配列とする
@@ -250,7 +242,7 @@ class TopicsBehavior extends ModelBehavior {
 	private function __parseTitle(Model $model) {
 		$setting = $this->settings['fields'];
 
-		$title = Hash::get($model->data, $setting['title']);
+		$title = Hash::get($model->data, $setting['title'], $setting['title']);
 		$result = mb_strimwidth(strip_tags($title), 0, self::MAX_TITLE_LENGTH);
 		if (preg_replace('/(\s|　)/', '', $result) === '') {
 			$result = mb_strimwidth($title, 0, self::MAX_TITLE_LENGTH);
@@ -442,6 +434,41 @@ class TopicsBehavior extends ModelBehavior {
 				}
 			}
 		}
+
+		return true;
+	}
+
+/**
+ *  既読データの登録
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param array $content コンテンツ
+ * @return array
+ * @throws InternalErrorException
+ */
+	public function saveTopicUserStatus(Model $model, $content) {
+		$model->loadModels([
+			'Topic' => 'Topics.Topic',
+			'TopicUserStatus' => 'Topics.TopicUserStatus',
+		]);
+
+		$topicAlias = $model->Topic->alias;
+		$conditions = array(
+			$topicAlias . '.plugin_key' => Current::read('Plugin.key'),
+			$topicAlias . '.language_id' => Current::read('Language.id'),
+			$topicAlias . '.block_id' => Current::read('Block.id', '0'),
+			$topicAlias . '.content_id' => Hash::get($content, $this->settings['fields']['content_id'], '0'),
+		);
+		if ($model->Behaviors->loaded('Workflow.Workflow')) {
+			if ($model->canEditWorkflowContent($content)) {
+				$conditions[$topicAlias . '.is_latest'] = true;
+			} else {
+				$conditions[$topicAlias . '.is_active'] = true;
+			}
+		}
+
+		//既読データ登録
+		$model->TopicUserStatus->saveTopicUserStatus($content, $conditions);
 
 		return true;
 	}

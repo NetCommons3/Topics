@@ -63,4 +63,81 @@ class TopicUserStatus extends TopicsAppModel {
 			),
 		));
 	}
+
+/**
+ * 既読データの登録
+ *
+ * @param array $content コンテンツ
+ * @param array $conditions トピックの条件
+ * @return array
+ * @throws InternalErrorException
+ */
+	public function saveTopicUserStatus($content, $conditions) {
+		$this->loadModels([
+			'Topic' => 'Topics.Topic',
+			'TopicReadable' => 'Topics.TopicReadable',
+		]);
+
+		if (! Current::read('User.id')) {
+			return true;
+		}
+
+		//トピックデータのチェック
+		$topic = $this->Topic->find('first', array(
+			'recursive' => -1,
+			'fields' => array($this->Topic->alias . '.id'),
+			'joins' => array(
+				array(
+					'table' => $this->TopicReadable->table,
+					'alias' => $this->TopicReadable->alias,
+					'type' => 'INNER',
+					'conditions' => array(
+						$this->TopicReadable->alias . '.topic_id' . ' = ' . $this->Topic->alias . '.id',
+						$this->TopicReadable->alias . '.user_id' => array(Current::read('User.id'), '0'),
+					),
+				),
+			),
+			'conditions' => $conditions,
+		));
+		if (! $topic) {
+			return true;
+		}
+
+		//既読になっているかどうかチェック
+		$data = array(
+			'topic_id' => $topic[$this->Topic->alias]['id'],
+			'user_id' => Current::read('User.id')
+		);
+		$count = $this->find('count', array(
+			'recursive' => -1,
+			'conditions' => $data,
+		));
+		if ($count > 0) {
+			return true;
+		}
+
+		//トランザクションBegin
+		$this->begin();
+
+		try {
+			$this->create(false);
+			$result = $this->save($data);
+			if (! $result) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			//トランザクションCommit
+			$this->commit();
+
+		} catch (Exception $ex) {
+			//トランザクションRollback。ただし、throwにしない。
+			$this->rollback();
+			CakeLog::error($ex);
+		}
+
+		$this->setSlaveDataSource();
+
+		return true;
+	}
+
 }
