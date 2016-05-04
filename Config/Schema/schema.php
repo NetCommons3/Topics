@@ -191,7 +191,7 @@ class TopicsSchema extends CakeSchema {
 		'plugin_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'title' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'title_icon' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'contents' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'summary' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'counts' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'path' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'public_type' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 4, 'unsigned' => false),
@@ -206,8 +206,8 @@ class TopicsSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'whatsnew' => array('column' => array('created', 'language_id', 'public_type', 'publish_start', 'publish_end', 'room_id', 'is_active', 'is_latest'), 'unique' => 0),
-			'search' => array('column' => array('title', 'contents'), 'type' => 'fulltext')
+			'whatsnew' => array('column' => array('modified', 'id', 'language_id', 'public_type', 'publish_start', 'publish_end', 'room_id', 'is_active', 'is_latest'), 'unique' => 0),
+			'search' => array('column' => array('search_contents'), 'type' => 'fulltext'),
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Mroonga', 'comment' => 'engine "InnoDB"'),
 	);

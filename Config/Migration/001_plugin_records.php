@@ -48,7 +48,7 @@ class PluginRecords extends NetCommonsMigration {
 				'namespace' => 'netcommons/topics',
 				'name' => '新着情報',
 				'type' => 1,
-				'default_action' => 'topics/view',
+				'default_action' => 'topics/index',
 				'default_setting_action' => 'topic_frame_settings/index',
 			),
 			//英語
@@ -58,7 +58,7 @@ class PluginRecords extends NetCommonsMigration {
 				'namespace' => 'netcommons/topics',
 				'name' => 'Topics',
 				'type' => 1,
-				'default_action' => 'topics/view',
+				'default_action' => 'topics/index',
 				'default_setting_action' => 'topic_frame_settings/index',
 			),
 		),

@@ -28,7 +28,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 	public $settings = array(
 		'fields' => array(
 			'title' => '', //必須項目
-			'contents' => '', //必須項目
+			'summary' => '', //必須項目
 			'content_key' => 'key',
 			'content_id' => 'id',
 			'path' => '/:plugin_key/:plugin_key/view/:block_id/:content_key',
@@ -42,7 +42,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			'status' => null,
 		),
 		'search_contents' => array(
-			//ここにフィールドを追加、デフォルトでfields.contentsの内容が含まれる
+			//ここにフィールドを追加、デフォルトでfields.summaryの内容が含まれる
 		),
 		'users' => array('0')
 	);
@@ -59,14 +59,14 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		$this->settings = Hash::merge($this->settings, $config);
 
 		//コンテンツは配列とする
-		if (is_string(Hash::get($this->settings, 'fields.contents'))) {
-			$this->settings['fields']['contents'] = array(Hash::get($this->settings, 'fields.contents'));
+		if (is_string(Hash::get($this->settings, 'fields.summary'))) {
+			$this->settings['fields']['summary'] = array(Hash::get($this->settings, 'fields.summary'));
 		}
 
 		//モデル名を付与する
 		$this->_setupFields($model);
 
-		//検索項目にfields.contentsの内容を含む
+		//検索項目にfields.summaryの内容を含む
 		$this->_setupSearchContents($model);
 	}
 
@@ -157,13 +157,6 @@ class TopicsBaseBehavior extends ModelBehavior {
 	const MAX_TITLE_LENGTH = 255;
 
 /**
- * タイトル表示時の文字数
- *
- * @var int
- */
-	const DISPLAY_TITLE_LENGTH = 64;
-
-/**
  * Delimiter
  *
  * @var string
@@ -180,7 +173,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 		//モデル名を付与する
 		$fields = $this->settings['fields'];
 		$fields = Hash::remove($fields, 'path');
-		$fields = Hash::remove($fields, 'contents');
+		$fields = Hash::remove($fields, 'summary');
 		$fields = Hash::remove($fields, 'search_contents');
 
 		$fieldKeys = array_keys($fields);
@@ -197,9 +190,9 @@ class TopicsBaseBehavior extends ModelBehavior {
 				$this->settings['fields'][$field] = $model->alias . '.' . $value;
 			}
 		}
-		foreach ($this->settings['fields']['contents'] as $i => $field) {
+		foreach ($this->settings['fields']['summary'] as $i => $field) {
 			if (strpos($field, '.') === false) {
-				$this->settings['fields']['contents'][$i] = $model->alias . '.' . $field;
+				$this->settings['fields']['summary'][$i] = $model->alias . '.' . $field;
 			}
 		}
 	}
@@ -213,7 +206,8 @@ class TopicsBaseBehavior extends ModelBehavior {
 	protected function _setupSearchContents(Model $model) {
 		//モデル名を付与する
 		$this->settings['search_contents'] = array_merge(
-			$this->settings['fields']['contents'],
+			array($this->settings['fields']['title']),
+			$this->settings['fields']['summary'],
 			$this->settings['search_contents']
 		);
 
@@ -251,7 +245,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 			'content_key' => Hash::get($model->data, $setting['content_key']),
 			'content_id' => Hash::get($model->data, $setting['content_id']),
 			'title' => $this->_parseTitle($model),
-			'contents' => $this->_parseContents($model),
+			'summary' => $this->_parseContents($model),
 			'search_contents' => $this->_parseSearchContents($model),
 		);
 
@@ -325,7 +319,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 		$setting = $this->settings['fields'];
 		$result = '';
 
-		foreach ($setting['contents'] as $field) {
+		foreach ($setting['summary'] as $field) {
 			$value = Hash::extract($model->data, $field);
 			$result .= implode($this->delimiter, $value);
 			$result .= chr(10);
@@ -396,7 +390,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 			);
 		}
 		if (! $topic) {
-			$topic[] = $this->_getTopic($model);
+			$topic[] = $this->_getTopic($model, ['is_active' => true]);
 		}
 
 		return $topic;

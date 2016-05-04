@@ -20,18 +20,31 @@ App::uses('TopicsAppController', 'Topics.Controller');
 class TopicsController extends TopicsAppController {
 
 /**
- * use model
+ * 使用するModel
  *
  * @var array
  */
-	//public $uses = array();
+	public $uses = array(
+		'Topics.Topic'
+	);
 
 /**
- * use component
+ * 使用するComponent
  *
  * @var array
  */
-	//public $components = array();
+	public $components = array(
+		'Paginator',
+	);
+
+/**
+ * 使用するHelpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'Workflow.Workflow',
+	);
 
 /**
  * index
@@ -39,37 +52,11 @@ class TopicsController extends TopicsAppController {
  * @return void
  */
 	public function index() {
-	}
+		$this->Paginator->settings = array(
+			'Topic' => $this->Topic->getQueryOptions()
+		);
 
-/**
- * view
- *
- * @return void
- */
-	public function view() {
-	}
-
-/**
- * add
- *
- * @return void
- */
-	public function add() {
-	}
-
-/**
- * edit
- *
- * @return void
- */
-	public function edit() {
-	}
-
-/**
- * delete
- *
- * @return void
- */
-	public function delete() {
+		$topics = $this->Paginator->paginate('Topic');
+		$this->set('topics', $topics);
 	}
 }
