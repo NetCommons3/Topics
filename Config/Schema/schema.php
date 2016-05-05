@@ -63,6 +63,7 @@ class TopicsSchema extends CakeSchema {
 		'display_created_user' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'display_created' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'display_description' => array('type' => 'boolean', 'null' => false, 'default' => null),
+		'display_rss' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'select_room' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'show_my_room' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'created_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'unsigned' => false),
@@ -70,9 +71,9 @@ class TopicsSchema extends CakeSchema {
 		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'unsigned' => false),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 	);
 
 /**
@@ -192,6 +193,7 @@ class TopicsSchema extends CakeSchema {
 		'title' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'title_icon' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'summary' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'search_contents' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8', 'comment' => '検索対象のシリアライズデータ'),
 		'counts' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'path' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'public_type' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 4, 'unsigned' => false),

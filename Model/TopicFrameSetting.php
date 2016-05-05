@@ -20,6 +20,41 @@ App::uses('TopicsAppModel', 'Topics.Model');
 class TopicFrameSetting extends TopicsAppModel {
 
 /**
+ * 表示方法(フラットに表示)
+ *
+ * @var int
+ */
+	const DISPLAY_TYPE_FLAT = '0';
+
+/**
+ * 表示方法(プラグインごとに表示)
+ *
+ * @var int
+ */
+	const DISPLAY_TYPE_PLUGIN = '1';
+
+/**
+ * 表示方法(ルームごとに表示)
+ *
+ * @var int
+ */
+	const DISPLAY_TYPE_ROOMS = '2';
+
+/**
+ * 表示単位(日ごとに表示)
+ *
+ * @var int
+ */
+	const UNIT_TYPE_DAYS = '0';
+
+/**
+ * 表示単位(件数ごとに表示)
+ *
+ * @var int
+ */
+	const UNIT_TYPE_NUMBERS = '1';
+
+/**
  * Validation rules
  *
  * @var array
@@ -116,6 +151,67 @@ class TopicFrameSetting extends TopicsAppModel {
 				),
 			),
 		));
+	}
+
+/**
+ * TopicFrameSettingデータ取得
+ *
+ * @return array TopicFrameSetting data
+ */
+	public function getTopicFrameSetting() {
+		$conditions = array(
+			'frame_key' => Current::read('Frame.key')
+		);
+
+		$topicFrameSetting = $this->find('first', array(
+				'recursive' => -1,
+				'conditions' => $conditions,
+			)
+		);
+
+		if (! $topicFrameSetting) {
+			$topicFrameSetting = $this->create([
+				'display_type' => self::DISPLAY_TYPE_FLAT,
+				'unit_type' => self::UNIT_TYPE_DAYS,
+				''
+			]);
+		}
+
+		return $topicFrameSetting;
+	}
+
+/**
+ * TopicFrameSettingの登録
+ *
+ * @param array $data received post data
+ * @return mixed On success Model::$data if its not empty or true, false on failure
+ * @throws InternalErrorException
+ */
+	public function saveTopicFrameSetting($data) {
+		//トランザクションBegin
+		$this->begin();
+
+		//バリデーション
+		$this->set($data);
+		if (! $this->validates()) {
+			$this->rollback();
+			return false;
+		}
+
+		try {
+			//登録処理
+			if (! $this->save(null, false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+			//トランザクションCommit
+			$this->commit();
+
+		} catch (Exception $ex) {
+			//トランザクションRollback
+			$this->rollback($ex);
+		}
+
+		return true;
 	}
 
 }

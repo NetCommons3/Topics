@@ -1,6 +1,6 @@
 <?php
 /**
- * index template
+ * 新着表示view
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>

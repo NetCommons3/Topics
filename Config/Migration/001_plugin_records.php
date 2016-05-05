@@ -49,7 +49,7 @@ class PluginRecords extends NetCommonsMigration {
 				'name' => '新着情報',
 				'type' => 1,
 				'default_action' => 'topics/index',
-				'default_setting_action' => 'topic_frame_settings/index',
+				'default_setting_action' => 'topic_frame_settings/edit',
 			),
 			//英語
 			array(
@@ -59,7 +59,7 @@ class PluginRecords extends NetCommonsMigration {
 				'name' => 'Topics',
 				'type' => 1,
 				'default_action' => 'topics/index',
-				'default_setting_action' => 'topic_frame_settings/index',
+				'default_setting_action' => 'topic_frame_settings/edit',
 			),
 		),
 		'PluginsRole' => array(

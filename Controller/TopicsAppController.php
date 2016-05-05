@@ -25,6 +25,7 @@ class TopicsAppController extends AppController {
  * @var array
  */
 	public $components = array(
-		'Security'
+		'Pages.PageLayout',
+		'Security',
 	);
 }

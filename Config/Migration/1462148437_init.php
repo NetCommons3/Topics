@@ -48,6 +48,7 @@ class Init extends NetCommonsMigration {
 					'display_created_user' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'display_created' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'display_description' => array('type' => 'boolean', 'null' => false, 'default' => null),
+					'display_rss' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'select_room' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'show_my_room' => array('type' => 'boolean', 'null' => false, 'default' => null),
 					'created_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'unsigned' => false),

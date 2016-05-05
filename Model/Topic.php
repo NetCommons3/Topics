@@ -310,7 +310,7 @@ class Topic extends TopicsAppModel {
 				$this->alias . '.publish_end >=' => $now,
 			),
 		);
-		$blockPublicTypeConditions['OR'] = array(
+		$blockPublicConditions['OR'] = array(
 			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
 			array(
 				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
@@ -319,6 +319,32 @@ class Topic extends TopicsAppModel {
 			),
 		);
 
+		//クエリ
+		$this->__bindModel();
+
+		$result = Hash::merge(array(
+			'recursive' => 0,
+			'conditions' => array(
+				$this->TopicReadable->alias . '.topic_id NOT' => null,
+				$this->alias . '.language_id' => Current::read('Language.id'),
+				array($blockPublicConditions),
+				array($publicTypeConditions),
+				array($roomConditions),
+			),
+			'order' => array(
+				$this->alias . '.modified' => 'desc', $this->alias . '.id' => 'desc'
+			),
+		), $options);
+
+		return $result;
+	}
+
+/**
+ * 新着データ取得のためのbindModel
+ *
+ * @return void
+ */
+	private function __bindModel() {
 		//クエリ
 		$this->bindModel(array(
 			'belongsTo' => array(
@@ -364,22 +390,6 @@ class Topic extends TopicsAppModel {
 				),
 			)
 		), true);
-
-		$result = Hash::merge(array(
-			'recursive' => 0,
-			'conditions' => array(
-				$this->TopicReadable->alias . '.topic_id NOT' => null,
-				$this->alias . '.language_id' => Current::read('Language.id'),
-				array($blockPublicTypeConditions),
-				array($publicTypeConditions),
-				array($roomConditions),
-			),
-			'order' => array(
-				$this->alias . '.modified' => 'desc', $this->alias . '.id' => 'desc'
-			),
-		), $options);
-
-		return $result;
 	}
 
 }
