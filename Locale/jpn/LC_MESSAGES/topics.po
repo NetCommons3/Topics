@@ -24,3 +24,15 @@ msgstr "最新××日分を新着とする"
 
 msgid "View number."
 msgstr "最新××件を新着とする"
+
+msgid "Display type"
+msgstr "表示方法"
+
+msgid "Show flat"
+msgstr "フラットで表示する"
+
+msgid "Sorted by plugins"
+msgstr "プラグイン毎に表示する"
+
+msgid "Sorted by rooms"
+msgstr "ルーム毎に表示する"
