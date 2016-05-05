@@ -43,7 +43,7 @@ class TopicsController extends TopicsAppController {
  * @var array
  */
 	public $helpers = array(
-		'Workflow.Workflow',
+		'Topics.Topics',
 	);
 
 /**
@@ -57,6 +57,7 @@ class TopicsController extends TopicsAppController {
 		);
 
 		$topics = $this->Paginator->paginate('Topic');
+		$topics = Hash::remove($topics, '{n}.Topic.search_contents');
 		$this->set('topics', $topics);
 	}
 }

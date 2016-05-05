@@ -9,76 +9,58 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->NetCommonsHtml->css('/topics/css/style.css')
+$camelizeData = $this->Topics->camelizeKeyRecursive($topics);
 ?>
-
-<?php foreach ($topics as $item): ?>
-	<hr>
-	<article>
+<div ng-controller="TopicsController" ng-init="initialize(<?php echo h(json_encode($camelizeData, true)); ?>)">
+	<article ng-repeat="item in topics track by $index">
+		<hr>
 		<h3 class="clearfix topic-row">
 			<div class="pull-left">
 				<div class="pull-left topic-title">
-					<?php
-						if ($item['Topic']['title_icon']) {
-							echo $this->NetCommonsHtml->titleIcon($item['Topic']['title_icon']);
-						}
-
-						$url = $item['Topic']['path'];
-						if (Hash::get($item, 'Frame.id')) {
-							$url .= '?frame_id=' . Hash::get($item, 'Frame.id');
-						}
-						$title = mb_strimwidth($item['Topic']['title'], 0, Topic::DISPLAY_TITLE_LENGTH, '...');
-						echo $this->NetCommonsHtml->link($title, $url);
-					?>
+					<span ng-bind-html="item.topic.titleIcon | ncHtmlContent"></span>
+					<a ng-href="{{item.topic.path}}">
+						{{item.topic.displayTitle}}
+					</a>
 				</div>
 			</div>
 
 			<div class="pull-right">
 				<div class="pull-left topic-status small">
-					<?php echo $this->Workflow->label($item['Topic']['status']); ?>
+					<span ng-bind-html="item.topic.displayStatus | ncHtmlContent"></span>
 				</div>
 				<div class="pull-left topic-plugin-name small">
 					<span class="label label-default">
-						<?php echo h(Hash::get($item, 'Plugin.name', '')); ?>
+						{{item.plugin.displayName}}
 					</span>
 				</div>
 				<div class="pull-right topic-datetime">
-					<?php echo $this->NetCommonsHtml->dateFormat($item['Topic']['modified']); ?>
+					{{item.topic.displayModified}}
 				</div>
 			</div>
 		</h3>
 		<div class="row topic-row">
-			<?php
-				if (Hash::get($item, 'Category.name')) {
-					$smCol = 4;
-					$xsCol = 12;
-				} else {
-					$smCol = 6;
-					$xsCol = 6;
-				}
-			?>
-			<div class="topic-room-name <?php echo 'col-sm-' . $smCol . ' col-xs-' . $xsCol ; ?>">
-				<?php echo mb_strimwidth(
-						Hash::get($item, 'RoomsLanguage.name', ''), 0, Topic::DISPLAY_ROOM_NAME_LENGTH, '...'
-					); ?>
+			<div class="topic-room-name"
+					ng-class="{'col-sm-6 col-xs-6': !item.category.name, 'col-sm-4 col-xs-6': item.category.name}">
+				{{item.roomsLanguage.displayName}}
 			</div>
 
-			<?php if (Hash::get($item, 'Category.name')) : ?>
-				<div class="topic-category-name <?php echo 'col-sm-' . $smCol . ' col-xs-' . $xsCol ; ?>">
-					<?php echo mb_strimwidth(
-							Hash::get($item, 'Category.name', ''), 0, Topic::DISPLAY_CATEGORY_NAME_LENGTH, '...'
-						); ?>
-				</div>
-			<?php endif; ?>
+			<div class="topic-category-name col-sm-4 col-xs-6" ng-show="item.category.name">
+				{{item.category.displayName}}
+			</div>
 
-			<div class="topic-handle <?php echo 'col-sm-' . $smCol . ' col-xs-' . $xsCol ; ?> text-right">
-				<?php echo $this->NetCommonsHtml->handleLink($item, ['avatar' => true]); ?>
+			<div class="topic-handle-name text-right"
+					ng-class="{'col-sm-6 col-xs-6': !item.category.name, 'col-sm-4 col-xs-12': item.category.name}">
+
+				<span ng-bind-html="item.trackableCreator.avatar | ncHtmlContent"></span>
+				<a ng-click="showUser(item.trackableCreator.id)" ng-controller="Users.controller" href="#">
+					{{item.trackableCreator.handlename}}
+				</a>
 			</div>
 		</div>
 		<div class="row topic-row">
 			<div class="col-xs-12 text-muted topic-summary topic-row">
-				<?php echo h($item['Topic']['summary']); ?>
+				{{item.summary}}
 			</div>
 		</div>
 	</article>
-<?php endforeach;
+</div>
