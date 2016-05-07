@@ -2,31 +2,71 @@
 /**
  * Topic Model
  *
- * @property Block $Block
- *
- * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AppModel', 'Model');
-App::uses('Search', 'Search.Utility');
+App::uses('TopicsAppModel', 'Topics.Model');
 
 /**
- * Summary for Topic Model
+ * Topic Model
+ *
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @package NetCommons\Topics\Model
  */
-class Topic extends AppModel {
+class Topic extends TopicsAppModel {
 
 /**
- * Behaviors
+ * 公開のタイプ(非公開)
+ *
+ * @var int
+ */
+	const TYPE_PRIVATE = '0';
+
+/**
+ * 公開のタイプ(公開)
+ *
+ * @var int
+ */
+	const TYPE_PUBLIC = '1';
+
+/**
+ * 公開のタイプ(期限付き公開)
+ *
+ * @var int
+ */
+	const TYPE_LIMITED = '2';
+
+/**
+ * タイトル表示時の文字数
+ *
+ * @var int
+ */
+	const DISPLAY_TITLE_LENGTH = 64;
+
+/**
+ * ルーム名表示時の文字数
+ *
+ * @var int
+ */
+	const DISPLAY_ROOM_NAME_LENGTH = 24;
+
+/**
+ * カテゴリ名表示時の文字数
+ *
+ * @var int
+ */
+	const DISPLAY_CATEGORY_NAME_LENGTH = 24;
+
+/**
+ * Validation rules
  *
  * @var array
  */
-	public $actsAs = array(
-		'NetCommons.OriginalKey',
-	);
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+	public $validate = array();
 
 /**
  * belongsTo associations
@@ -38,33 +78,71 @@ class Topic extends AppModel {
 			'className' => 'Blocks.Block',
 			'foreignKey' => 'block_id',
 			'conditions' => '',
-			'fields' => '',
+			'fields' => array('id', 'key', 'name'),
 			'order' => ''
-		)
+		),
+		'Category' => array(
+			'className' => 'Categories.Category',
+			'foreignKey' => 'category_id',
+			'conditions' => '',
+			'fields' => array('id', 'key', 'name'),
+			'order' => ''
+		),
+		'Frame' => array(
+			'className' => 'Frames.Frame',
+			'foreignKey' => 'frame_id',
+			'conditions' => '',
+			'fields' => array('id', 'key', 'name'),
+			'order' => ''
+		),
+		'Language' => array(
+			'className' => 'Languages.Language',
+			'foreignKey' => 'language_id',
+			'conditions' => '',
+			'fields' => array('id', 'code'),
+			'order' => ''
+		),
+		'Room' => array(
+			'className' => 'Rooms.Room',
+			'foreignKey' => 'room_id',
+			'conditions' => '',
+			'fields' => array('id', 'space_id'),
+			'order' => ''
+		),
 	);
 
 /**
- * Available plugins
+ * hasMany associations
  *
  * @var array
  */
-	public static $availablePlugins = array(
-		'announcements',
-		'bbses',
-		'blogs',
-		'cabinets',
-		'calendars',
-		'circular_notices',
-		'facility_manager',
-		'faqs',
-		'flexible_databases',
-		'links',
-		'photo_albums',
-		'questionnaires',
-		'reports',
-		'tasks',
-		'videos',
-		'workbooks',
+	public $hasMany = array(
+		'TopicReadable' => array(
+			'className' => 'Topics.TopicReadable',
+			'foreignKey' => 'topic_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'TopicUserStatus' => array(
+			'className' => 'Topics.TopicUserStatus',
+			'foreignKey' => 'topic_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
 	);
 
 /**
@@ -78,49 +156,48 @@ class Topic extends AppModel {
  */
 	public function beforeValidate($options = array()) {
 		$this->validate = Hash::merge($this->validate, array(
+			'language_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
+			'room_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
 			'block_id' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
+					'on' => 'update', // Limit validation to 'create' or 'update' operations
 				),
 			),
-			'key' => array(
-				'notBlank' => array(
-					'rule' => array('notBlank'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
-			'status' => array(
+			'content_id' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
+					'on' => 'update', // Limit validation to 'create' or 'update' operations
 				),
 			),
-			'is_active' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
+			'content_key' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
+					'on' => 'update', // Limit validation to 'create' or 'update' operations
 				),
 			),
-			'is_latest' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
+			'category_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
+					'allowEmpty' => true,
+					'required' => false,
 				),
 			),
 			'plugin_key' => array(
-				'notBlank' => array(
-					'rule' => array('notBlank'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
-			'title' => array(
-				'notBlank' => array(
-					'rule' => array('notBlank'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
-			'contents' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
@@ -132,178 +209,181 @@ class Topic extends AppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
-			'created_user' => array(
+			'public_type' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
+					'required' => false,
 				),
 			),
-			'modified_user' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
+			'is_active' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
 					'message' => __d('net_commons', 'Invalid request.'),
+					'required' => false,
+				),
+			),
+			'is_latest' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.'),
+					'required' => false,
 				),
 			),
 		));
-
-		return parent::beforeValidate($options);
 	}
 
 /**
- * validate topic
+ * 新着データ取得のオプション生成
  *
- * @param array $data received post data
- * @return bool True on success, false on error
+ * @param array $options マージするオプション
+ * @return array
  */
-	public function validateTopic($data) {
-		$this->set($data);
-		$this->validates();
-		return $this->validationErrors ? false : true;
-	}
-
-/**
- * build query from query and user privileges
- *
- * @param array $query query
- * @param int $userId user id
- * @param array $privileges privileges
- * @return array condition
- */
-	public function buildConditions($query, $userId, $privileges) {
-		$conditions = $this->__buildQueryBasedConditions($query);
-
-		if ($privileges['contentEditable']) {
-			$conditions['Topic.is_latest'] = 1;
-			return $conditions;
-		}
-
-		if ($privileges['contentReadable']) {
-			$conditions = array_merge(
-				$conditions,
-				['Topic.is_active' => 1]
-			);
-		}
-
-		return $conditions;
-	}
-
-/**
- * build conditions from query
- *
- * @param array $query query
- * @return array condition
- *
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
- * @SuppressWarnings(PHPMD.NPathComplexity)
- */
-	private function __buildQueryBasedConditions($query) {
-		$conditions = [];
-
-		if (isset($query['keyword']) && $query['keyword'] !== '') {
-			$conditions[] = sprintf(
-				'MATCH (`Topic`.`title`, `Topic`.`contents`) AGAINST (\'*D+ %s\' IN BOOLEAN MODE)',
-				$query['keyword']
-			);
-		}
-
-		if (isset($query['status'])) {
-			$conditions['Topic.status'] = $query['status'];
-		} else {
-			$conditions['Topic.status'] = array_keys(WorkflowComponent::getStatuses());
-		}
-
-		if (isset($query['plugin_key'])) {
-			$conditions['Topic.plugin_key'] = $query['plugin_key'];
-		}
-
-		$conditions = array_merge($conditions, $this->__buildDurationConditions($query));
-
-		if (isset($query['username']) && $query['username'] !== '') {
-			$conditions['TrackableUpdater.username'] = $query['username'];
-		}
-
-		if (isset($query['room_id']) && is_numeric($query['room_id'])) {
-			$conditions['Block.room_id'] = $query['room_id'];
-		}
-
-		if (isset($query['block_id']) && is_numeric($query['block_id'])) {
-			$conditions['Block.id'] = $query['block_id'];
-		}
-
-		return $conditions;
-	}
-
-/**
- * build duration query from query
- *
- * @param array $query query
- * @return array condition
- */
-	private function __buildDurationConditions($query) {
-		$conditions = [];
-
-		if (isset($query['from']) && $query['from']) {
-			$where = '(((Topic.from >= ? AND Topic.from <= NOW()) OR Topic.from IS NULL) AND ((Block.from >= ? AND Block.from <= NOW()) OR Block.to IS NULL))';
-			$conditions[$where] = [$query['from'], $query['from']];
-		} elseif (isset($query['latest_days']) && $query['latest_days']) {
-			$now = new DateTime('now');
-			$now->modify(' - ' . $query['latest_days'] . ' days');
-			$where = '(((Topic.from >= ? AND Topic.from <= NOW()) OR Topic.from IS NULL) AND ((Block.from >= ? AND Block.from <= NOW()) OR Block.from IS NULL))';
-			$conditions[$where] = [$now->format('Y-m-d H:i:s'), $now->format('Y-m-d H:i:s')];
-		} else {
-			$conditions[] = '((Topic.from <= NOW() OR Topic.from IS NULL) AND (Block.from <= NOW() OR Block.from IS NULL))';
-		}
-
-		if (isset($query['to']) && $query['to']) {
-			$where = '(((Topic.to <= ? AND Topic.to >= NOW()) OR Topic.to IS NULL) AND ((Block.to <= ? AND Block.to >= NOW()) OR Block.to IS NULL))';
-			$conditions[$where] = [$query['to'], $query['to']];
-		} else {
-			$conditions[] = '((Topic.to >= NOW() OR Topic.to IS NULL) AND (Block.to >= NOW() OR Block.to IS NULL))';
-		}
-
-		return $conditions;
-	}
-
-/**
- * After frame save hook
- *
- * @param array $data received post data
- * @return mixed On success Model::$data if its not empty or true, false on failure
- * @throws InternalErrorException
- */
-	public function afterFrameSave($data) {
+	public function getQueryOptions($options = array()) {
 		$this->loadModels([
-			'TopicFrameSetting' => 'Topics.TopicFrameSetting',
-			'TopicFrameSettingShowPlugin' => 'Topics.TopicFrameSettingShowPlugin',
+			'Room' => 'Rooms.Room',
+			'Role' => 'Roles.Role',
 		]);
 
-		try {
-			$plugins = array_map(function ($plugin) {
-				return ['plugin_key' => $plugin];
-			}, Topic::$availablePlugins);
-			if (!$this->TopicFrameSetting->validateTopicFrameSetting([
-				'TopicFrameSetting' => [
-					'frame_id' => $data['Frame']['id'],
-					'display_title' => true,
-					'display_room_name' => true,
-					'display_plugin_name' => true,
-					'display_created_user' => true,
-					'display_created' => true,
-					'display_description' => true,
-				],
-				'TopicFrameSettingShowPlugin' => $plugins,
-			])) {
-				$this->validationErrors = Hash::merge($this->validationErrors, $this->TopicFrameSetting->validationErrors);
-				return false;
-			}
-			if (!$this->TopicFrameSetting->saveAssociated(null, ['validate' => false, 'deep' => true])) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
-		} catch (Exception $ex) {
-			CakeLog::error($ex);
-			throw $ex;
+		//閲覧できるルームリスト取得
+		$rooms = $this->Room->find('all',
+			Hash::merge(
+				$this->Room->getReadableRoomsConditions(),
+				array(
+					'recursive' => -1,
+					'fields' => ['Room.id', 'Room.space_id', 'RolesRoom.room_id', 'RolesRoom.role_key']
+				)
+			)
+		);
+		//room_idの取得
+		$adminRoomIds = array_merge(
+			Hash::extract(
+				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR . '].room_id'
+			),
+			Hash::extract(
+				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_CHIEF_EDITOR . '].room_id'
+			),
+			Hash::extract(
+				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_EDITOR . '].room_id'
+			)
+		);
+		$readableRoomIds = array_diff(
+			Hash::extract($rooms, '{n}.Room.id'), $adminRoomIds
+		);
+
+		$roomConditions = array();
+
+		//is_latestのデータが見れる条件生成
+		if ($adminRoomIds) {
+			$roomConditions['OR'][0] = array(
+				$this->alias . '.room_id' => $adminRoomIds,
+				$this->alias . '.is_latest' => true
+			);
+		}
+		if (Current::read('User.id')) {
+			$roomConditions['OR'][1] = array(
+				$this->alias . '.created_user' => Current::read('User.id'),
+				$this->alias . '.is_latest' => true
+			);
+		}
+		//is_activeの条件生成
+		if ($readableRoomIds) {
+			$roomConditions['OR'][2] = array(
+				$this->alias . '.room_id' => $readableRoomIds,
+				$this->alias . '.is_active' => true
+			);
 		}
 
-		return $this->TopicFrameSetting;
+		//公開設定の条件生成
+		$now = gmdate('Y-m-d H:i:s');
+		$publicTypeConditions['OR'] = array(
+			$this->alias . '.public_type' => self::TYPE_PUBLIC,
+			array(
+				$this->alias . '.public_type' => self::TYPE_LIMITED,
+				$this->alias . '.publish_start <=' => $now,
+				$this->alias . '.publish_end >=' => $now,
+			),
+		);
+		$blockPubConditions['OR'] = array(
+			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
+			array(
+				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
+				$this->Block->alias . '.publish_start <=' => $now,
+				$this->Block->alias . '.publish_end >=' => $now,
+			),
+		);
+
+		//クエリ
+		$this->__bindModel();
+
+		$result = Hash::merge(array(
+			'recursive' => 0,
+			'conditions' => array(
+				$this->TopicReadable->alias . '.topic_id NOT' => null,
+				$this->alias . '.language_id' => Current::read('Language.id'),
+				array($blockPubConditions),
+				array($publicTypeConditions),
+				array($roomConditions),
+			),
+			'order' => array(
+				$this->alias . '.modified' => 'desc', $this->alias . '.id' => 'desc'
+			),
+		), $options);
+
+		return $result;
 	}
+
+/**
+ * 新着データ取得のためのbindModel
+ *
+ * @return void
+ */
+	private function __bindModel() {
+		//クエリ
+		$this->bindModel(array(
+			'belongsTo' => array(
+				'RoomsLanguage' => array(
+					'className' => 'Rooms.RoomsLanguage',
+					'fields' => array('id', 'name'),
+					'foreignKey' => false,
+					'type' => 'LEFT',
+					'conditions' => array(
+						'RoomsLanguage.room_id' . ' = ' . $this->alias . '.room_id',
+						'RoomsLanguage.language_id' => Current::read('Language.id', '0'),
+					),
+				),
+				'Plugin' => array(
+					'className' => 'PluginManager.Plugin',
+					'fields' => array('id', 'key', 'name'),
+					'foreignKey' => false,
+					'type' => 'LEFT',
+					'conditions' => array(
+						'Plugin.key' . ' = ' . $this->alias . '.plugin_key',
+						'Plugin.language_id' => Current::read('Language.id', '0'),
+					),
+				),
+				'TopicReadable' => array(
+					'className' => 'Topics.TopicReadable',
+					'fields' => array('id', 'topic_id', 'user_id'),
+					'foreignKey' => false,
+					'type' => 'INNER',
+					'conditions' => array(
+						$this->TopicReadable->alias . '.topic_id' . ' = ' . $this->alias . '.id',
+						$this->TopicReadable->alias . '.user_id' => array(Current::read('User.id', '0'), '0'),
+					),
+				),
+				'TopicUserStatus' => array(
+					'className' => 'Topics.TopicUserStatus',
+					'fields' => array('id', 'topic_id', 'user_id'),
+					'foreignKey' => false,
+					'type' => 'LEFT',
+					'conditions' => array(
+						$this->TopicUserStatus->alias . '.topic_id' . ' = ' . $this->alias . '.id',
+						$this->TopicUserStatus->alias . '.user_id' => Current::read('User.id', '0'),
+					),
+				),
+			)
+		), true);
+	}
+
 }

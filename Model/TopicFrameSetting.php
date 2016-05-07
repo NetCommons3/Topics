@@ -2,49 +2,64 @@
 /**
  * TopicFrameSetting Model
  *
- * @property Block $Block
- *
- * @author Jun Nishikawa <topaz2@m0n0m0n0.com>
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AppModel', 'Model');
+App::uses('TopicsAppModel', 'Topics.Model');
 
 /**
- * Summary for TopicFrameSetting Model
+ * TopicFrameSetting Model
+ *
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @package NetCommons\Topics\Model
  */
-class TopicFrameSetting extends AppModel {
+class TopicFrameSetting extends TopicsAppModel {
 
 /**
- * use behaviors
+ * 表示方法(フラットに表示)
+ *
+ * @var int
+ */
+	const DISPLAY_TYPE_FLAT = '0';
+
+/**
+ * 表示方法(プラグインごとに表示)
+ *
+ * @var int
+ */
+	const DISPLAY_TYPE_PLUGIN = '1';
+
+/**
+ * 表示方法(ルームごとに表示)
+ *
+ * @var int
+ */
+	const DISPLAY_TYPE_ROOMS = '2';
+
+/**
+ * 表示単位(日ごとに表示)
+ *
+ * @var int
+ */
+	const UNIT_TYPE_DAYS = '0';
+
+/**
+ * 表示単位(件数ごとに表示)
+ *
+ * @var int
+ */
+	const UNIT_TYPE_NUMBERS = '1';
+
+/**
+ * Validation rules
  *
  * @var array
  */
-	public $actsAs = array(
-		'NetCommons.OriginalKey',
-	);
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
-/**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'Frame' => array(
-			'className' => 'Frames.Frame',
-			'foreignKey' => 'frame_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
-
-	const
-		UNIT_TYPE_DAYS = 0,
-		UNIT_TYPE_TOPICS = 1;
+	public $validate = array();
 
 /**
  * Called during validation operations, before validation. Please note that custom
@@ -54,18 +69,19 @@ class TopicFrameSetting extends AppModel {
  * @return bool True if validate operation should continue, false to abort
  * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
  * @see Model::save()
+ * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  */
 	public function beforeValidate($options = array()) {
 		$this->validate = Hash::merge($this->validate, array(
-			'key' => array(
+			'frame_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
-			'frame_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
+			'display_type' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
@@ -123,7 +139,25 @@ class TopicFrameSetting extends AppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
+			'use_rss_feed' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
 			'select_room' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
+			'select_block' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
+			'select_plugin' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
 					'message' => __d('net_commons', 'Invalid request.'),
@@ -135,120 +169,71 @@ class TopicFrameSetting extends AppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
-			'created_user' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
-			'modified_user' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
 		));
-
-		return parent::beforeValidate($options);
 	}
 
 /**
- * After frame save hook
+ * TopicFrameSettingデータ取得
+ *
+ * @return array TopicFrameSetting data
+ */
+	public function getTopicFrameSetting() {
+		$conditions = array(
+			'frame_key' => Current::read('Frame.key')
+		);
+
+		$topicFrameSetting = $this->find('first', array(
+				'recursive' => -1,
+				'conditions' => $conditions,
+			)
+		);
+
+		if (! $topicFrameSetting) {
+			$topicFrameSetting = $this->create([
+				'display_type' => self::DISPLAY_TYPE_FLAT,
+				'unit_type' => self::UNIT_TYPE_DAYS,
+				'display_days' => '5',
+				'display_number' => '10',
+				'feed_title' => __d('topics', '[{X-SITE_NAME}]What\'s new'),
+				'feed_summary' => __d('topics', 'What\'s new today?'),
+			]);
+		}
+
+		return $topicFrameSetting;
+	}
+
+/**
+ * TopicFrameSettingの登録
  *
  * @param array $data received post data
  * @return mixed On success Model::$data if its not empty or true, false on failure
  * @throws InternalErrorException
  */
-	public function saveSettings($data) {
-		$this->loadModels([
-			'TopicFrameSetting' => 'Topics.TopicFrameSetting',
-			'TopicFrameSettingShowPlugin' => 'Topics.TopicFrameSettingShowPlugin',
-			'TopicSelectedRoom' => 'Topics.TopicSelectedRoom',
-		]);
+	public function saveTopicFrameSetting($data) {
+		//トランザクションBegin
+		$this->begin();
 
-		$this->setDataSource('master');
-		$con = $this->getDataSource();
-		$con->begin();
+		//バリデーション
+		$this->set($data);
+		if (! $this->validates()) {
+			$this->rollback();
+			return false;
+		}
 
 		try {
-			if (!$this->TopicFrameSetting->validateTopicFrameSetting([
-				'TopicFrameSetting' => $data['TopicFrameSetting'],
-			])) {
-				$this->validationErrors = Hash::merge($this->validationErrors, $this->TopicFrameSetting->validationErrors);
-				return false;
-			}
-			/* if (!$this->TopicFrameSettingShowPlugin->deleteAll(['topic_frame_setting_key' => $data['TopicFrameSetting']['key']], false)) { */
-			/* 	throw new InternalErrorException(__d('net_commons', 'Internal Server Error')); */
-			/* } */
-			/* $plugins = array_map(function($plugin) use ($data) { */
-			/* 		return [ */
-			/* 			'topic_frame_setting_key' => $data['TopicFrameSetting']['key'], */
-			/* 			'plugin_key' => $plugin, */
-			/* 		]; }, $data['TopicFrameSettingShowPlugin']['plugin_key'] ? : []); */
-			/* if (!$this->TopicFrameSettingShowPlugin->saveAll($plugins)) { */
-			/* 	throw new InternalErrorException(__d('net_commons', 'Internal Server Error')); */
-			/* } */
-			if (!$this->TopicFrameSetting->saveAssociated(null, ['validate' => false, 'deep' => true])) {
+			//登録処理
+			if (! $this->save(null, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
-			$rooms = array_map(function ($room) use ($data) {
-				return [
-					'topic_frame_setting_key' => $data['TopicFrameSetting']['key'],
-					'room_id' => $room,
-				];
-			},
-			$data['TopicSelectedRoom']['room_id'] ? : []);
-			if (!$this->TopicSelectedRoom->deleteAll(['topic_frame_setting_key' => $data['TopicFrameSetting']['key']], false)) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
-			if (!$this->TopicSelectedRoom->saveAll($rooms)) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
-			$con->commit();
+			//トランザクションCommit
+			$this->commit();
+
 		} catch (Exception $ex) {
-			$con->rollback();
-			CakeLog::error($ex);
-			throw $ex;
+			//トランザクションRollback
+			$this->rollback($ex);
 		}
 
-		return $this->TopicFrameSetting;
+		return true;
 	}
 
-/**
- * validate search box
- *
- * @param array $data received post data
- * @return bool True on success, false on error
- */
-	public function validateTopicFrameSetting($data) {
-		$this->set($data);
-		$this->validates();
-		return $this->validationErrors ? false : true;
-	}
-
-/**
- * Return latest topic choices
- *
- * @return array Latest topic choices
- */
-	public static function getLatestTopicChoices() {
-		$choices = [__d('topics', 'All Topics')];
-		foreach ([1, 5, 10, 50, 100] as $num) {
-			$choices[$num] = __d('topics', 'Latest %d topics', [$num]);
-		}
-		return $choices;
-	}
-
-/**
- * Return latest duration choices
- *
- * @return array Latest duration choices
- */
-	public static function getLatestDurationChoices() {
-		$choices = [__d('topics', 'All Durations')];
-		foreach (range(1, 31) as $num) {
-			$choices[$num] = __d('topics', '%d days', [$num]);
-		}
-		return $choices;
-	}
 }

@@ -1,16 +1,7 @@
 {
-    "name":        "netcommons/topics",
-    "description": "Topics Plugin for NetCommons",
-    "type":        "cakephp-plugin",
-    "keywords":    ["cakephp", "topics"],
-    "homepage":    "http://www.netcommons.org/",
-    "license":     "NetCommons License",
-    "authors": [
-        {
-            "name":     "NetCommons Community",
-            "homepage": "https://github.com/NetCommons3/Topics/graphs/contributors"
-        }
-    ],
+    "name": "netcommons/topics",
+    "description": "Topics for NetCommons Plugin",
+    "homepage": "http://www.netcommons.org/",
     "extra": {
         "installer-paths": {
             "app/Plugin/{$name}": ["type:cakephp-plugin"]
@@ -20,19 +11,23 @@
         "cakephp/cakephp":              "~2.6",
         "cakephp/debug_kit":            "~2.2",
         "cakedc/migrations":            "~2.2",
-        "components/jquery":            "~2.1",
         "phpunit/phpunit":              "~3.7.38",
-        "sebastian/phpcpd":             "~2.0",
-        "twbs/bootstrap":               "~3.1"
+        "sebastian/phpcpd":             "~2.0"
     },
     "require-dev": {
         "mustangostang/spyc":           "dev-master",
-        "netcommons/announcements":     "dev-master",
         "netcommons/net-commons":       "dev-master",
-        "netcommons/search":            "dev-master",
-        "netcommons/search-boxes":      "dev-master",
         "satooshi/php-coveralls":       "dev-master"
     },
+    "license": "NetCommons License",
+    "authors": [
+        {
+            "name": "NetCommons Community",
+            "homepage": "https://github.com/NetCommons3/Topics/graphs/contributors"
+        }
+    ],
+    "type":        "cakephp-plugin",
+    "keywords":    ["cakephp", "topics"],
     "config": {
         "vendor-dir": "vendors"
     }

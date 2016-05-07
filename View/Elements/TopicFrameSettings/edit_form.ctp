@@ -1,123 +1,170 @@
 <?php
-	echo $this->Form->hidden('id');
-	echo $this->Form->hidden('frame_id', ['value' => $frameId]);
-	echo $this->Form->hidden('key');
-	echo $this->Form->hidden('created');
-	echo $this->Form->hidden('created_user');
-	echo $this->Form->hidden('modified');
-	echo $this->Form->hidden('modified_user');
+/**
+ * 表示方法変更element
+ *
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
+ */
 ?>
-<div class="form-group">
-	<?php echo $this->Form->label('unit_type', __d('topics', 'Display style')); ?>
-	<?php
-		echo $this->Form->input('unit_type', [
-			'label' => __d('topics', 'Search Type'),
-			'type' => 'radio',
-			'options' => [
-				__d('topics', 'Treat latest x days as new'),
-				__d('topics', 'Treat latest x topics as new'),
-			],
-			'class' => 'unit_type',
-			'legend' => false,
-			'label' => false,
-			'before' => '<div class="radio"><label>',
-			'separator' => '</label></div><div class="radio"><label>',
-			'after' => '</label></div>',
-		]);
-	?>
-</div>
-<div class="form-group">
-	<?php
-		echo $this->Form->input('display_days', [
-			'label' => false,
-			'type' => 'select',
-			'options' => TopicFrameSetting::getLatestDurationChoices(),
-			'class' => 'form-control',
-			'disabled' => (int)$this->Form->request->data['TopicFrameSetting']['unit_type'] !== TopicFrameSetting::UNIT_TYPE_DAYS,
-		]);
-	?>
-</div>
-<div class="form-group">
-	<?php
-		echo $this->Form->input('display_number', [
-			'label' => false,
-			'type' => 'select',
-			'options' => TopicFrameSetting::getLatestTopicChoices(),
-			'class' => 'form-control',
-			'disabled' => (int)$this->Form->request->data['TopicFrameSetting']['unit_type'] !== TopicFrameSetting::UNIT_TYPE_TOPICS,
-		]);
-	?>
-</div>
-<div class="form-group">
-	<?php echo $this->Form->label('display_filter', __d('topics', 'Display filter')); ?>
-	<div class="form-input">
-	<?php echo $this->Form->checkbox('select_room', array(
-			'div' => false,
-			'checked' => $this->Form->request->data['TopicFrameSetting']['select_room'],
-		)
-	); ?>
-	<?php echo $this->Form->label('select_room', __d('topics', 'Select rooms')); ?>
-	</div>
-	<div class="form-input">
-		<?php
-			foreach ($rooms as $target) {
-				$checked[$target['LanguagesPage']['id']] = $target['LanguagesPage']['name'];
-			}
-			echo $this->Form->input('TopicSelectedRoom.room_id', [
-				'label' => false,
-				'type' => 'select',
-				'multiple' => 'multiple',
-				'value' => $checked,
-				'options' => $checked,
-				'class' => 'form-control',
-			]);
-		?>
-	</div>
-	<div class="form-input">
-	<?php echo $this->Form->checkbox('show_my_room', array(
-			'div' => false,
-			'checked' => $this->Form->request->data['TopicFrameSetting']['show_my_room'],
-		)
-	); ?>
-	<?php echo $this->Form->label('show_my_room', __d('topics', 'Show my room')); ?>
-	</div>
-</div>
-<div class="form-group">
-	<div class="form-input">
-		<?php echo $this->Form->label(__d('topics', 'Display fields')); ?>
-	</div>
-	<?php foreach(['title', 'description', 'room_name', 'plugin_name', 'created_user', 'created'] as $key): ?>
-		<?php $column = sprintf('display_%s', $key); ?>
-		<div class="form-input inline-block">
-			<?php echo $this->Form->checkbox($column, array(
-					'div' => false,
-					'checked' => $this->Form->request->data['TopicFrameSetting'][$column] ? (int)$this->Form->request->data['TopicFrameSetting'][$column] : null,
-					'disabled' => in_array($key, ['title'], true),
+
+<?php echo $this->NetCommonsForm->hidden('Frame.id'); ?>
+<?php echo $this->NetCommonsForm->hidden('TopicFrameSetting.id'); ?>
+<?php echo $this->NetCommonsForm->hidden('TopicFrameSetting.frame_key'); ?>
+
+<div class="row form-group">
+	<div class="col-xs-12 text-nowrap">
+		<?php echo $this->NetCommonsForm->radio('TopicFrameSetting.unit_type',
+				array(TopicFrameSetting::UNIT_TYPE_DAYS => __d('topics', 'Show the information for past xx days.')),
+				array(
+					'legend' => false,
+					'ng-click' => 'clickUnitType($event)',
 				)
 			); ?>
-		<?php echo $this->Form->label($column, __d('topics', Inflector::humanize($key))); ?>
-		</div>
-	<?php endforeach; ?>
+	</div>
+	<div class="col-xs-11 col-xs-offset-1">
+		<?php echo $this->NetCommonsForm->selectDays('TopicFrameSetting.display_days', array(
+			'div' => false,
+		)); ?>
+	</div>
 </div>
-<!--
-	<div class="form-group">
-	<div class="form-input">
-		<?php echo $this->Form->label(__d('topics', 'Target Plugins')); ?>
+
+<div class="row form-group">
+	<div class="col-xs-12 text-nowrap">
+		<?php echo $this->NetCommonsForm->radio('TopicFrameSetting.unit_type',
+				array(TopicFrameSetting::UNIT_TYPE_NUMBERS => __d('topics', 'View number.')),
+				array(
+					'legend' => false,
+					'ng-click' => 'clickUnitType($event)',
+				)
+			); ?>
 	</div>
-		<div class="input-group">
-		<?php $checked = [];
-			/* foreach ($this->Form->request->data['TopicFrameSettingShowPlugin'] as $target) { */
-			/* 	$checked[$target['TopicFrameSettingShowPlugin']['plugin_key']] = $target['TopicFrameSettingShowPlugin']['plugin_key']; */
-			/* } */
-			/* echo $this->Form->input('TopicFrameSettingShowPlugin.plugin_key', [ */
-			/* 	'label' => false, */
-			/* 	'div' => false, */
-			/* 	'class' => 'form-input inline-block', */
-			/* 	'multiple' => 'checkbox', */
-			/* 	'options' => $plugins, */
-			/* 	'value' => $checked, */
-			/* ]); */
-		?>
+	<div class="col-sm-11 col-xs-offset-1">
+		<?php echo $this->NetCommonsForm->selectNumber('TopicFrameSetting.display_number', array(
+			'div' => false,
+		)); ?>
+	</div>
+</div>
+
+<?php
+	echo $this->NetCommonsForm->input('TopicFrameSetting.display_type', array(
+		'type' => 'select',
+		'options' => array(
+			TopicFrameSetting::DISPLAY_TYPE_FLAT => __d('topics', 'Show flat'),
+			TopicFrameSetting::DISPLAY_TYPE_PLUGIN => __d('topics', 'Sorted by plugins'),
+			TopicFrameSetting::DISPLAY_TYPE_ROOMS => __d('topics', 'Sorted by rooms'),
+		),
+		'label' => __d('topics', 'Display type'),
+	));
+?>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<?php echo __d('topics', 'Display items'); ?>
+	</div>
+
+	<div class="panel-body">
+
+	</div>
+</div>
+
+<?php
+	$selectRoomDomId = $this->NetCommonsForm->domId('TopicFrameSetting.select_room');
+	$selectBlockDomId = $this->NetCommonsForm->domId('TopicFrameSetting.select_block');
+
+	$ngInit = $selectBlockDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.select_block') . '; ' .
+			$selectRoomDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.select_room') . ';';
+?>
+
+<div ng-init="<?php echo $ngInit; ?>">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<?php
+				echo $this->NetCommonsForm->input('TopicFrameSetting.select_room', array(
+					'type' => 'checkbox',
+					'label' => __d('topics', 'Select room to show'),
+					'class' => false,
+					'div' => false,
+					'childDiv' => array('class' => 'form-inline'),
+					'ng-checked' => $selectRoomDomId,
+					'ng-click' => $selectRoomDomId . ' = checked($event); ' . $selectBlockDomId . ' = 0;',
+				));
+			?>
+		</div>
+
+		<div class="panel-body" ng-show="<?php echo $selectRoomDomId; ?>">
 		</div>
 	</div>
-//-->
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<?php
+				echo $this->NetCommonsForm->input('TopicFrameSetting.select_block', array(
+					'type' => 'checkbox',
+					'label' => __d('topics', 'Select block to show'),
+					'class' => false,
+					'div' => false,
+					'childDiv' => array('class' => 'form-inline'),
+					'ng-checked' => $selectBlockDomId,
+					'ng-click' => $selectBlockDomId . ' = checked($event); ' . $selectRoomDomId . ' = 0;',
+				));
+			?>
+		</div>
+
+		<div class="panel-body" ng-show="<?php echo $selectBlockDomId; ?>">
+		</div>
+	</div>
+</div>
+
+<?php $selectPluginDomId = $this->NetCommonsForm->domId('TopicFrameSetting.select_plugin'); ?>
+<div class="panel panel-default"
+		ng-init="<?php echo $selectPluginDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.select_plugin'); ?>">
+
+	<div class="panel-heading">
+		<?php
+			echo $this->NetCommonsForm->input('TopicFrameSetting.select_plugin', array(
+				'type' => 'checkbox',
+				'label' => __d('topics', 'Select plugin to show'),
+				'class' => false,
+				'div' => false,
+				'childDiv' => array('class' => 'form-inline'),
+				'ng-click' => $selectPluginDomId . ' = checked($event)',
+			));
+		?>
+	</div>
+
+	<div class="panel-body" ng-show="<?php echo $selectPluginDomId; ?>">
+	</div>
+</div>
+
+<?php $rssFeedDomId = $this->NetCommonsForm->domId('TopicFrameSetting.use_rss_feed'); ?>
+<div class="panel panel-default"
+		ng-init="<?php echo $rssFeedDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.use_rss_feed'); ?>">
+
+	<div class="panel-heading">
+		<?php
+			echo $this->NetCommonsForm->input('TopicFrameSetting.use_rss_feed', array(
+				'type' => 'checkbox',
+				'label' => __d('topics', 'RSS feed'),
+				'class' => false,
+				'div' => false,
+				'childDiv' => array('class' => 'form-inline'),
+				'ng-click' => $rssFeedDomId . ' = checked($event)',
+			));
+		?>
+	</div>
+
+	<div class="panel-body" ng-show="<?php echo $rssFeedDomId; ?>">
+		<?php echo $this->NetCommonsForm->input('TopicFrameSetting.feed_title', array(
+				'label' => __d('topics', 'Feed title'),
+			)); ?>
+
+		<?php echo $this->NetCommonsForm->input('TopicFrameSetting.feed_summary', array(
+				'type' => 'textarea',
+				'label' => __d('topics', 'Feed summary'),
+				'help' => $this->Topics->rssSettingHelp(__d('topics', '{X-SITE_NAME} : Site name'))
+			)); ?>
+	</div>
+</div>

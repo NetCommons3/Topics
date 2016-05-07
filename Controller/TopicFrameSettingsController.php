@@ -2,23 +2,32 @@
 /**
  * TopicFrameSettings Controller
  *
- * @property TopicFrameSetting $TopicFrameSetting
- * @property PaginatorComponent $Paginator
- *
- * @author   Jun Nishikawa <topaz2@m0n0m0n0.com>
- * @link     http://www.netcommons.org NetCommons Project
- * @license  http://www.netcommons.org/license.txt NetCommons License
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AppController', 'Controller');
+App::uses('TopicsAppController', 'Topics.Controller');
 
 /**
- * Summary for TopicFrameSettings Controller
+ * TopicFrameSettings Controller
+ *
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @package NetCommons\Topics\Controller
  */
 class TopicFrameSettingsController extends TopicsAppController {
 
 /**
- * uses
+ * layout
+ *
+ * @var array
+ */
+	public $layout = 'NetCommons.setting';
+
+/**
+ * use models
  *
  * @var array
  */
@@ -27,54 +36,49 @@ class TopicFrameSettingsController extends TopicsAppController {
 	);
 
 /**
- * layout
+ * use components
  *
  * @var array
  */
-	public $layout = 'Frames.setting';
+	public $components = array(
+		'NetCommons.Permission' => array(
+			'allow' => array(
+				'edit' => 'page_editable',
+			),
+		),
+	);
 
 /**
- * beforeFilter
+ * use helpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'Blocks.BlockForm',
+		'Blocks.BlockTabs' => array(
+			'mainTabs' => array(
+				'frame_settings' => array('url' => array('controller' => 'bbs_frame_settings')),
+			),
+		),
+		'NetCommons.DisplayNumber',
+	);
+
+/**
+ * edit
  *
  * @return void
  */
-	public function beforeFilter() {
-		$this->Security->unlockedFields = ['display_days', 'display_number'];
-		parent::beforeFilter();
-		$this->Auth->deny('index');
-		$this->initTabs('frame_settings');
-	}
-
-/**
- * edit method
- *
- * @param string $frameId frameId
- * @throws NotFoundException
- * @return void
- */
-	public function edit($frameId = null) {
-		$options = array('conditions' => array('TopicFrameSetting.frame_id' => $frameId));
-		$topicFrameSetting = $this->TopicFrameSetting->find('first', $options);
-		if (!$topicFrameSetting) {
-			throw new NotFoundException(__('Invalid topic frame setting'));
-		}
-
-		App::uses('Topic', 'Topics.Model');
-		$options = array('conditions' => array('language_id' => 2, 'key' => Topic::$availablePlugins));
-		$plugins = $this->Plugin->getForOptions($options);
-		$rooms = $this->Room->getReadableRooms();
-		$this->set(compact('plugins', 'rooms'));
-
-		if ($this->request->is(array('post', 'put'))) {
-			$this->TopicFrameSetting->saveSettings($this->request->data);
-			if (!$this->handleValidationError($this->TopicFrameSetting->validationErrors)) {
+	public function edit() {
+		if ($this->request->is('put') || $this->request->is('post')) {
+			if ($this->TopicFrameSetting->saveTopicFrameSetting($this->data)) {
+				$this->redirect(NetCommonsUrl::backToPageUrl());
 				return;
 			}
-			return $this->redirectByFrameId();
+			$this->NetCommons->handleValidationError($this->TopicFrameSetting->validationErrors);
+
 		} else {
-			$this->request->data = $topicFrameSetting;
-			$options = array('conditions' => array('topic_frame_setting_key' => $this->request->data['TopicFrameSetting']['key']));
-			$this->request->data['TopicFrameSettingShowPlugin'] = $this->TopicFrameSettingShowPlugin->find('all', $options);
+			$this->request->data = $this->TopicFrameSetting->getTopicFrameSetting();
+			$this->request->data['Frame'] = Current::read('Frame');
 		}
 	}
 }
