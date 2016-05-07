@@ -203,12 +203,6 @@ class Topic extends TopicsAppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
-			'title' => array(
-				'notBlank' => array(
-					'rule' => array('notBlank'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
 			'path' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
@@ -310,7 +304,7 @@ class Topic extends TopicsAppModel {
 				$this->alias . '.publish_end >=' => $now,
 			),
 		);
-		$blockPublicConditions['OR'] = array(
+		$blockPubConditions['OR'] = array(
 			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
 			array(
 				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
@@ -327,7 +321,7 @@ class Topic extends TopicsAppModel {
 			'conditions' => array(
 				$this->TopicReadable->alias . '.topic_id NOT' => null,
 				$this->alias . '.language_id' => Current::read('Language.id'),
-				array($blockPublicConditions),
+				array($blockPubConditions),
 				array($publicTypeConditions),
 				array($roomConditions),
 			),

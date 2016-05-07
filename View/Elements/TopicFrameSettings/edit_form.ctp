@@ -78,7 +78,7 @@
 			$selectRoomDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.select_room') . ';';
 ?>
 
-<div ng-init="<?php echo$ngInit; ?>">
+<div ng-init="<?php echo $ngInit; ?>">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<?php

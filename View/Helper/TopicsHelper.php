@@ -52,7 +52,7 @@ class TopicsHelper extends AppHelper {
  * @return array 変換後データ
  */
 	public function camelizeKeyRecursive($orig) {
-		$new = [];
+		$newResult = [];
 		$callback = ['Inflector', 'variable'];
 
 		foreach ($orig as $key => $value) {
@@ -67,13 +67,13 @@ class TopicsHelper extends AppHelper {
 					$avatar = $this->DisplayUser->avatar($value, [], 'TrackableUpdater.id');
 					$value = Hash::insert($value, 'TrackableUpdater.avatar', $avatar);
 				}
-				$new[$camelKey] = $this->camelizeKeyRecursive($value);
+				$newResult[$camelKey] = $this->camelizeKeyRecursive($value);
 			} else {
-				$new = $this->__parseValueForCamelize($new, $camelKey, $value);
+				$newResult = $this->__parseValueForCamelize($newResult, $camelKey, $value);
 			}
 		}
 
-		return $new;
+		return $newResult;
 	}
 
 /**
@@ -81,50 +81,51 @@ class TopicsHelper extends AppHelper {
  *
  * self::camelizeKeyRecursiveから実行される
  *
+ * @param array $newResult keyをcamel形式に変換して戻す配列
  * @param string $camelKey key値
  * @param string $value 値
  * @return string 変換後の値
  */
-	private function __parseValueForCamelize($new, $camelKey, $value) {
+	private function __parseValueForCamelize($newResult, $camelKey, $value) {
 		$callback = ['Inflector', 'variable'];
 
 		if ($camelKey === 'title') {
-			$new[$camelKey] = $value;
+			$newResult[$camelKey] = $value;
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$new[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_TITLE_LENGTH, '...');
+			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_TITLE_LENGTH, '...');
 
 		} elseif ($camelKey === 'status') {
-			$new[$camelKey] = $value;
+			$newResult[$camelKey] = $value;
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$new[$camelKey] = $this->Workflow->label($value);
+			$newResult[$camelKey] = $this->Workflow->label($value);
 
 		} elseif ($camelKey === 'name') {
-			$new[$camelKey] = $value;
+			$newResult[$camelKey] = $value;
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$new[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_ROOM_NAME_LENGTH, '...');
+			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_ROOM_NAME_LENGTH, '...');
 
 		} elseif ($camelKey === 'path') {
 			$url = $value;
-			if (Hash::get($new, 'frame.id')) {
-				$url .= '?frame_id=' . Hash::get($new, 'frame.id');
-			} elseif (Hash::get($new, 'Frame.id')) {
-				$url .= '?frame_id=' . Hash::get($new, 'Frame.id');
+			if (Hash::get($newResult, 'frame.id')) {
+				$url .= '?frame_id=' . Hash::get($newResult, 'frame.id');
+			} elseif (Hash::get($newResult, 'Frame.id')) {
+				$url .= '?frame_id=' . Hash::get($newResult, 'Frame.id');
 			}
-			$new[$camelKey] = $this->NetCommonsHtml->url($url);
+			$newResult[$camelKey] = $this->NetCommonsHtml->url($url);
 
 		} elseif (in_array($camelKey, ['created', 'modified'], true)) {
-			$new[$camelKey] = $value;
+			$newResult[$camelKey] = $value;
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$new[$camelKey] = $this->NetCommonsHtml->dateFormat($value);
+			$newResult[$camelKey] = $this->NetCommonsHtml->dateFormat($value);
 
 		} elseif ($camelKey === 'titleIcon') {
-			$new[$camelKey] = $this->NetCommonsHtml->titleIcon($value);
+			$newResult[$camelKey] = $this->NetCommonsHtml->titleIcon($value);
 
 		} else {
-			$new[$camelKey] = $value;
+			$newResult[$camelKey] = $value;
 		}
 
-		return $new;
+		return $newResult;
 	}
 
 /**
