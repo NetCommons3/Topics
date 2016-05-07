@@ -46,7 +46,7 @@ class PluginRecords extends NetCommonsMigration {
 				'language_id' => '2',
 				'key' => 'topics',
 				'namespace' => 'netcommons/topics',
-				'name' => '新着情報',
+				'name' => 'トピックス',
 				'type' => 1,
 				'default_action' => 'topics/index',
 				'default_setting_action' => 'topic_frame_settings/edit',

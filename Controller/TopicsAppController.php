@@ -28,4 +28,13 @@ class TopicsAppController extends AppController {
 		'Pages.PageLayout',
 		'Security',
 	);
+
+/**
+ * 使用するHelpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'Topics.Topics',
+	);
 }

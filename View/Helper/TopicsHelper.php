@@ -127,4 +127,28 @@ class TopicsHelper extends AppHelper {
 		return $new;
 	}
 
+/**
+ * ヘルプの表示
+ *
+ * @param string $content メッセージ内容(オリジナルタグの内容)
+ * @param string $placement ポジション
+ * @return string ヘルプHTML出力
+ */
+	public function rssSettingHelp($content = '', $placement = 'bottom') {
+		$html = '';
+
+		$content = __d('topics', 'Each of the embedded keywords, will be sent is converted ' .
+				'to the corresponding content. <br />') . $content;
+
+		$html .= __d('topics', 'Can use an embedded keyword in the channel title line and summary') . ' ';
+		$html .= '<a href="" data-toggle="popover" data-placement="' . $placement . '"' .
+					' title="' . __d('topics', 'Embedded keyword?') . '"' . ' data-content="' . $content . '">';
+		$html .= '<span class="glyphicon glyphicon-question-sign"></span>';
+		$html .= '</a>';
+		$html .= '<script type="text/javascript">' .
+			'$(function () { $(\'[data-toggle="popover"]\').popover({html: true}) });</script>';
+
+		return $html;
+	}
+
 }

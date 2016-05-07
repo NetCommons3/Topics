@@ -8,9 +8,11 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+
+echo $this->NetCommonsHtml->script('/topics/js/topics.js');
 ?>
 
-<article class="block-setting-body">
+<article class="block-setting-body" ng-controller="TopicsController">
 	<?php echo $this->BlockTabs->main(BlockTabsHelper::MAIN_TAB_FRAME_SETTING); ?>
 
 	<div class="tab-content">

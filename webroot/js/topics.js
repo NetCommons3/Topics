@@ -20,4 +20,14 @@ NetCommonsApp.controller('TopicsController', ['$scope', function($scope) {
   $scope.initialize = function(topics) {
     $scope.topics = angular.copy(topics);
   };
+
+  /**
+   * Radio click
+   *
+   * @return {void}
+   */
+  $scope.checked = function($event) {
+    return Number($event.target.checked);
+  };
+
 }]);

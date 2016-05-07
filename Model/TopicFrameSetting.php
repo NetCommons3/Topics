@@ -138,7 +138,25 @@ class TopicFrameSetting extends TopicsAppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
+			'use_rss_feed' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
 			'select_room' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
+			'select_block' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
+			'select_plugin' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
 					'message' => __d('net_commons', 'Invalid request.'),
@@ -173,7 +191,10 @@ class TopicFrameSetting extends TopicsAppModel {
 			$topicFrameSetting = $this->create([
 				'display_type' => self::DISPLAY_TYPE_FLAT,
 				'unit_type' => self::UNIT_TYPE_DAYS,
-				''
+				'display_days' => '5',
+				'display_number' => '10',
+				'feed_title' => __d('topics', '[{X-SITE_NAME}]What\'s new'),
+				'feed_summary' => __d('topics', 'What\'s new today?'),
 			]);
 		}
 

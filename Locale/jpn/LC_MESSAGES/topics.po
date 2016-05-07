@@ -16,6 +16,17 @@ msgstr ""
 "X-Generator: Poedit 1.8.1\n"
 
 #
+#: TopicFrameSettingの初期値
+#
+
+msgid "[{X-SITE_NAME}]What's new"
+msgstr "[{X-SITE_NAME}]新着情報"
+
+msgid "What's new today?"
+msgstr "新着情報をお知らせします。"
+
+
+#
 #: 表示方法変更
 #
 
@@ -36,3 +47,36 @@ msgstr "プラグイン毎に表示する"
 
 msgid "Sorted by rooms"
 msgstr "ルーム毎に表示する"
+
+msgid "Display items"
+msgstr "表示項目"
+
+msgid "Select room to show"
+msgstr "指定したルームのみ表示する"
+
+msgid "Select block to show"
+msgstr "指定したブロックのみ表示する"
+
+msgid "Select plugin to show"
+msgstr "指定したプラグインのみ表示する"
+
+msgid "RSS feed"
+msgstr "RSS配信する"
+
+msgid "Feed title"
+msgstr "RSSのタイトル"
+
+msgid "Feed summary"
+msgstr "RSSの概要"
+
+msgid "{X-SITE_NAME} : Site name"
+msgstr "{X-SITE_NAME} : サイト名"
+
+msgid "Can use an embedded keyword in the channel title line and summary"
+msgstr "RSSの件名と概要には埋め込みキーワードが使えます。"
+
+msgid "Embedded keyword?"
+msgstr "埋め込みキーワードとは？"
+
+msgid "Each of the embedded keywords, will be sent is converted to the corresponding content. <br />"
+msgstr "それぞれの埋め込みキーワードは、対応する内容に変換されて送信されます。<br />"
