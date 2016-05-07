@@ -59,6 +59,17 @@ class TopicFixture extends CakeTestFixture {
 	public function init() {
 		require_once App::pluginPath('Topics') . 'Config' . DS . 'Schema' . DS . 'schema.php';
 		$this->fields = (new TopicsSchema())->tables[Inflector::tableize($this->name)];
+
+		$searchType = 'like';
+		$hasMroonga = false;
+
+		if ($searchType === 'like') {
+			$this->fields = Hash::remove($this->fields, 'indexes.search');
+		}
+		if (! $hasMroonga) {
+			$this->fields = Hash::insert($this->fields, 'tableParameters.engine', 'InnoDB');
+			$this->fields = Hash::remove($this->fields, 'tableParameters.comment', null);
+		}
 		parent::init();
 	}
 
