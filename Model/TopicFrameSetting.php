@@ -70,6 +70,7 @@ class TopicFrameSetting extends TopicsAppModel {
  * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
  * @see Model::save()
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+ * @throws BadRequestException
  */
 	public function beforeValidate($options = array()) {
 		$this->validate = Hash::merge($this->validate, array(
@@ -211,6 +212,7 @@ class TopicFrameSetting extends TopicsAppModel {
  * @throws InternalErrorException
  * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#aftersave
  * @see Model::save()
+ * @throws InternalErrorException
  */
 	public function afterSave($created, $options = array()) {
 		//TopicFramesRoom登録
@@ -219,7 +221,7 @@ class TopicFrameSetting extends TopicsAppModel {
 				'TopicFramesRoom' => 'Topics.TopicFramesRoom',
 			]);
 			if (! $this->TopicFramesRoom->saveTopicFramesRoom($this->data)) {
-				throw new BadRequestException(__d('net_commons', 'Bad Request'));
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 		}
 
@@ -229,7 +231,7 @@ class TopicFrameSetting extends TopicsAppModel {
 				'TopicFramesPlugin' => 'Topics.TopicFramesPlugin',
 			]);
 			if (! $this->TopicFramesPlugin->saveTopicFramesPlugin($this->data)) {
-				throw new BadRequestException(__d('net_commons', 'Bad Request'));
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 		}
 
@@ -239,7 +241,7 @@ class TopicFrameSetting extends TopicsAppModel {
 				'TopicFramesBlock' => 'Topics.TopicFramesBlock',
 			]);
 			if (! $this->TopicFramesBlock->saveTopicFramesBlock($this->data)) {
-				throw new BadRequestException(__d('net_commons', 'Bad Request'));
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 		}
 
