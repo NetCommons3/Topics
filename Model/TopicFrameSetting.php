@@ -70,6 +70,7 @@ class TopicFrameSetting extends TopicsAppModel {
  * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
  * @see Model::save()
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+ * @throws BadRequestException
  */
 	public function beforeValidate($options = array()) {
 		$this->validate = Hash::merge($this->validate, array(
@@ -170,6 +171,81 @@ class TopicFrameSetting extends TopicsAppModel {
 				),
 			),
 		));
+
+		//TopicFramesRoomのチェック
+		if (isset($this->data['TopicFramesRoom'])) {
+			$this->loadModels([
+				'TopicFramesRoom' => 'Topics.TopicFramesRoom',
+			]);
+			if (! $this->TopicFramesRoom->validateRequestData($this->data)) {
+				throw new BadRequestException(__d('net_commons', 'Bad Request'));
+			}
+		}
+
+		//TopicFramesPluginのチェック
+		if (isset($this->data['TopicFramesPlugin'])) {
+			$this->loadModels([
+				'TopicFramesPlugin' => 'Topics.TopicFramesPlugin',
+			]);
+			if (! $this->TopicFramesPlugin->validateRequestData($this->data)) {
+				throw new BadRequestException(__d('net_commons', 'Bad Request'));
+			}
+		}
+
+		//TopicFramesBlockのチェック
+		if (isset($this->data['TopicFramesBlock'])) {
+			$this->loadModels([
+				'TopicFramesBlock' => 'Topics.TopicFramesBlock',
+			]);
+			if (! $this->TopicFramesBlock->validateRequestData($this->data)) {
+				throw new BadRequestException(__d('net_commons', 'Bad Request'));
+			}
+		}
+	}
+
+/**
+ * Called after each successful save operation.
+ *
+ * @param bool $created True if this save created a new record
+ * @param array $options Options passed from Model::save().
+ * @return void
+ * @throws InternalErrorException
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#aftersave
+ * @see Model::save()
+ * @throws InternalErrorException
+ */
+	public function afterSave($created, $options = array()) {
+		//TopicFramesRoom登録
+		if (isset($this->data['TopicFramesRoom'])) {
+			$this->loadModels([
+				'TopicFramesRoom' => 'Topics.TopicFramesRoom',
+			]);
+			if (! $this->TopicFramesRoom->saveTopicFramesRoom($this->data)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+
+		//TopicFramesPluginのチェック
+		if (isset($this->data['TopicFramesPlugin'])) {
+			$this->loadModels([
+				'TopicFramesPlugin' => 'Topics.TopicFramesPlugin',
+			]);
+			if (! $this->TopicFramesPlugin->saveTopicFramesPlugin($this->data)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+
+		//TopicFramesBlockのチェック
+		if (isset($this->data['TopicFramesBlock'])) {
+			$this->loadModels([
+				'TopicFramesBlock' => 'Topics.TopicFramesBlock',
+			]);
+			if (! $this->TopicFramesBlock->saveTopicFramesBlock($this->data)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+
+		parent::afterSave($created, $options);
 	}
 
 /**
@@ -183,10 +259,9 @@ class TopicFrameSetting extends TopicsAppModel {
 		);
 
 		$topicFrameSetting = $this->find('first', array(
-				'recursive' => -1,
-				'conditions' => $conditions,
-			)
-		);
+			'recursive' => -1,
+			'conditions' => $conditions,
+		));
 
 		if (! $topicFrameSetting) {
 			$topicFrameSetting = $this->create([
@@ -205,7 +280,7 @@ class TopicFrameSetting extends TopicsAppModel {
 /**
  * TopicFrameSettingの登録
  *
- * @param array $data received post data
+ * @param array $data リクエストデータ
  * @return mixed On success Model::$data if its not empty or true, false on failure
  * @throws InternalErrorException
  */
@@ -216,7 +291,6 @@ class TopicFrameSetting extends TopicsAppModel {
 		//バリデーション
 		$this->set($data);
 		if (! $this->validates()) {
-			$this->rollback();
 			return false;
 		}
 
@@ -234,6 +308,64 @@ class TopicFrameSetting extends TopicsAppModel {
 		}
 
 		return true;
+	}
+
+/**
+ * 新着データ取得のオプション生成
+ *
+ * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @return array
+ */
+	public function getQueryOptions($topicFrameSetting) {
+		$this->loadModels([
+			'TopicFramesRoom' => 'Topics.TopicFramesRoom',
+			'TopicFramesPlugin' => 'Topics.TopicFramesPlugin',
+			'TopicFramesBlock' => 'Topics.TopicFramesBlock',
+		]);
+
+		$conditions = array();
+
+		//指定したルームのみ表示する
+		if ($topicFrameSetting[$this->alias]['select_room']) {
+			$roomIds = $this->TopicFramesRoom->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'room_id'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$roomIds = array_unique(array_values($roomIds));
+
+			$conditions['OR']['Topic.room_id'] = array_merge(array('0'), $roomIds);
+
+			if ($topicFrameSetting[$this->alias]['show_my_room'] && Current::read('User.id')) {
+				$conditions['OR']['Room.space_id'] = Space::PRIVATE_SPACE_ID;
+			}
+		}
+
+		//指定したプラグインのみ表示する
+		if ($topicFrameSetting[$this->alias]['select_plugin']) {
+			$pluginKeys = $this->TopicFramesPlugin->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'plugin_key'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$pluginKeys = array_unique(array_values($pluginKeys));
+
+			$conditions['Topic.plugin_key'] = array_merge(array('0'), $pluginKeys);
+		}
+
+		//指定したブロックのみ表示する
+		if ($topicFrameSetting[$this->alias]['select_block']) {
+			$blockKeys = $this->TopicFramesBlock->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'block_key'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$blockKeys = array_unique(array_values($blockKeys));
+
+			$conditions['Block.key'] = array_merge(array('0'), $blockKeys);
+		}
+
+		return array('conditions' => $conditions);
 	}
 
 }

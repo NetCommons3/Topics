@@ -20,21 +20,22 @@ App::uses('TopicsAppController', 'Topics.Controller');
 class TopicsController extends TopicsAppController {
 
 /**
- * 使用するModel
- *
- * @var array
- */
-	public $uses = array(
-		'Topics.Topic'
-	);
-
-/**
  * 使用するComponent
  *
  * @var array
  */
 	public $components = array(
 		'Paginator',
+	);
+
+/**
+ * 使用するModel
+ *
+ * @var array
+ */
+	public $uses = array(
+		'Topics.Topic',
+		'Topics.TopicFrameSetting',
 	);
 
 /**
@@ -52,12 +53,24 @@ class TopicsController extends TopicsAppController {
  * @return void
  */
 	public function index() {
+		$topicFrameSetting = $this->TopicFrameSetting->getTopicFrameSetting();
+		$options = $this->TopicFrameSetting->getQueryOptions($topicFrameSetting);
 		$this->Paginator->settings = array(
-			'Topic' => $this->Topic->getQueryOptions()
+			'Topic' => $this->Topic->getQueryOptions($options)
 		);
 
 		$topics = $this->Paginator->paginate('Topic');
 		$topics = Hash::remove($topics, '{n}.Topic.search_contents');
 		$this->set('topics', $topics);
+		$this->set('topicFrameSetting', $topicFrameSetting['TopicFrameSetting']);
+
+		$displayType = $this->viewVars['topicFrameSetting']['display_type'];
+		if ($displayType === TopicFrameSetting::DISPLAY_TYPE_ROOMS) {
+			$this->view = 'index_rooms';
+		} elseif ($displayType === TopicFrameSetting::DISPLAY_TYPE_PLUGIN) {
+			$this->view = 'index_plugins';
+		} else {
+			$this->view = 'index';
+		}
 	}
 }

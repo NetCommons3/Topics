@@ -296,12 +296,12 @@ class Topic extends TopicsAppModel {
 
 		//公開設定の条件生成
 		$now = gmdate('Y-m-d H:i:s');
-		$publicTypeConditions['OR'] = array(
-			$this->alias . '.public_type' => self::TYPE_PUBLIC,
-			array(
-				$this->alias . '.public_type' => self::TYPE_LIMITED,
-				$this->alias . '.publish_start <=' => $now,
+		$publicTypeConditions[0] = array(
+			$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
+			$this->alias . '.publish_start <=' => $now,
+			'OR' => array(
 				$this->alias . '.publish_end >=' => $now,
+				$this->alias . '.publish_end' => null,
 			),
 		);
 		$blockPubConditions['OR'] = array(
