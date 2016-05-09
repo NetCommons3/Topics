@@ -30,4 +30,17 @@ NetCommonsApp.controller('TopicsController', ['$scope', function($scope) {
     return Number($event.target.checked);
   };
 
+  /**
+   * Radio click
+   *
+   * @return {void}
+   */
+  $scope.selected = function($event) {
+    console.log($event);
+    if (! $event) {
+      return;
+    }
+    return Number($event.target.value);
+  };
+
 }]);

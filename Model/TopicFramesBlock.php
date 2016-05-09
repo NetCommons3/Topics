@@ -71,4 +71,71 @@ class TopicFramesBlock extends TopicsAppModel {
 		));
 	}
 
+/**
+ * TopicFramesPluginのチェック
+ *
+ * @param array $data リクエストデータ
+ * @return bool
+ */
+	public function validateRequestData($data) {
+		$blockKeys = Hash::extract($data, 'Block.{n}.key');
+
+		$check = Hash::get($data, $this->alias . '.block_key', array());
+		foreach ($check as $blockKey) {
+			if (! in_array($blockKey, $blockKeys, true)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+/**
+ * TopicFramesBlockの登録
+ *
+ * TopicFrameSetting::saveTopicFrameSetting()から実行されるため、ここではトランザクションを開始しない
+ *
+ * @param array $data リクエストデータ
+ * @return mixed On success Model::$data if its not empty or true, false on failure
+ * @throws InternalErrorException
+ */
+	public function saveTopicFramesBlock($data) {
+		$blockKeys = Hash::get($data, $this->alias . '.block_key', array());
+
+		$saved = $this->find('list', array(
+			'recursive' => -1,
+			'fields' => array('id', 'block_key'),
+			'conditions' => ['frame_key' => Current::read('Frame.key')],
+		));
+		$saved = array_unique(array_values($saved));
+
+		$delete = array_diff($saved, $blockKeys);
+		if (count($delete) > 0) {
+			$conditions = array(
+				$this->alias . '.frame_key' => Current::read('Frame.key'),
+				$this->alias . '.block_key' => $delete,
+			);
+			if (! $this->deleteAll($conditions, false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+
+		$new = array_diff($blockKeys, $saved);
+		if (count($new) > 0) {
+			$saveDate = array();
+			foreach ($new as $i => $blockKey) {
+				$saveDate[$i] = array(
+					'id' => null,
+					'block_key' => $blockKey,
+					'frame_key' => Current::read('Frame.key')
+				);
+			}
+			if (! $this->saveMany($saveDate)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+
+		return true;
+	}
+
 }

@@ -71,4 +71,71 @@ class TopicFramesRoom extends TopicsAppModel {
 		));
 	}
 
+/**
+ * TopicFrameSettingのチェック
+ *
+ * @param array $data リクエストデータ
+ * @return bool
+ */
+	public function validateRequestData($data) {
+		$roomIds = Hash::extract($data, 'Room.{n}.id');
+
+		$check = Hash::get($data, $this->alias . '.room_id', array());
+		foreach ($check as $roomId) {
+			if (! in_array($roomId, $roomIds, true)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+/**
+ * TopicFramesRoomの登録
+ *
+ * TopicFrameSetting::saveTopicFrameSetting()から実行されるため、ここではトランザクションを開始しない
+ *
+ * @param array $data リクエストデータ
+ * @return mixed On success Model::$data if its not empty or true, false on failure
+ * @throws InternalErrorException
+ */
+	public function saveTopicFramesRoom($data) {
+		$roomIds = Hash::get($data, $this->alias . '.room_id', array());
+
+		$saved = $this->find('list', array(
+			'recursive' => -1,
+			'fields' => array('id', 'room_id'),
+			'conditions' => ['frame_key' => Current::read('Frame.key')],
+		));
+		$saved = array_unique(array_values($saved));
+
+		$delete = array_diff($saved, $roomIds);
+		if (count($delete) > 0) {
+			$conditions = array(
+				$this->alias . '.frame_key' => Current::read('Frame.key'),
+				$this->alias . '.room_id' => $delete,
+			);
+			if (! $this->deleteAll($conditions, false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+
+		$new = array_diff($roomIds, $saved);
+		if (count($new) > 0) {
+			$saveDate = array();
+			foreach ($new as $i => $roomId) {
+				$saveDate[$i] = array(
+					'id' => null,
+					'room_id' => $roomId,
+					'frame_key' => Current::read('Frame.key')
+				);
+			}
+			if (! $this->saveMany($saveDate)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+
+		return true;
+	}
+
 }

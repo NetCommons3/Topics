@@ -6,6 +6,9 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
 
+/**
+ * 新着一覧
+ */
 article > .topic-row {
 	margin-bottom: 5px;
 }
@@ -24,4 +27,26 @@ article .topic-category-name,
 article .topic-handle-name,
 article .topic-summary {
 	padding-left: 2em;
+}
+
+/**
+ * 新着設定
+ */
+.topics-display > .form-group {
+	width: 12em;
+	float: left;
+}
+.topics-display > .form-group > .checkbox {
+	margin: 0px;
+}
+
+.topics-frame-rooms {
+	max-height: 250px;
+	overflow: auto;
+}
+.topics-frame-rooms dl {
+	margin-bottom: 0px;
+}
+.topics-frame-rooms dl dd.form-group:last-child {
+	margin-bottom: 0px;
 }
