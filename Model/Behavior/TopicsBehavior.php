@@ -37,6 +37,8 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			'public_type' => null,
 			'publish_start' => null,
 			'publish_end' => null,
+			'answer_period_start' => null,
+			'answer_period_end' => null,
 			'is_active' => null,
 			'is_latest' => null,
 			'status' => null,
