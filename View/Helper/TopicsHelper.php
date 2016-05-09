@@ -106,11 +106,7 @@ class TopicsHelper extends AppHelper {
 
 		} elseif ($camelKey === 'path') {
 			$url = $value;
-			if (Hash::get($newResult, 'frame.id')) {
-				$url .= '?frame_id=' . Hash::get($newResult, 'frame.id');
-			} elseif (Hash::get($newResult, 'Frame.id')) {
-				$url .= '?frame_id=' . Hash::get($newResult, 'Frame.id');
-			} elseif (Hash::get($newResult, 'frameId')) {
+			if (Hash::get($newResult, 'frameId')) {
 				$url .= '?frame_id=' . Hash::get($newResult, 'frameId');
 			}
 			$newResult[$camelKey] = $this->NetCommonsHtml->url($url);
