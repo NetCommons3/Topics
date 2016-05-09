@@ -42,9 +42,10 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			'status' => null,
 		),
 		'search_contents' => array(
-			//ここにフィールドを追加、デフォルトでfields.summaryの内容が含まれる
+			//ここにフィールドを追加、デフォルトでfields.titleとfields.summaryの内容が含まれる
 		),
-		'users' => array('0')
+		'users' => array('0'),
+		'is_workflow' => true,
 	);
 
 /**
@@ -109,10 +110,12 @@ class TopicsBehavior extends TopicsBaseBehavior {
  *
  * @param Model $model 呼び出し元のモデル
  * @param array $content コンテンツ
+ * @param bool $answered 回答したかどうか
  * @return array
  * @throws InternalErrorException
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function saveTopicUserStatus(Model $model, $content) {
+	public function saveTopicUserStatus(Model $model, $content, $answered = false) {
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 			'TopicUserStatus' => 'Topics.TopicUserStatus',
@@ -126,7 +129,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			$topicAlias . '.content_id' => Hash::get($content, $this->settings['fields']['content_id'], '0'),
 		);
 		if ($model->Behaviors->loaded('Workflow.Workflow')) {
-			if ($model->canEditWorkflowContent($content)) {
+			if ($model->canEditWorkflowContent($content) && $this->settings['is_workflow']) {
 				$conditions[$topicAlias . '.is_latest'] = true;
 			} else {
 				$conditions[$topicAlias . '.is_active'] = true;
@@ -134,9 +137,31 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		}
 
 		//既読データ登録
-		$model->TopicUserStatus->saveTopicUserStatus($content, $conditions);
+		$update = array(
+			'read' => true,
+			'answered' => $answered
+		);
+		$model->TopicUserStatus->saveTopicUserStatus($content, $conditions, $update);
 
 		return true;
+	}
+
+/**
+ * 読めるユーザIDをセットする
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param array $users ユーザIDのリスト
+ * @param bool $append 追加かどうか
+ * @return void
+ * @throws InternalErrorException
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function setTopicUsers(Model $model, $users, $append = false) {
+		if ($append) {
+			$this->settings['users'] = array_merge($this->settings['users'], $users);
+		} else {
+			$this->settings['users'] = $users;
+		}
 	}
 
 }
@@ -250,7 +275,8 @@ class TopicsBaseBehavior extends ModelBehavior {
 		);
 
 		$fields1 = array(
-			'category_id', 'title_icon', 'public_type', 'publish_start', 'publish_end', 'status'
+			'category_id', 'title_icon', 'public_type', 'publish_start', 'publish_end', 'status',
+			'answer_period_start', 'answer_period_end'
 		);
 		foreach ($fields1 as $field) {
 			if (! Hash::get($model->data, $setting[$field])) {
@@ -458,7 +484,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 
 		$topicId = Hash::extract($model->data, $model->Topic->alias . '.{n}.id');
 
-		$conditions = array($model->TopicUserStatus->alias . '.id' => $topicId);
+		$conditions = array($model->TopicUserStatus->alias . '.topic_id' => $topicId);
 		if (! $model->TopicUserStatus->deleteAll($conditions, false, false)) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
@@ -480,6 +506,25 @@ class TopicsBaseBehavior extends ModelBehavior {
 			'TopicReadable' => 'Topics.TopicReadable',
 		]);
 
+		//選択されていないユーザIDを削除
+		$saved = $model->TopicReadable->find('list', array(
+			'recursive' => -1,
+			'fields' => array('id', 'user_id'),
+			'conditions' => ['topic_id' => $topicId],
+		));
+		$saved = array_unique(array_values($saved));
+		$delete = array_diff($saved, $this->settings['users']);
+		if (count($delete) > 0) {
+			$conditions = array(
+				$model->TopicReadable->alias . '.topic_id' => $topicId,
+				$model->TopicReadable->alias . '.user_id' => $delete,
+			);
+			if (! $model->TopicReadable->deleteAll($conditions, false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+
+		//登録処理
 		foreach ($this->settings['users'] as $userId) {
 			$conditions = array('topic_id' => $topicId, 'user_id' => $userId);
 			$count = $model->TopicReadable->find('count', array(

@@ -69,10 +69,11 @@ class TopicUserStatus extends TopicsAppModel {
  *
  * @param array $content コンテンツ
  * @param array $conditions トピックの条件
+ * @param array $update アップデート
  * @return array
  * @throws InternalErrorException
  */
-	public function saveTopicUserStatus($content, $conditions) {
+	public function saveTopicUserStatus($content, $conditions, $update) {
 		$this->loadModels([
 			'Topic' => 'Topics.Topic',
 			'TopicReadable' => 'Topics.TopicReadable',
@@ -83,22 +84,7 @@ class TopicUserStatus extends TopicsAppModel {
 		}
 
 		//トピックデータのチェック
-		$topic = $this->Topic->find('first', array(
-			'recursive' => -1,
-			'fields' => array($this->Topic->alias . '.id'),
-			'joins' => array(
-				array(
-					'table' => $this->TopicReadable->table,
-					'alias' => $this->TopicReadable->alias,
-					'type' => 'INNER',
-					'conditions' => array(
-						$this->TopicReadable->alias . '.topic_id' . ' = ' . $this->Topic->alias . '.id',
-						$this->TopicReadable->alias . '.user_id' => array(Current::read('User.id'), '0'),
-					),
-				),
-			),
-			'conditions' => $conditions,
-		));
+		$topic = $this->TopicReadable->getTopicIdByReadable($conditions);
 		if (! $topic) {
 			return true;
 		}
@@ -108,13 +94,19 @@ class TopicUserStatus extends TopicsAppModel {
 			'topic_id' => $topic[$this->Topic->alias]['id'],
 			'user_id' => Current::read('User.id')
 		);
-		$count = $this->find('count', array(
+		$topicUserStatus = $this->find('first', array(
 			'recursive' => -1,
 			'conditions' => $data,
 		));
-		if ($count > 0) {
+
+		$topicUserStatus = Hash::get($topicUserStatus, $this->alias, array());
+		$answered = Hash::get($topicUserStatus, 'answered') === true ||
+					Hash::get($topicUserStatus, 'answered') === Hash::get($update, 'answered', false);
+		if (Hash::get($topicUserStatus, 'id') && $answered &&
+				Hash::get($topicUserStatus, 'read') === Hash::get($update, 'read', false)) {
 			return true;
 		}
+		$data = Hash::merge($data, $update, ['id' => Hash::get($topicUserStatus, 'id', null)]);
 
 		//トランザクションBegin
 		$this->begin();
@@ -138,6 +130,25 @@ class TopicUserStatus extends TopicsAppModel {
 		$this->setSlaveDataSource();
 
 		return true;
+	}
+
+/**
+ * Topicデータ取得
+ *
+ * @param int $topicId トピックID
+ * @return array 既読トピックID
+ */
+	public function getTopicUserStatusId($topicId) {
+		$data = array(
+			'topic_id' => $topicId,
+			'user_id' => Current::read('User.id')
+		);
+		$result = $this->find('first', array(
+			'recursive' => -1,
+			'conditions' => $data,
+		));
+
+		return Hash::get($result, $this->alias . '.id', null);
 	}
 
 }

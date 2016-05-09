@@ -83,4 +83,35 @@ class TopicReadable extends TopicsAppModel {
 		));
 	}
 
+/**
+ * Topicデータ取得
+ *
+ * @param array $conditions トピックの条件
+ * @return array トピックID
+ */
+	public function getTopicIdByReadable($conditions) {
+		$this->loadModels([
+			'Topic' => 'Topics.Topic',
+		]);
+
+		$topic = $this->Topic->find('first', array(
+			'recursive' => -1,
+			'fields' => array($this->Topic->alias . '.id'),
+			'joins' => array(
+				array(
+					'table' => $this->table,
+					'alias' => $this->alias,
+					'type' => 'INNER',
+					'conditions' => array(
+						$this->alias . '.topic_id' . ' = ' . $this->Topic->alias . '.id',
+						$this->alias . '.user_id' => array(Current::read('User.id'), '0'),
+					),
+				),
+			),
+			'conditions' => $conditions,
+		));
+
+		return $topic;
+	}
+
 }
