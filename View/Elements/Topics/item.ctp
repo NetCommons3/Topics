@@ -55,6 +55,6 @@
 </div>
 <div class="row topic-row">
 	<div class="col-xs-12 text-muted topic-summary topic-row">
-		{{item.summary}}
+		{{item.topic.summary}}
 	</div>
 </div>

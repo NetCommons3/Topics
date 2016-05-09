@@ -22,10 +22,8 @@ article .topic-status {
 	margin-bottom: 2px;
 }
 
-article .topic-room-name,
 article .topic-category-name,
-article .topic-handle-name,
-article .topic-summary {
+article .topic-handle-name {
 	padding-left: 2em;
 }
 
