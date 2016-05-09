@@ -304,6 +304,8 @@ class Topic extends TopicsAppModel {
 				$this->alias . '.publish_end' => null,
 			),
 		);
+		$roomConditions['OR'][2][0] = $publicTypeConditions;
+
 		$blockPubConditions['OR'] = array(
 			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
 			array(
@@ -322,7 +324,7 @@ class Topic extends TopicsAppModel {
 				$this->TopicReadable->alias . '.topic_id NOT' => null,
 				$this->alias . '.language_id' => Current::read('Language.id'),
 				array($blockPubConditions),
-				array($publicTypeConditions),
+				//array($publicTypeConditions),
 				array($roomConditions),
 			),
 			'order' => array(
@@ -383,7 +385,7 @@ class Topic extends TopicsAppModel {
 					),
 				),
 			)
-		), true);
+		), false);
 	}
 
 }

@@ -83,9 +83,6 @@ class TopicsBehavior extends TopicsBaseBehavior {
  * @see Model::save()
  */
 	public function afterSave(Model $model, $created, $options = array()) {
-		if (! Hash::check($model->data, $this->settings['fields']['title'])) {
-			return true;
-		}
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 			'TopicUserStatus' => 'Topics.TopicUserStatus',
@@ -164,6 +161,18 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		} else {
 			$this->settings['users'] = $users;
 		}
+	}
+
+/**
+ * 新着のタイトルをセットする
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param string $title タイトル
+ * @return void
+ * @throws InternalErrorException
+ */
+	public function setTopicTitle(Model $model, $title) {
+		$this->settings['fields']['title'] = $title;
 	}
 
 }
