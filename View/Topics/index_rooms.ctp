@@ -14,7 +14,6 @@ $camelizeData = $this->Topics->camelizeKeyRecursive($topics);
 <div ng-controller="TopicsController" ng-init="initialize(<?php echo h(json_encode($camelizeData, true)); ?>)">
 	<article ng-repeat="item in topics track by $index">
 		<hr>
-
 		<?php echo $this->element('Topics.Topics/item'); ?>
 	</article>
 </div>

@@ -27,20 +27,7 @@ class TopicFrameSettingsController extends TopicsAppController {
 	public $layout = 'NetCommons.setting';
 
 /**
- * use models
- *
- * @var array
- */
-	public $uses = array(
-		'PluginManager.Plugin',
-		'Topics.TopicFrameSetting',
-		'Topics.TopicFramesBlock',
-		'Topics.TopicFramesPlugin',
-		'Topics.TopicFramesRoom',
-	);
-
-/**
- * use components
+ * 使用するComponent
  *
  * @var array
  */
@@ -59,7 +46,20 @@ class TopicFrameSettingsController extends TopicsAppController {
 	);
 
 /**
- * use helpers
+ * 使用するModels
+ *
+ * @var array
+ */
+	public $uses = array(
+		'PluginManager.Plugin',
+		'Topics.TopicFrameSetting',
+		'Topics.TopicFramesBlock',
+		'Topics.TopicFramesPlugin',
+		'Topics.TopicFramesRoom',
+	);
+
+/**
+ * 使用するHelpers
  *
  * @var array
  */

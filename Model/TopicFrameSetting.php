@@ -310,4 +310,62 @@ class TopicFrameSetting extends TopicsAppModel {
 		return true;
 	}
 
+/**
+ * 新着データ取得のオプション生成
+ *
+ * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @return array
+ */
+	public function getQueryOptions($topicFrameSetting) {
+		$this->loadModels([
+			'TopicFramesRoom' => 'Topics.TopicFramesRoom',
+			'TopicFramesPlugin' => 'Topics.TopicFramesPlugin',
+			'TopicFramesBlock' => 'Topics.TopicFramesBlock',
+		]);
+
+		$conditions = array();
+
+		//指定したルームのみ表示する
+		if ($topicFrameSetting[$this->alias]['select_room']) {
+			$roomIds = $this->TopicFramesRoom->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'room_id'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$roomIds = array_unique(array_values($roomIds));
+
+			$conditions['OR']['Topic.room_id'] = array_merge(array('0'), $roomIds);
+
+			if ($topicFrameSetting[$this->alias]['show_my_room'] && Current::read('User.id')) {
+				$conditions['OR']['Room.space_id'] = Space::PRIVATE_SPACE_ID;
+			}
+		}
+
+		//指定したプラグインのみ表示する
+		if ($topicFrameSetting[$this->alias]['select_plugin']) {
+			$pluginKeys = $this->TopicFramesPlugin->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'plugin_key'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$pluginKeys = array_unique(array_values($pluginKeys));
+
+			$conditions['Topic.plugin_key'] = array_merge(array('0'), $pluginKeys);
+		}
+
+		//指定したブロックのみ表示する
+		if ($topicFrameSetting[$this->alias]['select_block']) {
+			$blockKeys = $this->TopicFramesBlock->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'block_key'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$blockKeys = array_unique(array_values($blockKeys));
+
+			$conditions['Block.key'] = array_merge(array('0'), $blockKeys);
+		}
+
+		return array('conditions' => $conditions);
+	}
+
 }

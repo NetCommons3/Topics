@@ -105,7 +105,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 	}
 
 /**
- *  既読データの登録
+ * 既読データの登録
  *
  * @param Model $model 呼び出し元のモデル
  * @param array $content コンテンツ
@@ -267,6 +267,11 @@ class TopicsBaseBehavior extends ModelBehavior {
 				continue;
 			}
 			$merge[$field] = Hash::get($model->data, $model->alias . '.' . $field);
+		}
+
+		//公開日時が設定されていない場合は、更新日時をセットする
+		if (! Hash::get($model->data, $setting['publish_start'])) {
+			$merge['publish_start'] = Hash::get($model->data, $model->alias . '.modified');
 		}
 
 		//登録処理
