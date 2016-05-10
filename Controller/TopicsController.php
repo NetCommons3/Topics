@@ -78,8 +78,11 @@ class TopicsController extends TopicsAppController {
 		} else {
 			$options = $this->TopicFrameSetting->getQueryOptions($topicFrameSetting, $conditions);
 			$this->Paginator->settings = array(
-				'Topic' => $this->Topic->getQueryOptions($options)
+				'Topic' => $this->Topic->getQueryOptions(
+					Hash::get($this->params['named'], 'status', '0'), $options
+				)
 			);
+
 			$topics = $this->Paginator->paginate('Topic');
 			$topics = Hash::remove($topics, '{n}.Topic.search_contents');
 			$this->set('topics', $topics);

@@ -109,10 +109,9 @@ class TopicFramesRoom extends TopicsAppModel {
 			));
 			$roomIds = array_unique(array_values($roomIds));
 
-			$conditions['OR']['Topic.room_id'] = array_merge(array('0'), $roomIds);
-
+			$conditions[0]['OR']['Topic.room_id'] = array_merge(array('0'), $roomIds);
 			if ($topicFrameSetting['TopicFrameSetting']['show_my_room'] && Current::read('User.id')) {
-				$conditions['OR']['Room.space_id'] = Space::PRIVATE_SPACE_ID;
+				$conditions[0]['OR']['Room.space_id'] = Space::PRIVATE_SPACE_ID;
 			}
 		}
 
@@ -129,7 +128,7 @@ class TopicFramesRoom extends TopicsAppModel {
  * @throws InternalErrorException
  */
 	public function saveTopicFramesRoom($data) {
-		$roomIds = Hash::get($data, 'TopicFrameSetting' . '.room_id', array());
+		$roomIds = Hash::get($data, $this->alias . '.room_id', array());
 
 		$saved = $this->find('list', array(
 			'recursive' => -1,

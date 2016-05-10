@@ -27,6 +27,11 @@ article .topic-handle-name {
 	padding-left: 2em;
 }
 
+article h3 .topic-plugin-name.small > .label,
+article h3 .topic-status.small > .label {
+	font-size: 90%;
+}
+
 /**
  * 新着設定
  */

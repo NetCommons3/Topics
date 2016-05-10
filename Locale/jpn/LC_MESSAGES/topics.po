@@ -28,6 +28,18 @@ msgstr "新着情報をお知らせします。"
 msgid "view number "
 msgstr "最新 "
 
+msgid "Before publishing"
+msgstr "公開前"
+
+msgid "Answer end"
+msgstr "受付終了"
+
+msgid "Answered"
+msgstr "回答済み"
+
+msgid "Unanswered"
+msgstr "未回答"
+
 
 #
 #: 表示方法変更

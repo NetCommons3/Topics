@@ -31,15 +31,13 @@ $params = array(
 <div ng-controller="TopicsController"
 		ng-init="initialize(<?php echo h(json_encode($params, true)); ?>)">
 
-	<strong>
-		<?php echo __d('topics', 'view number '); ?>
-	</strong>
-
 	<?php if ($topicFrameSetting['unit_type'] === TopicFrameSetting::UNIT_TYPE_DAYS) : ?>
 		<?php echo $this->DisplayNumber->dropDownToggleDays(array('currentDays' => $topicFrameSetting['display_days'])); ?>
 	<?php else : ?>
 		<?php echo $this->DisplayNumber->dropDownToggle(); ?>
 	<?php endif; ?>
+
+	<?php echo $this->Topics->dropdownStatus(); ?>
 
 	<?php foreach ($camelizeData as $item) : ?>
 		<article>

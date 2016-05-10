@@ -327,22 +327,13 @@ class TopicFrameSetting extends TopicsAppModel {
 		$options = array();
 
 		//指定したルームのみ表示する
-		$conditions = Hash::merge(
-			$conditions,
-			$this->TopicFramesRoom->getConditions($topicFrameSetting, $conditions)
-		);
+		$conditions = $this->TopicFramesRoom->getConditions($topicFrameSetting, $conditions);
 
 		//指定したプラグインのみ表示する
-		$conditions = Hash::merge(
-			$conditions,
-			$this->TopicFramesPlugin->getConditions($topicFrameSetting, $conditions)
-		);
+		$conditions = $this->TopicFramesPlugin->getConditions($topicFrameSetting, $conditions);
 
 		//指定したブロックのみ表示する
-		$conditions = Hash::merge(
-			$conditions,
-			$this->TopicFramesBlock->getConditions($topicFrameSetting, $conditions)
-		);
+		$conditions = $this->TopicFramesBlock->getConditions($topicFrameSetting, $conditions);
 
 		//期間指定
 		if (! Hash::get($conditions, 'Topic.publish_start >=') &&
@@ -352,6 +343,11 @@ class TopicFrameSetting extends TopicsAppModel {
 			$date->sub(new DateInterval('P' . $topicFrameSetting[$this->alias]['display_days'] . 'D'));
 			$period = $date->format('Y-m-d H:i:s');
 			$conditions['Topic.publish_start >='] = $period;
+		}
+
+		//非会員を受け付けるどうか（パブリックスペースのみ有効）
+		if (! Current::read('User.id')) {
+			$conditions['Topic.is_no_member_allow'] = true;
 		}
 
 		$options['conditions'] = $conditions;

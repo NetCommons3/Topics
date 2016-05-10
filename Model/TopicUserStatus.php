@@ -101,7 +101,7 @@ class TopicUserStatus extends TopicsAppModel {
 
 		$topicUserStatus = Hash::get($topicUserStatus, $this->alias, array());
 		$answered = Hash::get($topicUserStatus, 'answered') === true ||
-					Hash::get($topicUserStatus, 'answered') === Hash::get($update, 'answered', false);
+					Hash::get($topicUserStatus, 'answered') === Hash::get($update, 'answered');
 		if (Hash::get($topicUserStatus, 'id') && $answered &&
 				Hash::get($topicUserStatus, 'read') === Hash::get($update, 'read', false)) {
 			return true;

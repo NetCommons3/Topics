@@ -105,7 +105,7 @@ class TopicFramesPlugin extends TopicsAppModel {
  * @throws InternalErrorException
  */
 	public function saveTopicFramesPlugin($data) {
-		$pluginKeys = Hash::get($data, 'TopicFrameSetting' . '.plugin_key', array());
+		$pluginKeys = Hash::get($data, $this->alias . '.plugin_key', array());
 
 		$saved = $this->find('list', array(
 			'recursive' => -1,

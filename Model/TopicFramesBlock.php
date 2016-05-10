@@ -122,7 +122,7 @@ class TopicFramesBlock extends TopicsAppModel {
  * @throws InternalErrorException
  */
 	public function saveTopicFramesBlock($data) {
-		$blockKeys = Hash::get($data, 'TopicFrameSetting' . '.block_key', array());
+		$blockKeys = Hash::get($data, $this->alias . '.block_key', array());
 
 		$saved = $this->find('list', array(
 			'recursive' => -1,
