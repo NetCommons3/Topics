@@ -25,6 +25,9 @@ msgstr "[{X-SITE_NAME}]新着情報"
 msgid "What's new today?"
 msgstr "新着情報をお知らせします。"
 
+msgid "view number "
+msgstr "最新 "
+
 
 #
 #: 表示方法変更
@@ -72,6 +75,9 @@ msgstr "詳細"
 msgid "Room name"
 msgstr "ルーム名"
 
+msgid "Category name"
+msgstr "カテゴリ名"
+
 msgid "Plugin name"
 msgstr "プラグイン名"
 
@@ -80,6 +86,12 @@ msgstr "登録者"
 
 msgid "Creation datetime"
 msgstr "登録日時"
+
+msgid "Category name appears %s plugins."
+msgstr "カテゴリー名は、%sプラグインで表示されます。"
+
+msgid "Blogs and Links and FAQ"
+msgstr "ブログ・リンクリスト・FAQ"
 
 msgid "RSS feed"
 msgstr "RSS配信する"

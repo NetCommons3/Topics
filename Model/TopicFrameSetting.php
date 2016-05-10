@@ -314,58 +314,55 @@ class TopicFrameSetting extends TopicsAppModel {
  * 新着データ取得のオプション生成
  *
  * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @param array $conditions 取得条件
  * @return array
  */
-	public function getQueryOptions($topicFrameSetting) {
+	public function getQueryOptions($topicFrameSetting, $conditions = array()) {
 		$this->loadModels([
 			'TopicFramesRoom' => 'Topics.TopicFramesRoom',
 			'TopicFramesPlugin' => 'Topics.TopicFramesPlugin',
 			'TopicFramesBlock' => 'Topics.TopicFramesBlock',
 		]);
 
-		$conditions = array();
+		$options = array();
 
 		//指定したルームのみ表示する
-		if ($topicFrameSetting[$this->alias]['select_room']) {
-			$roomIds = $this->TopicFramesRoom->find('list', array(
-				'recursive' => -1,
-				'fields' => array('id', 'room_id'),
-				'conditions' => ['frame_key' => Current::read('Frame.key')],
-			));
-			$roomIds = array_unique(array_values($roomIds));
-
-			$conditions['OR']['Topic.room_id'] = array_merge(array('0'), $roomIds);
-
-			if ($topicFrameSetting[$this->alias]['show_my_room'] && Current::read('User.id')) {
-				$conditions['OR']['Room.space_id'] = Space::PRIVATE_SPACE_ID;
-			}
-		}
+		$conditions = Hash::merge(
+			$conditions,
+			$this->TopicFramesRoom->getConditions($topicFrameSetting, $conditions)
+		);
 
 		//指定したプラグインのみ表示する
-		if ($topicFrameSetting[$this->alias]['select_plugin']) {
-			$pluginKeys = $this->TopicFramesPlugin->find('list', array(
-				'recursive' => -1,
-				'fields' => array('id', 'plugin_key'),
-				'conditions' => ['frame_key' => Current::read('Frame.key')],
-			));
-			$pluginKeys = array_unique(array_values($pluginKeys));
-
-			$conditions['Topic.plugin_key'] = array_merge(array('0'), $pluginKeys);
-		}
+		$conditions = Hash::merge(
+			$conditions,
+			$this->TopicFramesPlugin->getConditions($topicFrameSetting, $conditions)
+		);
 
 		//指定したブロックのみ表示する
-		if ($topicFrameSetting[$this->alias]['select_block']) {
-			$blockKeys = $this->TopicFramesBlock->find('list', array(
-				'recursive' => -1,
-				'fields' => array('id', 'block_key'),
-				'conditions' => ['frame_key' => Current::read('Frame.key')],
-			));
-			$blockKeys = array_unique(array_values($blockKeys));
+		$conditions = Hash::merge(
+			$conditions,
+			$this->TopicFramesBlock->getConditions($topicFrameSetting, $conditions)
+		);
 
-			$conditions['Block.key'] = array_merge(array('0'), $blockKeys);
+		//期間指定
+		if (! Hash::get($conditions, 'Topic.publish_start >=') &&
+				$topicFrameSetting[$this->alias]['unit_type'] === self::UNIT_TYPE_DAYS) {
+
+			$date = new DateTime();
+			$date->sub(new DateInterval('P' . $topicFrameSetting[$this->alias]['display_days'] . 'D'));
+			$period = $date->format('Y-m-d H:i:s');
+			$conditions['Topic.publish_start >='] = $period;
 		}
 
-		return array('conditions' => $conditions);
+		$options['conditions'] = $conditions;
+
+		if ($topicFrameSetting[$this->alias]['unit_type'] === self::UNIT_TYPE_NUMBERS) {
+			$options['limit'] = (int)$topicFrameSetting[$this->alias]['display_number'];
+		} else {
+			$options['limit'] = 1000;
+		}
+
+		return $options;
 	}
 
 }

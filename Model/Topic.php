@@ -244,6 +244,7 @@ class Topic extends TopicsAppModel {
 			'Room' => 'Rooms.Room',
 			'Role' => 'Roles.Role',
 		]);
+		$now = gmdate('Y-m-d H:i:s');
 
 		//閲覧できるルームリスト取得
 		$rooms = $this->Room->find('all',
@@ -290,22 +291,20 @@ class Topic extends TopicsAppModel {
 		if ($readableRoomIds) {
 			$roomConditions['OR'][2] = array(
 				$this->alias . '.room_id' => $readableRoomIds,
-				$this->alias . '.is_active' => true
+				$this->alias . '.is_active' => true,
+				//公開設定の条件生成
+				array(
+					$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
+					$this->alias . '.publish_start <=' => $now,
+					'OR' => array(
+						$this->alias . '.publish_end >=' => $now,
+						$this->alias . '.publish_end' => null,
+					),
+				)
 			);
 		}
 
-		//公開設定の条件生成
-		$now = gmdate('Y-m-d H:i:s');
-		$publicTypeConditions[0] = array(
-			$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
-			$this->alias . '.publish_start <=' => $now,
-			'OR' => array(
-				$this->alias . '.publish_end >=' => $now,
-				$this->alias . '.publish_end' => null,
-			),
-		);
-		$roomConditions['OR'][2][0] = $publicTypeConditions;
-
+		//ブロック公開設定の条件生成
 		$blockPubConditions['OR'] = array(
 			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
 			array(
@@ -376,7 +375,7 @@ class Topic extends TopicsAppModel {
 				),
 				'TopicUserStatus' => array(
 					'className' => 'Topics.TopicUserStatus',
-					'fields' => array('id', 'topic_id', 'user_id'),
+					'fields' => array('id', 'topic_id', 'user_id', 'read', 'answered'),
 					'foreignKey' => false,
 					'type' => 'LEFT',
 					'conditions' => array(

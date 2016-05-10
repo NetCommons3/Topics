@@ -8,9 +8,9 @@
  * TopicsController Javascript
  *
  * @param {string} Controller name
- * @param {function($scope, NetCommonsWysiwyg)} Controller
+ * @param {function($scope)} Controller
  */
-NetCommonsApp.controller('TopicsController', ['$scope', function($scope) {
+NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) {
 
   /**
    * Initialize
@@ -44,3 +44,54 @@ NetCommonsApp.controller('TopicsController', ['$scope', function($scope) {
   };
 
 }]);
+
+
+/**
+ * TopicsController Javascript
+ *
+ * @param {string} Controller name
+ * @param {function($scope, $http)} Controller
+ */
+NetCommonsApp.controller('TopicsController',
+    ['$scope', '$http', '$location', function($scope, $http, $location) {
+
+      /**
+       * 新着データ
+       */
+      $scope.topics = [];
+
+      /**
+       * Initialize
+       *
+       * @return {void}
+       */
+      $scope.initialize = function(data) {
+        $scope.frameId = data['frameId'];
+        $scope.urlParams = data['urlParams'];
+        $scope.paginator = data['paginator'];
+      };
+
+      /**
+       * URLからデータ取得
+       *
+       * @return {void}
+       */
+      $scope.more = function() {
+        var url = '/topics/topics/index';
+        angular.forEach($scope.urlParams, function(value, key) {
+          url = url + '/' + key + ':' + value;
+        });
+        url = url + '/page:' + ($scope.paginator['page'] + 1);
+
+        $http.get($scope.baseUrl + url + '.json', {params: {frame_id: $scope.frameId}})
+          .success(function(data) {
+              $scope.paginator = data['paginator'];
+              angular.forEach(data['topics'], function(value) {
+                $scope.topics.push(value);
+              });
+            })
+          .error(function(data) {
+            });
+      };
+
+    }]);

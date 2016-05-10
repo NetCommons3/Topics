@@ -80,7 +80,7 @@ class TopicFramesBlock extends TopicsAppModel {
 	public function validateRequestData($data) {
 		$blockKeys = Hash::extract($data, 'Block.{n}.key');
 
-		$check = Hash::get($data, $this->alias . '.block_key', array());
+		$check = Hash::get($data, 'TopicFrameSetting' . '.block_key', array());
 		foreach ($check as $blockKey) {
 			if (! in_array($blockKey, $blockKeys, true)) {
 				return false;
@@ -88,6 +88,28 @@ class TopicFramesBlock extends TopicsAppModel {
 		}
 
 		return true;
+	}
+
+/**
+ * 新着取得するための条件を取得する
+ *
+ * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @param array $conditions 条件配列
+ * @return array 条件配列
+ */
+	public function getConditions($topicFrameSetting, $conditions) {
+		if ($topicFrameSetting['TopicFrameSetting']['select_block']) {
+			$blockKeys = $this->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'block_key'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$blockKeys = array_unique(array_values($blockKeys));
+
+			$conditions['Block.key'] = array_merge(array('0'), $blockKeys);
+		}
+
+		return $conditions;
 	}
 
 /**
@@ -100,7 +122,7 @@ class TopicFramesBlock extends TopicsAppModel {
  * @throws InternalErrorException
  */
 	public function saveTopicFramesBlock($data) {
-		$blockKeys = Hash::get($data, $this->alias . '.block_key', array());
+		$blockKeys = Hash::get($data, 'TopicFrameSetting' . '.block_key', array());
 
 		$saved = $this->find('list', array(
 			'recursive' => -1,
@@ -112,8 +134,8 @@ class TopicFramesBlock extends TopicsAppModel {
 		$delete = array_diff($saved, $blockKeys);
 		if (count($delete) > 0) {
 			$conditions = array(
-				$this->alias . '.frame_key' => Current::read('Frame.key'),
-				$this->alias . '.block_key' => $delete,
+				'TopicFrameSetting' . '.frame_key' => Current::read('Frame.key'),
+				'TopicFrameSetting' . '.block_key' => $delete,
 			);
 			if (! $this->deleteAll($conditions, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
