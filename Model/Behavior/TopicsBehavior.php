@@ -48,6 +48,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		),
 		'users' => array('0'),
 		'is_workflow' => true,
+		'data' => array()
 	);
 
 /**
@@ -164,15 +165,16 @@ class TopicsBehavior extends TopicsBaseBehavior {
 	}
 
 /**
- * 新着のタイトルをセットする
+ * 新着のデータをセットする
  *
  * @param Model $model 呼び出し元のモデル
- * @param string $title タイトル
+ * @param string $key キー
+ * @param mixed $value 値
  * @return void
  * @throws InternalErrorException
  */
-	public function setTopicTitle(Model $model, $title) {
-		$this->settings['fields']['title'] = $title;
+	public function setTopicValue(Model $model, $key, $value) {
+		$this->settings['data'][$key] = $value;
 	}
 
 }
@@ -285,29 +287,21 @@ class TopicsBaseBehavior extends ModelBehavior {
 			'search_contents' => $this->_parseSearchContents($model),
 		);
 
-		$fields1 = array(
+		$fields = array(
 			'category_id', 'title_icon', 'public_type', 'publish_start', 'publish_end', 'status',
-			'answer_period_start', 'answer_period_end'
-		);
-		foreach ($fields1 as $field) {
-			if (! Hash::get($model->data, $setting[$field])) {
-				continue;
-			}
-			$merge[$field] = Hash::get($model->data, $setting[$field]);
-		}
-
-		$fields2 = array(
+			'answer_period_start', 'answer_period_end',
 			'created_user', 'created', 'modified_user', 'modified'
 		);
-		foreach ($fields2 as $field) {
-			if (! Hash::get($model->data, $model->alias . '.' . $field)) {
+		foreach ($fields as $field) {
+			$value = $this->_getSaveData($model, $field);
+			if ($value === false) {
 				continue;
 			}
-			$merge[$field] = Hash::get($model->data, $model->alias . '.' . $field);
+			$merge[$field] = $value;
 		}
 
 		//公開日時が設定されていない場合は、更新日時をセットする
-		if (! Hash::get($model->data, $setting['publish_start'])) {
+		if (! isset($merge['publish_start'])) {
 			$merge['publish_start'] = Hash::get($model->data, $model->alias . '.modified');
 		}
 
@@ -337,9 +331,7 @@ class TopicsBaseBehavior extends ModelBehavior {
  * @return string
  */
 	protected function _parseTitle(Model $model) {
-		$setting = $this->settings['fields'];
-
-		$title = Hash::get($model->data, $setting['title'], $setting['title']);
+		$title = $this->_getSaveData($model, 'title');
 		$result = mb_strimwidth(strip_tags($title), 0, self::MAX_TITLE_LENGTH);
 		if (preg_replace('/(\s|　)/', '', $result) === '') {
 			$result = mb_strimwidth($title, 0, self::MAX_TITLE_LENGTH);
@@ -407,6 +399,33 @@ class TopicsBaseBehavior extends ModelBehavior {
 		}
 
 		return serialize($result);
+	}
+
+/**
+ * 新着データを取得する
+ *
+ * self::_saveTopic()から実行される
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param string $field フィールド名
+ * @return string
+ */
+	protected function _getSaveData(Model $model, $field) {
+		$setting = $this->settings['fields'];
+		$data = $this->settings['data'];
+
+		if (in_array($field, ['created_user', 'created', 'modified_user', 'modified'], true)) {
+			if (Hash::get($model->data, $model->alias . '.' . $field)) {
+				return Hash::get($model->data, $model->alias . '.' . $field);
+			}
+		} elseif (array_key_exists($field, $data)) {
+			return Hash::get($data, $field);
+		} else {
+			if (Hash::get($model->data, $setting[$field])) {
+				return Hash::get($model->data, $setting[$field]);
+			}
+		}
+		return false;
 	}
 
 /**
