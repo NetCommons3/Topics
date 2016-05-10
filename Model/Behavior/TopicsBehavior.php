@@ -84,6 +84,11 @@ class TopicsBehavior extends TopicsBaseBehavior {
  * @see Model::save()
  */
 	public function afterSave(Model $model, $created, $options = array()) {
+		//$options['fieldList']がセットされているときは、saveFieldから実行されたとして判断し、処理しない
+		if ($options['fieldList']) {
+			return true;
+		}
+
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 			'TopicUserStatus' => 'Topics.TopicUserStatus',
@@ -415,15 +420,15 @@ class TopicsBaseBehavior extends ModelBehavior {
 		$data = $this->settings['data'];
 
 		if (in_array($field, ['created_user', 'created', 'modified_user', 'modified'], true)) {
-			if (Hash::get($model->data, $model->alias . '.' . $field)) {
-				return Hash::get($model->data, $model->alias . '.' . $field);
-			}
-		} elseif (array_key_exists($field, $data)) {
-			return Hash::get($data, $field);
+			$pathKey = $model->alias . '.' . $field;
 		} else {
-			if (Hash::get($model->data, $setting[$field])) {
-				return Hash::get($model->data, $setting[$field]);
-			}
+			$pathKey = $setting[$field];
+		}
+
+		if (array_key_exists($field, $data)) {
+			return Hash::get($data, $field);
+		} elseif (Hash::get($model->data, $pathKey)) {
+			return Hash::get($model->data, $pathKey);
 		}
 		return false;
 	}
