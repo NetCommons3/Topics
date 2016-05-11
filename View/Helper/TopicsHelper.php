@@ -203,8 +203,6 @@ class TopicsHelper extends AppHelper {
  * @return string HTML出力
  */
 	public function dropdownStatus() {
-		$html = '';
-
 		$named = $this->_View->Paginator->params['named'];
 		$named['page'] = '1';
 		$named['limit'] = null;

@@ -337,6 +337,51 @@ class Topic extends TopicsAppModel {
 		]);
 		$now = gmdate('Y-m-d H:i:s');
 
+		//ステータスの条件生成
+		$statusConditions = $this->__getStatusConditions($now, $status);
+
+		//閲覧可のルームの条件生成
+		$roomConditions = $this->__getRoomsConditions($now);
+
+		//ブロック公開設定の条件生成
+		$blockPubConditions['OR'] = array(
+			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
+			array(
+				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
+				$this->Block->alias . '.publish_start <=' => $now,
+				$this->Block->alias . '.publish_end >=' => $now,
+			),
+		);
+
+		//クエリ
+		$this->__bindModel();
+
+		$result = Hash::merge(array(
+			'recursive' => 0,
+			'conditions' => array(
+				$this->TopicReadable->alias . '.topic_id NOT' => null,
+				$this->alias . '.language_id' => Current::read('Language.id'),
+				array($blockPubConditions),
+				//array($publicTypeConditions),
+				array($roomConditions),
+				array($statusConditions),
+			),
+			'order' => array(
+				$this->alias . '.publish_start' => 'desc', $this->alias . '.id' => 'desc'
+			),
+		), $options);
+
+		return $result;
+	}
+
+/**
+ * 新着データ取得のためのRooms条件を取得する
+ *
+ * @param string $now 現在時刻
+ * @param int $status ステータス
+ * @return array
+ */
+	private function __getStatusConditions($now, $status) {
 		$statusConditions = array();
 		if ($status === self::STATUS_UNANSWERED) {
 			//未回答
@@ -368,6 +413,16 @@ class Topic extends TopicsAppModel {
 			);
 		}
 
+		return $statusConditions;
+	}
+
+/**
+ * 新着データ取得のためのRooms条件を取得する
+ *
+ * @param string $now 現在時刻
+ * @return array
+ */
+	private function __getRoomsConditions($now) {
 		//閲覧できるルームリスト取得
 		$rooms = $this->Room->find('all',
 			Hash::merge(
@@ -426,35 +481,7 @@ class Topic extends TopicsAppModel {
 			);
 		}
 
-		//ブロック公開設定の条件生成
-		$blockPubConditions['OR'] = array(
-			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
-			array(
-				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
-				$this->Block->alias . '.publish_start <=' => $now,
-				$this->Block->alias . '.publish_end >=' => $now,
-			),
-		);
-
-		//クエリ
-		$this->__bindModel();
-
-		$result = Hash::merge(array(
-			'recursive' => 0,
-			'conditions' => array(
-				$this->TopicReadable->alias . '.topic_id NOT' => null,
-				$this->alias . '.language_id' => Current::read('Language.id'),
-				array($blockPubConditions),
-				//array($publicTypeConditions),
-				array($roomConditions),
-				array($statusConditions),
-			),
-			'order' => array(
-				$this->alias . '.publish_start' => 'desc', $this->alias . '.id' => 'desc'
-			),
-		), $options);
-
-		return $result;
+		return $roomConditions;
 	}
 
 /**
