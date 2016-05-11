@@ -219,8 +219,6 @@ class TopicsHelper extends AppHelper {
 			'current' => Hash::get($named, 'status', '0'),
 			'url' => $named,
 		));
-
-		return $html;
 	}
 
 }

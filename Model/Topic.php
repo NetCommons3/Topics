@@ -326,6 +326,7 @@ class Topic extends TopicsAppModel {
 /**
  * 新着データ取得のオプション生成
  *
+ * @param int $status ステータス
  * @param array $options マージするオプション
  * @return array
  */
