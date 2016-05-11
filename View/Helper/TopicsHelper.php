@@ -117,7 +117,7 @@ class TopicsHelper extends AppHelper {
 			}
 			$newResult[$camelKey] = $this->NetCommonsHtml->url($url);
 
-		} elseif (in_array($camelKey, ['created', 'modified'], true)) {
+		} elseif (in_array($camelKey, ['publishStart', 'created', 'modified'], true)) {
 			$newResult[$camelKey] = $value;
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
 			$newResult[$camelKey] = $this->NetCommonsHtml->dateFormat($value);

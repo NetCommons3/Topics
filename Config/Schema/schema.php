@@ -219,7 +219,7 @@ class TopicsSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'whatsnew' => array('column' => array('modified', 'id', 'language_id', 'public_type', 'publish_start', 'publish_end', 'room_id', 'is_active', 'is_latest'), 'unique' => 0),
+			'whatsnew' => array('column' => array('publish_start', 'id', 'language_id', 'public_type', 'modified', 'publish_end', 'room_id', 'is_active', 'is_latest'), 'unique' => 0),
 			'search' => array('column' => array('search_contents'), 'type' => 'fulltext'),
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Mroonga', 'comment' => 'engine "InnoDB"'),

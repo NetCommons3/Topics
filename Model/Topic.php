@@ -449,7 +449,7 @@ class Topic extends TopicsAppModel {
 				array($statusConditions),
 			),
 			'order' => array(
-				$this->alias . '.modified' => 'desc', $this->alias . '.id' => 'desc'
+				$this->alias . '.publish_start' => 'desc', $this->alias . '.id' => 'desc'
 			),
 		), $options);
 

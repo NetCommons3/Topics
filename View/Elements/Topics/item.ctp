@@ -35,7 +35,7 @@
 
 		<?php if ($topicFrameSetting['display_created']) : ?>
 			<div class="pull-right topic-datetime">
-				<?php echo h($item['topic']['displayModified']); ?>
+				<?php echo h($item['topic']['displayPublishStart']); ?>
 			</div>
 		<?php endif; ?>
 	</div>
