@@ -61,7 +61,7 @@ class TopicFramesPlugin extends TopicsAppModel {
 	public function validateRequestData($data) {
 		$pluginKeys = Hash::extract($data, 'Plugin.{n}.key');
 
-		$check = Hash::get($data, $this->alias . '.plugin_key', array());
+		$check = Hash::get($data, 'TopicFrameSetting' . '.plugin_key', array());
 		foreach ($check as $pluginKey) {
 			if (! in_array($pluginKey, $pluginKeys, true)) {
 				return false;
@@ -69,6 +69,30 @@ class TopicFramesPlugin extends TopicsAppModel {
 		}
 
 		return true;
+	}
+
+/**
+ * 新着取得するための条件を取得する
+ *
+ * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @param array $conditions 条件配列
+ * @return array 条件配列
+ */
+	public function getConditions($topicFrameSetting, $conditions) {
+		if (Hash::get($conditions, 'Topic.plugin_key')) {
+			$conditions['Topic.plugin_key'] = Hash::get($conditions, 'Topic.plugin_key');
+		} elseif ($topicFrameSetting['TopicFrameSetting']['select_plugin']) {
+			$pluginKeys = $this->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'plugin_key'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$pluginKeys = array_unique(array_values($pluginKeys));
+
+			$conditions['Topic.plugin_key'] = array_merge(array('0'), $pluginKeys);
+		}
+
+		return $conditions;
 	}
 
 /**
@@ -93,8 +117,8 @@ class TopicFramesPlugin extends TopicsAppModel {
 		$delete = array_diff($saved, $pluginKeys);
 		if (count($delete) > 0) {
 			$conditions = array(
-				$this->alias . '.frame_key' => Current::read('Frame.key'),
-				$this->alias . '.plugin_key' => $delete,
+				'TopicFrameSetting' . '.frame_key' => Current::read('Frame.key'),
+				'TopicFrameSetting' . '.plugin_key' => $delete,
 			);
 			if (! $this->deleteAll($conditions, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));

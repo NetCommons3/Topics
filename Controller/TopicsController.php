@@ -36,6 +36,9 @@ class TopicsController extends TopicsAppController {
 	public $uses = array(
 		'Topics.Topic',
 		'Topics.TopicFrameSetting',
+		'Topics.TopicFramesRoom',
+		'Topics.TopicFramesPlugin',
+		'Topics.TopicFramesBlock',
 	);
 
 /**
@@ -44,6 +47,7 @@ class TopicsController extends TopicsAppController {
  * @var array
  */
 	public $helpers = array(
+		'NetCommons.DisplayNumber',
 		'Topics.Topics',
 	);
 
@@ -54,15 +58,17 @@ class TopicsController extends TopicsAppController {
  */
 	public function index() {
 		$topicFrameSetting = $this->TopicFrameSetting->getTopicFrameSetting();
-		$options = $this->TopicFrameSetting->getQueryOptions($topicFrameSetting);
-		$this->Paginator->settings = array(
-			'Topic' => $this->Topic->getQueryOptions($options)
-		);
-
-		$topics = $this->Paginator->paginate('Topic');
-		$topics = Hash::remove($topics, '{n}.Topic.search_contents');
-		$this->set('topics', $topics);
 		$this->set('topicFrameSetting', $topicFrameSetting['TopicFrameSetting']);
+
+		$conditions = array();
+
+		$days = Hash::get($this->params['named'], 'days');
+		if ($days) {
+			$date = new DateTime();
+			$date->sub(new DateInterval('P' . $days . 'D'));
+			$period = $date->format('Y-m-d H:i:s');
+			$conditions['Topic.publish_start >='] = $period;
+		}
 
 		$displayType = $this->viewVars['topicFrameSetting']['display_type'];
 		if ($displayType === TopicFrameSetting::DISPLAY_TYPE_ROOMS) {
@@ -70,6 +76,17 @@ class TopicsController extends TopicsAppController {
 		} elseif ($displayType === TopicFrameSetting::DISPLAY_TYPE_PLUGIN) {
 			$this->view = 'index_plugins';
 		} else {
+			$options = $this->TopicFrameSetting->getQueryOptions($topicFrameSetting, $conditions);
+			$this->Paginator->settings = array(
+				'Topic' => $this->Topic->getQueryOptions(
+					Hash::get($this->params['named'], 'status', '0'), $options
+				)
+			);
+
+			$topics = $this->Paginator->paginate('Topic');
+			$topics = Hash::remove($topics, '{n}.Topic.search_contents');
+			$this->set('topics', $topics);
+
 			$this->view = 'index';
 		}
 	}

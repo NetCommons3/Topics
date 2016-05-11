@@ -12,7 +12,7 @@
 echo $this->NetCommonsHtml->script('/topics/js/topics.js');
 ?>
 
-<article class="block-setting-body" ng-controller="TopicsController">
+<article class="block-setting-body" ng-controller="TopicSettingsController">
 	<?php echo $this->BlockTabs->main(BlockTabsHelper::MAIN_TAB_FRAME_SETTING); ?>
 
 	<div class="tab-content">

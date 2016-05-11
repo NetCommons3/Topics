@@ -37,6 +37,8 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			'public_type' => null,
 			'publish_start' => null,
 			'publish_end' => null,
+			'is_no_member_allow' => null,
+			'is_answer' => false,
 			'answer_period_start' => null,
 			'answer_period_end' => null,
 			'is_active' => null,
@@ -72,6 +74,10 @@ class TopicsBehavior extends TopicsBaseBehavior {
 
 		//検索項目にfields.summaryの内容を含む
 		$this->_setupSearchContents($model);
+
+		$fields = $this->settings['fields'];
+		$this->settings['fields']['is_answer'] =
+				$fields['answer_period_start'] || $fields['answer_period_end'];
 	}
 
 /**
@@ -290,11 +296,12 @@ class TopicsBaseBehavior extends ModelBehavior {
 			'title' => $this->_parseTitle($model),
 			'summary' => $this->_parseContents($model),
 			'search_contents' => $this->_parseSearchContents($model),
+			'is_answer' => $setting['is_answer'],
 		);
 
 		$fields = array(
 			'category_id', 'title_icon', 'public_type', 'publish_start', 'publish_end', 'status',
-			'answer_period_start', 'answer_period_end',
+			'is_no_member_allow', 'answer_period_start', 'answer_period_end',
 			'created_user', 'created', 'modified_user', 'modified'
 		);
 		foreach ($fields as $field) {
@@ -427,10 +434,11 @@ class TopicsBaseBehavior extends ModelBehavior {
 
 		if (array_key_exists($field, $data)) {
 			return Hash::get($data, $field);
-		} elseif (Hash::get($model->data, $pathKey)) {
+		} elseif (Hash::get($model->data, $pathKey, false) !== false) {
 			return Hash::get($model->data, $pathKey);
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 /**

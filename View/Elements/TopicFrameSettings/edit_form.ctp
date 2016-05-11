@@ -82,46 +82,58 @@
 			<?php echo __d('topics', 'Display items'); ?>
 		</div>
 
-		<div class="panel-body clearfix topics-display">
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.display_title', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Title'),
-					'disabled' => true,
-				));
-			?>
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.display_summary', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Detail'),
-				));
-			?>
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.display_room_name', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Room name'),
-					'ng-disabled' => $displayTypeDomId . ' === ' . TopicFrameSetting::DISPLAY_TYPE_ROOMS,
-				));
-			?>
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.display_plugin_name', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Plugin name'),
-					'ng-disabled' => $displayTypeDomId . ' === ' . TopicFrameSetting::DISPLAY_TYPE_PLUGIN,
-				));
-			?>
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.display_created_user', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Creator'),
-				));
-			?>
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.display_created', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Creation datetime'),
-				));
-			?>
+		<div class="panel-body">
+			<div class="clearfix topics-display">
+				<?php
+					echo $this->NetCommonsForm->input('TopicFrameSetting.display_title', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Title'),
+						'disabled' => true,
+					));
+				?>
+				<?php
+					echo $this->NetCommonsForm->input('TopicFrameSetting.display_summary', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Detail'),
+					));
+				?>
+				<?php
+					echo $this->NetCommonsForm->input('TopicFrameSetting.display_room_name', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Room name'),
+						'ng-disabled' => $displayTypeDomId . ' === ' . TopicFrameSetting::DISPLAY_TYPE_ROOMS,
+					));
+				?>
+				<?php
+					echo $this->NetCommonsForm->input('TopicFrameSetting.display_category_name', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Category name'),
+					));
+				?>
+				<?php
+					echo $this->NetCommonsForm->input('TopicFrameSetting.display_plugin_name', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Plugin name'),
+						'ng-disabled' => $displayTypeDomId . ' === ' . TopicFrameSetting::DISPLAY_TYPE_PLUGIN,
+					));
+				?>
+				<?php
+					echo $this->NetCommonsForm->input('TopicFrameSetting.display_created_user', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Creator'),
+					));
+				?>
+				<?php
+					echo $this->NetCommonsForm->input('TopicFrameSetting.display_created', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Creation datetime'),
+					));
+				?>
+			</div>
+
+			<?php echo $this->NetCommonsForm->help(
+					sprintf(__d('topics', 'Category name appears %s plugins.'), __d('topics', 'Blogs and Links and FAQ'))
+				); ?>
 		</div>
 	</div>
 

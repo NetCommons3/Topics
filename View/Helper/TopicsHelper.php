@@ -21,6 +21,13 @@ App::uses('Topic', 'Topics.Model');
 class TopicsHelper extends AppHelper {
 
 /**
+ * camelizeKeyRecursiveで使用する変数
+ *
+ * @var array
+ */
+	private $__orig = array();
+
+/**
  * Other helpers used by FormHelper
  *
  * @var array
@@ -55,6 +62,7 @@ class TopicsHelper extends AppHelper {
 		$newResult = [];
 		$callback = ['Inflector', 'variable'];
 
+		$this->__orig = $orig;
 		foreach ($orig as $key => $value) {
 			$camelKey = call_user_func($callback, $key);
 
@@ -68,6 +76,9 @@ class TopicsHelper extends AppHelper {
 					$value = Hash::insert($value, 'TrackableUpdater.avatar', $avatar);
 				}
 				$newResult[$camelKey] = $this->camelizeKeyRecursive($value);
+
+				$displayStatus = $this->__getStatusLabel($newResult[$camelKey]);
+				$newResult[$camelKey]['topic']['displayStatus'] = $displayStatus;
 			} else {
 				$newResult = $this->__parseValueForCamelize($newResult, $camelKey, $value);
 			}
@@ -94,11 +105,6 @@ class TopicsHelper extends AppHelper {
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
 			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_TITLE_LENGTH, '...');
 
-		} elseif ($camelKey === 'status') {
-			$newResult[$camelKey] = $value;
-			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$newResult[$camelKey] = $this->Workflow->label($value);
-
 		} elseif ($camelKey === 'name') {
 			$newResult[$camelKey] = $value;
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
@@ -111,7 +117,7 @@ class TopicsHelper extends AppHelper {
 			}
 			$newResult[$camelKey] = $this->NetCommonsHtml->url($url);
 
-		} elseif (in_array($camelKey, ['created', 'modified'], true)) {
+		} elseif (in_array($camelKey, ['publishStart', 'created', 'modified'], true)) {
 			$newResult[$camelKey] = $value;
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
 			$newResult[$camelKey] = $this->NetCommonsHtml->dateFormat($value);
@@ -124,6 +130,47 @@ class TopicsHelper extends AppHelper {
 		}
 
 		return $newResult;
+	}
+
+/**
+ * keyによる変換処理
+ *
+ * self::camelizeKeyRecursiveから実行される
+ *
+ * @param array $newResult keyをcamel形式に変換して戻す配列
+ * @return string 変換後の値
+ */
+	private function __getStatusLabel($newResult) {
+		$status = Hash::get($newResult, 'topic.status');
+		$publishStart = Hash::get($newResult, 'topic.publishStart');
+		//$answerPeriodStart = Hash::get($newResult, 'topic.answerPeriodStart');
+		$answerPeriodEnd = Hash::get($newResult, 'topic.answerPeriodEnd');
+
+		$labels = Topic::$statuses;
+
+		$now = gmdate('Y-m-d H:i:s');
+
+		if (in_array($status, array_keys($labels), true)) {
+			//承認待ち、差し戻し、一時保存
+
+		} elseif ($now < $publishStart) {
+			//公開前
+			$status = Topic::STATUS_BEFORE_PUBLISH;
+
+		} elseif (Hash::get($newResult, 'topic.isAnswer')) {
+			if ($answerPeriodEnd && $answerPeriodEnd < $now) {
+				//終了
+				$status = Topic::STATUS_ANSWER_END;
+			} elseif (Hash::get($newResult, 'topicUserStatus.answered')) {
+				//回答済み
+				$status = Topic::STATUS_ANSWERED;
+			} elseif (Current::read('User.id')) {
+				//未回答
+				$status = Topic::STATUS_UNANSWERED;
+			}
+		}
+
+		return $this->Workflow->label($status, $labels);
 	}
 
 /**
@@ -148,6 +195,28 @@ class TopicsHelper extends AppHelper {
 			'$(function () { $(\'[data-toggle="popover"]\').popover({html: true}) });</script>';
 
 		return $html;
+	}
+
+/**
+ * ステータスの絞り込み
+ *
+ * @return string HTML出力
+ */
+	public function dropdownStatus() {
+		$named = $this->_View->Paginator->params['named'];
+		$named['page'] = '1';
+		$named['limit'] = null;
+
+		$options = Hash::merge(
+			array('0' => __d('net_commons', 'All Statuses')),
+			Hash::combine(Topic::$statuses, '{n}.key', '{n}.message')
+		);
+
+		return $this->_View->element('Topics.Topics/select_status', array(
+			'options' => $options,
+			'current' => Hash::get($named, 'status', '0'),
+			'url' => $named,
+		));
 	}
 
 }
