@@ -25,7 +25,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
  * @var array
  * @see ModelBehavior::$settings
  */
-	public $settings = array(
+	protected $_settings = array(
 		'fields' => array(
 			'title' => '', //必須項目
 			'summary' => '', //必須項目
@@ -62,11 +62,13 @@ class TopicsBehavior extends TopicsBaseBehavior {
  */
 	public function setup(Model $model, $config = array()) {
 		parent::setup($model, $config);
-		$this->settings = Hash::merge($this->settings, $config);
+		$this->settings[$model->alias] = Hash::merge($this->_settings, $config);
 
 		//コンテンツは配列とする
-		if (is_string(Hash::get($this->settings, 'fields.summary'))) {
-			$this->settings['fields']['summary'] = array(Hash::get($this->settings, 'fields.summary'));
+		if (is_string(Hash::get($this->settings[$model->alias], 'fields.summary'))) {
+			$this->settings[$model->alias]['fields']['summary'] = array(
+				Hash::get($this->settings[$model->alias], 'fields.summary')
+			);
 		}
 
 		//モデル名を付与する
@@ -75,8 +77,8 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		//検索項目にfields.summaryの内容を含む
 		$this->_setupSearchContents($model);
 
-		$fields = $this->settings['fields'];
-		$this->settings['fields']['is_answer'] =
+		$fields = $this->settings[$model->alias]['fields'];
+		$this->settings[$model->alias]['fields']['is_answer'] =
 				$fields['answer_period_start'] || $fields['answer_period_end'];
 	}
 
@@ -137,10 +139,12 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			$topicAlias . '.plugin_key' => Current::read('Plugin.key'),
 			$topicAlias . '.language_id' => Current::read('Language.id'),
 			$topicAlias . '.block_id' => Current::read('Block.id', '0'),
-			$topicAlias . '.content_id' => Hash::get($content, $this->settings['fields']['content_id'], '0'),
+			$topicAlias . '.content_id' => Hash::get(
+				$content, $this->settings[$model->alias]['fields']['content_id'], '0'
+			),
 		);
 		if ($model->Behaviors->loaded('Workflow.Workflow')) {
-			if ($model->canEditWorkflowContent($content) && $this->settings['is_workflow']) {
+			if ($model->canEditWorkflowContent($content) && $this->settings[$model->alias]['is_workflow']) {
 				$conditions[$topicAlias . '.is_latest'] = true;
 			} else {
 				$conditions[$topicAlias . '.is_active'] = true;
@@ -169,9 +173,11 @@ class TopicsBehavior extends TopicsBaseBehavior {
  */
 	public function setTopicUsers(Model $model, $users, $append = false) {
 		if ($append) {
-			$this->settings['users'] = array_merge($this->settings['users'], $users);
+			$this->settings[$model->alias]['users'] = array_merge(
+				$this->settings[$model->alias]['users'], $users
+			);
 		} else {
-			$this->settings['users'] = $users;
+			$this->settings[$model->alias]['users'] = $users;
 		}
 	}
 
@@ -185,7 +191,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
  * @throws InternalErrorException
  */
 	public function setTopicValue(Model $model, $key, $value) {
-		$this->settings['data'][$key] = $value;
+		$this->settings[$model->alias]['data'][$key] = $value;
 	}
 
 }
@@ -213,56 +219,56 @@ class TopicsBaseBehavior extends ModelBehavior {
 	public $delimiter = ' ';
 
 /**
- * $this->settings['fields']のセットアップ
+ * $this->settings[$model->alias]['fields']のセットアップ
  *
  * @param Model $model 呼び出し元のモデル
  * @return void
  */
 	protected function _setupFields(Model $model) {
 		//モデル名を付与する
-		$fields = $this->settings['fields'];
+		$fields = $this->settings[$model->alias]['fields'];
 		$fields = Hash::remove($fields, 'path');
 		$fields = Hash::remove($fields, 'summary');
 		$fields = Hash::remove($fields, 'search_contents');
 
 		$fieldKeys = array_keys($fields);
 		foreach ($fieldKeys as $field) {
-			$value = Hash::get($this->settings['fields'], $field);
-			if (Hash::get($this->settings['fields'], $field) === false) {
+			$value = Hash::get($this->settings[$model->alias]['fields'], $field);
+			if (Hash::get($this->settings[$model->alias]['fields'], $field) === false) {
 				continue;
 			}
 			if (! $value && $model->hasField($field)) {
-				$this->settings['fields'][$field] = $model->alias . '.' . $field;
+				$this->settings[$model->alias]['fields'][$field] = $model->alias . '.' . $field;
 			}
-			$value = Hash::get($this->settings['fields'], $field);
+			$value = Hash::get($this->settings[$model->alias]['fields'], $field);
 			if ($value && strpos($value, '.') === false) {
-				$this->settings['fields'][$field] = $model->alias . '.' . $value;
+				$this->settings[$model->alias]['fields'][$field] = $model->alias . '.' . $value;
 			}
 		}
-		foreach ($this->settings['fields']['summary'] as $i => $field) {
+		foreach ($this->settings[$model->alias]['fields']['summary'] as $i => $field) {
 			if (strpos($field, '.') === false) {
-				$this->settings['fields']['summary'][$i] = $model->alias . '.' . $field;
+				$this->settings[$model->alias]['fields']['summary'][$i] = $model->alias . '.' . $field;
 			}
 		}
 	}
 
 /**
- * $this->settings['fields']のセットアップ
+ * $this->settings[$model->alias]['fields']のセットアップ
  *
  * @param Model $model 呼び出し元のモデル
  * @return void
  */
 	protected function _setupSearchContents(Model $model) {
 		//モデル名を付与する
-		$this->settings['search_contents'] = array_merge(
-			array($this->settings['fields']['title']),
-			$this->settings['fields']['summary'],
-			$this->settings['search_contents']
+		$this->settings[$model->alias]['search_contents'] = array_merge(
+			array($this->settings[$model->alias]['fields']['title']),
+			$this->settings[$model->alias]['fields']['summary'],
+			$this->settings[$model->alias]['search_contents']
 		);
 
-		foreach ($this->settings['search_contents'] as $i => $field) {
+		foreach ($this->settings[$model->alias]['search_contents'] as $i => $field) {
 			if (strpos($field, '.') === false) {
-				$this->settings['search_contents'][$i] = $model->alias . '.' . $field;
+				$this->settings[$model->alias]['search_contents'][$i] = $model->alias . '.' . $field;
 			}
 		}
 	}
@@ -287,7 +293,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 			$topic = Hash::remove($topic, '{n}.{s}.frame_id');
 		}
 
-		$setting = $this->settings['fields'];
+		$setting = $this->settings[$model->alias]['fields'];
 
 		//登録するデータセット
 		$merge = array(
@@ -362,7 +368,7 @@ class TopicsBaseBehavior extends ModelBehavior {
  * @return string
  */
 	protected function _parseContents(Model $model) {
-		$setting = $this->settings['fields'];
+		$setting = $this->settings[$model->alias]['fields'];
 		$result = '';
 
 		foreach ($setting['summary'] as $field) {
@@ -384,7 +390,7 @@ class TopicsBaseBehavior extends ModelBehavior {
  * @return string
  */
 	protected function _parsePath(Model $model, $saveData) {
-		$setting = $this->settings['fields'];
+		$setting = $this->settings[$model->alias]['fields'];
 		$result = $setting['path'];
 
 		foreach ($saveData as $key => $value) {
@@ -405,7 +411,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 	protected function _parseSearchContents(Model $model) {
 		$result = array();
 
-		foreach ($this->settings['search_contents'] as $field) {
+		foreach ($this->settings[$model->alias]['search_contents'] as $field) {
 			$value = Hash::extract($model->data, $field);
 			$result[] = $value;
 		}
@@ -423,8 +429,8 @@ class TopicsBaseBehavior extends ModelBehavior {
  * @return string
  */
 	protected function _getSaveData(Model $model, $field) {
-		$setting = $this->settings['fields'];
-		$data = $this->settings['data'];
+		$setting = $this->settings[$model->alias]['fields'];
+		$data = $this->settings[$model->alias]['data'];
 
 		if (in_array($field, ['created_user', 'created', 'modified_user', 'modified'], true)) {
 			$pathKey = $model->alias . '.' . $field;
@@ -452,7 +458,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 	protected function _getTopicForSave(Model $model) {
 		$topic = array();
 
-		$setting = $this->settings['fields'];
+		$setting = $this->settings[$model->alias]['fields'];
 		if ($model->hasField('is_latest') && Hash::get($model->data, $setting['is_latest'])) {
 			$topic[] = $this->_getTopic($model,
 				['is_latest' => Hash::get($model->data, $setting['is_latest'])]
@@ -484,7 +490,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 			'Topic' => 'Topics.Topic',
 		]);
 
-		$setting = $this->settings['fields'];
+		$setting = $this->settings[$model->alias]['fields'];
 		if (Hash::get($model->data, $model->alias . '.key')) {
 			$defaultConditions = array(
 				'plugin_key' => Current::read('Plugin.key'),
@@ -556,7 +562,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 			'conditions' => ['topic_id' => $topicId],
 		));
 		$saved = array_unique(array_values($saved));
-		$delete = array_diff($saved, $this->settings['users']);
+		$delete = array_diff($saved, $this->settings[$model->alias]['users']);
 		if (count($delete) > 0) {
 			$conditions = array(
 				$model->TopicReadable->alias . '.topic_id' => $topicId,
@@ -568,7 +574,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 		}
 
 		//登録処理
-		foreach ($this->settings['users'] as $userId) {
+		foreach ($this->settings[$model->alias]['users'] as $userId) {
 			$conditions = array('topic_id' => $topicId, 'user_id' => $userId);
 			$count = $model->TopicReadable->find('count', array(
 				'recursive' => -1,
