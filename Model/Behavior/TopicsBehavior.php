@@ -134,6 +134,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
  * @param bool $cascade If true records that depend on this record will also be deleted
  * @return mixed False if the operation should abort. Any other result will continue.
  * @throws InternalErrorException
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function beforeDelete(Model $model, $cascade = true) {
 		$model->loadModels([
