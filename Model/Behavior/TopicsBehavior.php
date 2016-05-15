@@ -54,6 +54,13 @@ class TopicsBehavior extends TopicsBaseBehavior {
 	);
 
 /**
+ * 削除するデータ保持用配列
+ *
+ * @var array
+ */
+	protected $_deletedRow = array();
+
+/**
  * Setup this behavior with the specified configuration settings.
  *
  * @param Model $model 呼び出し元のモデル
@@ -78,8 +85,9 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		$this->_setupSearchContents($model);
 
 		$fields = $this->settings[$model->alias]['fields'];
-		$this->settings[$model->alias]['fields']['is_answer'] =
-				$fields['answer_period_start'] || $fields['answer_period_end'];
+
+		$isAnswer = $fields['answer_period_start'] || $fields['answer_period_end'];
+		$this->settings[$model->alias]['fields']['is_answer'] = $isAnswer;
 	}
 
 /**
@@ -116,6 +124,97 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		}
 
 		return parent::afterSave($model, $created, $options);
+	}
+
+/**
+ * Before delete is called before any delete occurs on the attached model, but after the model's
+ * beforeDelete is called. Returning false from a beforeDelete will abort the delete.
+ *
+ * @param Model $model Model using this behavior
+ * @param bool $cascade If true records that depend on this record will also be deleted
+ * @return mixed False if the operation should abort. Any other result will continue.
+ * @throws InternalErrorException
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function beforeDelete(Model $model, $cascade = true) {
+		$model->loadModels([
+			'Block' => 'Blocks.Block',
+			'Topic' => 'Topics.Topic',
+		]);
+
+		//idからkey取得
+		if (! $model->blockKey && ! $model->contentKey && $model->hasField('key')) {
+			$content = $model->find('first', array(
+				'recursive' => -1,
+				'conditions' => array('id' => $model->id)
+			));
+			$model->contentKey = Hash::get($content, $model->alias . '.key');
+		}
+
+		//削除するトピックID取得
+		$this->_deleteRow = array();
+		if ($model->blockKey) {
+			$blockIds = $model->Block->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'id'),
+				'conditions' => array('key' => $model->blockKey)
+			));
+
+			$result = $model->Topic->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'id'),
+				'conditions' => array('block_id' => $blockIds)
+			));
+			$this->_deleteRow = array_values($result);
+
+		} elseif ($model->contentKey) {
+			$result = $model->Topic->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'id'),
+				'conditions' => array('content_key' => $model->contentKey)
+			));
+			$this->_deleteRow = array_values($result);
+		}
+
+		return true;
+	}
+
+/**
+ * After delete is called after any delete occurs on the attached model.
+ *
+ * @param Model $model Model using this behavior
+ * @return void
+ * @throws InternalErrorException
+ */
+	public function afterDelete(Model $model) {
+		$model->loadModels([
+			'Topic' => 'Topics.Topic',
+			'TopicReadable' => 'Topics.TopicReadable',
+			'TopicUserStatus' => 'Topics.TopicUserStatus',
+		]);
+
+		if ($this->_deleteRow) {
+			//読めるかどうかデータ削除
+			$conditions = array($model->TopicReadable->alias . '.topic_id' => $this->_deleteRow);
+			$result = $model->TopicReadable->deleteAll($conditions, false, false);
+			if (! $result) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			//既読データ削除
+			$conditions = array($model->TopicUserStatus->alias . '.topic_id' => $this->_deleteRow);
+			$result = $model->TopicUserStatus->deleteAll($conditions, false, false);
+			if (! $result) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			//新着データの削除
+			$conditions = array($model->Topic->alias . '.id' => $this->_deleteRow);
+			$result = $model->Topic->deleteAll($conditions, false, false);
+			if (! $result) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
 	}
 
 /**
