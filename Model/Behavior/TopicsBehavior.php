@@ -142,7 +142,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		]);
 
 		//idからkey取得
-		if (! $model->contentKey && $model->hasField('key')) {
+		if (! $model->blockKey && ! $model->contentKey && $model->hasField('key')) {
 			$content = $model->find('first', array(
 				'recursive' => -1,
 				'conditions' => array('id' => $model->id)
@@ -162,7 +162,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			$result = $model->Topic->find('list', array(
 				'recursive' => -1,
 				'fields' => array('id', 'id'),
-				'conditions' => array('key' => $blockIds)
+				'conditions' => array('block_id' => $blockIds)
 			));
 			$this->_deleteRow = array_values($result);
 
