@@ -8,12 +8,30 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
-
-$camelizeData = $this->Topics->camelizeKeyRecursive($topics);
 ?>
-<div ng-controller="TopicsController" ng-init="initialize(<?php echo h(json_encode($camelizeData, true)); ?>)">
-	<article ng-repeat="item in topics track by $index">
+
+<?php echo $this->element('Topics.Topics/header'); ?>
+
+<?php foreach ($rooms as $key => $name) : ?>
+	<?php if ($topics[$key]['paging']['count'] > 0) : ?>
 		<hr>
-		<?php echo $this->element('Topics.Topics/item'); ?>
-	</article>
-</div>
+		<h3><?php echo h($name); ?></h3>
+
+		<?php
+			$camelizeData = $this->Topics->camelizeKeyRecursive($topics[$key]['topics']);
+			$params = array(
+				'named' => $this->request->params['named'],
+				'paging' => $topics[$key]['paging'],
+				'params' => array(
+					'frame_id' => Current::read('Frame.id'),
+					'room_id' => $key,
+				),
+			);
+
+			echo $this->element('Topics.Topics/index_article', array(
+				'camelizeData' => $camelizeData,
+				'params' => $params
+			));
+		?>
+	<?php endif; ?>
+<?php endforeach;

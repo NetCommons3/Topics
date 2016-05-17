@@ -81,10 +81,14 @@ class TopicFrameSetting extends TopicsAppModel {
 				),
 			),
 			'display_type' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
+				'inList' => array(
+					'rule' => array('inList', array(
+						self::DISPLAY_TYPE_FLAT,
+						self::DISPLAY_TYPE_PLUGIN,
+						self::DISPLAY_TYPE_ROOMS
+					)),
 					'message' => __d('net_commons', 'Invalid request.'),
-				),
+				)
 			),
 			'unit_type' => array(
 				'boolean' => array(
@@ -327,7 +331,7 @@ class TopicFrameSetting extends TopicsAppModel {
 		$options = array();
 
 		//指定したルームのみ表示する
-		$conditions = $this->TopicFramesRoom->getConditions($topicFrameSetting, $conditions);
+		$conditions = $this->TopicFramesRoom->getTopicConditions($topicFrameSetting, $conditions);
 
 		//指定したプラグインのみ表示する
 		$conditions = $this->TopicFramesPlugin->getConditions($topicFrameSetting, $conditions);

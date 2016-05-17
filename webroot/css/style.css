@@ -23,6 +23,7 @@ h3.topic-row > div {
 
 article > .topic-row {
 	margin-bottom: 4px;
+	/*line-height: 1.0em;*/
 }
 article .topic-plugin-name,
 article .topic-datetime,
@@ -34,9 +35,12 @@ article .topic-status {
 	margin-bottom: 2px;
 }
 
+article .topic-category-name:first-child {
+	/*padding-left: 0px;*/
+}
 article .topic-category-name,
 article .topic-handle-name {
-	padding-left: 2em;
+	/*padding-left: 2em;*/
 }
 
 article h3 .topic-plugin-name.small > .label,
