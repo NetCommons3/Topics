@@ -221,30 +221,32 @@
 		</div>
 	</div>
 
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.use_rss_feed', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'RSS feed'),
-					'class' => false,
-					'div' => false,
-					'childDiv' => array('class' => 'form-inline'),
-					'ng-click' => $rssFeedDomId . ' = checked($event)',
-				));
-			?>
-		</div>
+	<?php if (Current::read('Space.id') === Space::PUBLIC_SPACE_ID) : ?>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<?php
+					echo $this->NetCommonsForm->input('TopicFrameSetting.use_rss_feed', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'RSS feed'),
+						'class' => false,
+						'div' => false,
+						'childDiv' => array('class' => 'form-inline'),
+						'ng-click' => $rssFeedDomId . ' = checked($event)',
+					));
+				?>
+			</div>
 
-		<div class="panel-body" ng-show="<?php echo $rssFeedDomId; ?>">
-			<?php echo $this->NetCommonsForm->input('TopicFrameSetting.feed_title', array(
-					'label' => __d('topics', 'Feed title'),
-				)); ?>
+			<div class="panel-body" ng-show="<?php echo $rssFeedDomId; ?>">
+				<?php echo $this->NetCommonsForm->input('TopicFrameSetting.feed_title', array(
+						'label' => __d('topics', 'Feed title'),
+					)); ?>
 
-			<?php echo $this->NetCommonsForm->input('TopicFrameSetting.feed_summary', array(
-					'type' => 'textarea',
-					'label' => __d('topics', 'Feed summary'),
-					'help' => $this->Topics->rssSettingHelp(__d('topics', '{X-SITE_NAME} : Site name'))
-				)); ?>
+				<?php echo $this->NetCommonsForm->input('TopicFrameSetting.feed_summary', array(
+						'type' => 'textarea',
+						'label' => __d('topics', 'Feed summary'),
+						'help' => $this->Topics->rssSettingHelp(__d('topics', '{X-SITE_NAME} : Site name'))
+					)); ?>
+			</div>
 		</div>
-	</div>
+	<?php endif; ?>
 </div>
