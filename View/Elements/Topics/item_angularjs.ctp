@@ -41,20 +41,36 @@
 	</div>
 </h3>
 <div class="row topic-row">
+	<?php
+		if ($topicFrameSetting['display_room_name']) {
+			$colNoCateSmSize = 6;
+			$colCateSmSize = 4;
+		} else {
+			$colNoCateSmSize = 12;
+			$colCateSmSize = 6;
+		}
+		$colXsSize = 12;
+
+		$colNoCateClass = 'col-sm-' . $colNoCateSmSize . ' col-xs-' . $colXsSize;
+		$colCateClass = 'col-sm-' . $colCateSmSize . ' col-xs-' . $colXsSize;
+	?>
+
 	<?php if ($topicFrameSetting['display_room_name']) : ?>
 		<div class="topic-room-name"
-				ng-class="{'col-sm-6 col-xs-6': !item.category.name, 'col-sm-4 col-xs-6': item.category.name}">
+				ng-class="{'<?php echo $colNoCateClass; ?>': !item.category.name,
+							'<?php echo $colCateClass; ?>': item.category.name}">
 			{{item.roomsLanguage.displayName}}
 		</div>
 	<?php endif; ?>
 
-	<div class="topic-category-name col-sm-4 col-xs-6" ng-show="item.category.name">
+	<div class="topic-category-name <?php echo $colCateClass; ?>" ng-show="item.category.name">
 		{{item.category.displayName}}
 	</div>
 
 	<?php if ($topicFrameSetting['display_created_user']) : ?>
 		<div class="topic-handle-name text-right"
-				ng-class="{'col-sm-6 col-xs-6': !item.category.name, 'col-sm-4 col-xs-12': item.category.name}">
+					ng-class="{'<?php echo $colNoCateClass; ?>': !item.category.name,
+								'<?php echo $colCateClass; ?>': item.category.name}">
 
 			<span ng-bind-html="item.trackableCreator.avatar | ncHtmlContent"></span>
 			<a ng-click="showUser(item.trackableCreator.id)" ng-controller="Users.controller" href="#">

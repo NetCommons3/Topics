@@ -23,7 +23,7 @@
 
 	<br ng-show="paging.nextPage">
 	<div class="form-group" ng-show="paging.nextPage">
-		<button type="button" class="btn btn-default btn-block" ng-click="more()">
+		<button type="button" class="btn btn-info btn-block btn-sm" ng-click="more()">
 			<?php echo __d('net_commons', 'More'); ?>
 		</button>
 	</div>

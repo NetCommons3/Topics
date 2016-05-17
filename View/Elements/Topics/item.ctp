@@ -44,14 +44,12 @@
 	<?php
 		if ($topicFrameSetting['display_room_name'] && $item['category']['name']) {
 			$colSmSize = 4;
-			$colXsSize = 6;
 		} elseif ($topicFrameSetting['display_room_name'] || $item['category']['name']) {
 			$colSmSize = 6;
-			$colXsSize = 6;
 		} else {
 			$colSmSize = 12;
-			$colXsSize = 12;
 		}
+		$colXsSize = 12;
 
 		$colClass = 'col-sm-' . $colSmSize . ' col-xs-' . $colXsSize;
 	?>
