@@ -66,7 +66,7 @@
 
 <?php if ($topicFrameSetting['display_summary']) : ?>
 	<div class="row topic-row">
-		<div class="col-xs-12 text-muted topic-summary topic-row" ng-bind-html="item.topic.summary | ncHtmlContent">
+		<div class="col-xs-12 text-muted topic-summary topic-row" ng-bind-html="item.topic.displaySummary | ncHtmlContent">
 		</div>
 	</div>
 <?php endif;

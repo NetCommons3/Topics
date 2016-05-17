@@ -9,13 +9,25 @@
 /**
  * 新着一覧
  */
+article.topic-row-outer:first-child {
+	margin-top: 0px;
+}
+article.topic-row-outer {
+	margin-top: 24px;
+	margin-bottom: 10px;
+}
+
+h3.topic-row > div {
+	margin-top: 4px;
+}
+
 article > .topic-row {
-	margin-bottom: 5px;
+	margin-bottom: 4px;
 }
 article .topic-plugin-name,
 article .topic-datetime,
 article .topic-status {
-	margin-left: 10px;
+	margin-left: 8px;
 }
 
 article .topic-status {

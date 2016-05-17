@@ -110,6 +110,11 @@ class TopicsHelper extends AppHelper {
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
 			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_ROOM_NAME_LENGTH, '...');
 
+		} elseif ($camelKey === 'summary') {
+			$newResult[$camelKey] = $value;
+			$camelKey = call_user_func($callback, 'display_' . $camelKey);
+			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_SUMMARY_LENGTH, '...');
+
 		} elseif ($camelKey === 'path') {
 			$url = $value;
 			if (Hash::get($newResult, 'frameId')) {
@@ -146,7 +151,7 @@ class TopicsHelper extends AppHelper {
 		//$answerPeriodStart = Hash::get($newResult, 'topic.answerPeriodStart');
 		$answerPeriodEnd = Hash::get($newResult, 'topic.answerPeriodEnd');
 
-		$labels = Topic::$statuses;
+		$labels = (new Topic())->statuses;
 
 		$now = gmdate('Y-m-d H:i:s');
 
@@ -209,7 +214,7 @@ class TopicsHelper extends AppHelper {
 
 		$options = Hash::merge(
 			array('0' => __d('net_commons', 'All Statuses')),
-			Hash::combine(Topic::$statuses, '{n}.key', '{n}.message')
+			Hash::combine((new Topic())->statuses, '{n}.key', '{n}.message')
 		);
 
 		return $this->_View->element('Topics.Topics/select_status', array(

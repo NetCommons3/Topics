@@ -36,7 +36,6 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
    * @return {void}
    */
   $scope.selected = function($event) {
-    console.log($event);
     if (! $event) {
       return;
     }
@@ -66,9 +65,9 @@ NetCommonsApp.controller('TopicsController',
        * @return {void}
        */
       $scope.initialize = function(data) {
-        $scope.frameId = data['frameId'];
-        $scope.urlParams = data['urlParams'];
-        $scope.paginator = data['paginator'];
+        $scope.named = data['named'];
+        $scope.paging = data['paging'];
+        $scope.params = data['params'];
       };
 
       /**
@@ -78,14 +77,14 @@ NetCommonsApp.controller('TopicsController',
        */
       $scope.more = function() {
         var url = '/topics/topics/index';
-        angular.forEach($scope.urlParams, function(value, key) {
+        angular.forEach($scope.named, function(value, key) {
           url = url + '/' + key + ':' + value;
         });
-        url = url + '/page:' + ($scope.paginator['page'] + 1);
+        url = url + '/page:' + ($scope.paging['page'] + 1);
 
-        $http.get($scope.baseUrl + url + '.json', {params: {frame_id: $scope.frameId}})
+        $http.get($scope.baseUrl + url + '.json', {params: $scope.params})
           .success(function(data) {
-              $scope.paginator = data['paginator'];
+              $scope.paging = data['paging'];
               angular.forEach(data['topics'], function(value) {
                 $scope.topics.push(value);
               });

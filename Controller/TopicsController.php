@@ -59,6 +59,7 @@ class TopicsController extends TopicsAppController {
 	public function index() {
 		$topicFrameSetting = $this->TopicFrameSetting->getTopicFrameSetting();
 		$this->set('topicFrameSetting', $topicFrameSetting['TopicFrameSetting']);
+		$displayType = $this->viewVars['topicFrameSetting']['display_type'];
 
 		$conditions = array();
 
@@ -70,24 +71,61 @@ class TopicsController extends TopicsAppController {
 			$conditions['Topic.publish_start >='] = $period;
 		}
 
-		$displayType = $this->viewVars['topicFrameSetting']['display_type'];
 		if ($displayType === TopicFrameSetting::DISPLAY_TYPE_ROOMS) {
 			$this->view = 'index_rooms';
 		} elseif ($displayType === TopicFrameSetting::DISPLAY_TYPE_PLUGIN) {
+			//プラグインごとに表示する
+			$pluginKey = Hash::get($this->request->query, 'plugin_key');
+			if ($pluginKey) {
+				$conditions['Plugin.key'] = $pluginKey;
+			}
+
+			$plugins = $this->TopicFramesPlugin->getPlugins($topicFrameSetting, $conditions);
+			$this->set('plugins', $plugins);
+
+			$topics = array();
+			$pluginKeys = array_keys($plugins);
+			foreach ($pluginKeys as $pluginKey) {
+				$conditions['Plugin.key'] = $pluginKey;
+				$topics[$pluginKey] = $this->__getTopics($topicFrameSetting, $conditions);
+			}
+			$this->set('topics', $topics);
+
 			$this->view = 'index_plugins';
 		} else {
-			$options = $this->TopicFrameSetting->getQueryOptions($topicFrameSetting, $conditions);
-			$this->Paginator->settings = array(
-				'Topic' => $this->Topic->getQueryOptions(
-					Hash::get($this->params['named'], 'status', '0'), $options
-				)
-			);
-
-			$topics = $this->Paginator->paginate('Topic');
-			$topics = Hash::remove($topics, '{n}.Topic.search_contents');
-			$this->set('topics', $topics);
+			//フラット表示
+			$result = $this->__getTopics($topicFrameSetting, $conditions);
+			$this->set('topics', $result['topics']);
+			$this->set('paging', $result['paging']);
 
 			$this->view = 'index';
 		}
 	}
+
+/**
+ * プラグインデータ取得
+ *
+ * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @param array $conditions 条件配列
+ * @return array
+ */
+	private function __getTopics($topicFrameSetting, $conditions) {
+		$options = $this->TopicFrameSetting->getQueryOptions($topicFrameSetting, $conditions);
+		$this->Paginator->settings = array(
+			'Topic' => $this->Topic->getQueryOptions(
+				Hash::get($this->params['named'], 'status', '0'), $options
+			),
+		);
+
+		$topics = $this->Paginator->paginate('Topic');
+		$topics = Hash::remove($topics, '{n}.Topic.search_contents');
+
+		$paging = $this->request['paging'];
+		$paging = Hash::remove($paging, 'Topic.order');
+		$paging = Hash::remove($paging, 'Topic.options');
+		$paging = Hash::remove($paging, 'Topic.paramType');
+
+		return array('topics' => $topics, 'paging' => $paging['Topic']);
+	}
+
 }
