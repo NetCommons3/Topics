@@ -97,7 +97,7 @@ class TopicFramesRoom extends TopicsAppModel {
  * @param array $conditions 条件配列
  * @return array 条件配列
  */
-	public function getConditions($topicFrameSetting, $conditions) {
+	public function getTopicConditions($topicFrameSetting, $conditions) {
 		if (Hash::get($conditions, 'Topic.room_id')) {
 			$conditions['Topic.room_id'] = Hash::get($conditions, 'Topic.room_id');
 
@@ -110,6 +110,34 @@ class TopicFramesRoom extends TopicsAppModel {
 			$roomIds = array_unique(array_values($roomIds));
 
 			$conditions[0]['OR']['Topic.room_id'] = array_merge(array('0'), $roomIds);
+			if ($topicFrameSetting['TopicFrameSetting']['show_my_room'] && Current::read('User.id')) {
+				$conditions[0]['OR']['Room.space_id'] = Space::PRIVATE_SPACE_ID;
+			}
+		}
+
+		return $conditions;
+	}
+
+/**
+ * 新着取得するための条件を取得する
+ *
+ * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @param array $conditions 条件配列
+ * @return array 条件配列
+ */
+	public function getConditions($topicFrameSetting, $conditions) {
+		if (Hash::get($conditions, $this->alias . '.room_id')) {
+			$conditions[$this->alias . '.room_id'] = Hash::get($conditions, $this->alias . '.room_id');
+
+		} elseif ($topicFrameSetting['TopicFrameSetting']['select_room']) {
+			$roomIds = $this->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'room_id'),
+				'conditions' => ['frame_key' => Current::read('Frame.key')],
+			));
+			$roomIds = array_unique(array_values($roomIds));
+
+			$conditions[0]['OR']['Room.id'] = array_merge(array('0'), $roomIds);
 			if ($topicFrameSetting['TopicFrameSetting']['show_my_room'] && Current::read('User.id')) {
 				$conditions[0]['OR']['Room.space_id'] = Space::PRIVATE_SPACE_ID;
 			}
@@ -164,6 +192,45 @@ class TopicFramesRoom extends TopicsAppModel {
 		}
 
 		return true;
+	}
+
+/**
+ * ルームデータ取得
+ *
+ * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @param array $conditions 条件配列
+ * @return array
+ */
+	public function getRooms($topicFrameSetting, $conditions = []) {
+		$this->loadModels([
+			'RoomsLanguage' => 'Rooms.RoomsLanguage',
+		]);
+
+		//$roomIds = $this->Room->find('list', $options);
+
+		if ($topicFrameSetting['TopicFrameSetting']['select_room']) {
+			$conditions = $this->getConditions($topicFrameSetting, $conditions);
+		}
+
+		$options = $this->Room->getReadableRoomsConditions($conditions);
+		$options['fields'] = array('Room.id', 'Room.parent_id', 'RoomsLanguage.name');
+		$options['joins'][] = array(
+			'table' => $this->RoomsLanguage->table,
+			'alias' => $this->RoomsLanguage->alias,
+			'type' => 'INNER',
+			'conditions' => array(
+				$this->RoomsLanguage->alias . '.room_id' . ' = ' . $this->Room->alias . ' .id',
+				$this->RoomsLanguage->alias . '.language_id' => Current::read('Language.id', '0'),
+			),
+		);
+		$rooms = $this->Room->find('all', $options);
+
+		$result = array();
+		foreach ($rooms as $room) {
+			$result[$room['Room']['id']] = $room['RoomsLanguage']['name'];
+		}
+
+		return $result;
 	}
 
 }

@@ -42,27 +42,32 @@
 </h3>
 <div class="row topic-row">
 	<?php
-		if ($item['category']['name']) {
-			$colClass = 'col-sm-4 col-xs-6';
+		if ($topicFrameSetting['display_room_name'] && $item['category']['name']) {
+			$colSmSize = 4;
+		} elseif ($topicFrameSetting['display_room_name'] || $item['category']['name']) {
+			$colSmSize = 6;
 		} else {
-			$colClass = 'col-sm-6 col-xs-6';
+			$colSmSize = 12;
 		}
+		$colXsSize = 12;
+
+		$colClass = 'col-sm-' . $colSmSize . ' col-xs-' . $colXsSize;
 	?>
 
 	<?php if ($topicFrameSetting['display_room_name']) : ?>
-		<div class="topic-room-name <?php echo $colClass; ?>">
+		<div class="topic-room-name <?php echo 'col-sm-' . $colSmSize . ' col-xs-' . $colXsSize; ?>">
 			<?php echo h($item['roomsLanguage']['displayName']); ?>
 		</div>
 	<?php endif; ?>
 
 	<?php if ($item['category']['name']) : ?>
-		<div class="topic-category-name col-sm-4 col-xs-6">
+		<div class="topic-category-name <?php echo 'col-sm-' . $colSmSize . ' col-xs-' . $colXsSize; ?>">
 			<?php echo h($item['category']['displayName']); ?>
 		</div>
 	<?php endif; ?>
 
 	<?php if ($topicFrameSetting['display_created_user']) : ?>
-		<div class="topic-handle-name <?php echo $colClass; ?> text-right">
+		<div class="topic-handle-name <?php echo 'col-sm-' . $colSmSize; ?> col-xs-12 text-right">
 			<?php echo $item['trackableCreator']['avatar']; ?>
 			<a ng-click="showUser(<?php echo $item['trackableCreator']['id']; ?>)" ng-controller="Users.controller" href="#">
 				<?php echo h($item['trackableCreator']['handlename']); ?>

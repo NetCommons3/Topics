@@ -27,25 +27,11 @@
 					'plugin_key' => $key,
 				),
 			);
+
+			echo $this->element('Topics.Topics/index_article', array(
+				'camelizeData' => $camelizeData,
+				'params' => $params
+			));
 		?>
-		<article ng-controller="TopicsController" ng-init="initialize(<?php echo h(json_encode($params, true)); ?>)">
-			<?php foreach ($camelizeData as $item) : ?>
-				<article class="topic-row-outer">
-					<?php echo $this->element('Topics.Topics/item', array('item' => $item)); ?>
-				</article>
-			<?php endforeach; ?>
-
-			<article class="topic-row-outer" ng-repeat="item in topics track by $index">
-				<?php echo $this->element('Topics.Topics/item_angularjs'); ?>
-			</article>
-
-			<br ng-show="paging.nextPage">
-			<div class="form-group" ng-show="paging.nextPage">
-				<button type="button" class="btn btn-default btn-block" ng-click="more()">
-					<?php echo __d('net_commons', 'More'); ?>
-				</button>
-			</div>
-
-		</article>
 	<?php endif; ?>
 <?php endforeach;
