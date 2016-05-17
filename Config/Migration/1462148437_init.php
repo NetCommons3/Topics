@@ -38,7 +38,7 @@ class Init extends NetCommonsMigration {
 				'topic_frame_settings' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'unsigned' => false, 'key' => 'primary'),
 					'frame_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'display_type' => array('type' => 'boolean', 'null' => false, 'default' => null),
+					'display_type' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'unsigned' => false, 'comment' => '表示タイプ 0: フラット, 1: プラグインごとに表示, 2: ルームごとに表示'),
 					'unit_type' => array('type' => 'integer', 'null' => false, 'default' => null, 'comment' => 'Whether to handle (n days / n counts) as new topics.'),
 					'display_days' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 3, 'unsigned' => false),
 					'display_number' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 3, 'unsigned' => false),
