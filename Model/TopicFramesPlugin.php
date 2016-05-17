@@ -78,7 +78,7 @@ class TopicFramesPlugin extends TopicsAppModel {
  * @param array $conditions 条件配列
  * @return array 条件配列
  */
-	public function getConditions($topicFrameSetting, $conditions) {
+	public function getConditions($topicFrameSetting, $conditions = []) {
 		if (Hash::get($conditions, 'Topic.plugin_key')) {
 			$conditions['Topic.plugin_key'] = Hash::get($conditions, 'Topic.plugin_key');
 		} elseif ($topicFrameSetting['TopicFrameSetting']['select_plugin']) {
@@ -93,6 +93,56 @@ class TopicFramesPlugin extends TopicsAppModel {
 		}
 
 		return $conditions;
+	}
+
+/**
+ * プラグインデータ取得
+ *
+ * @param array $topicFrameSetting TopicFrameSettingデータ
+ * @param array $conditions 条件配列
+ * @return array
+ */
+	public function getPlugins($topicFrameSetting, $conditions = []) {
+		if ($topicFrameSetting['TopicFrameSetting']['select_plugin']) {
+			$this->bindModel(array(
+				'belongsTo' => array(
+					'Plugin' => array(
+						'className' => 'PluginManager.Plugin',
+						'fields' => array('id', 'name'),
+						'foreignKey' => false,
+						'type' => 'INNER',
+						'conditions' => array(
+							'Plugin.key' . ' = ' . $this->alias . '.plugin_key',
+							'Plugin.language_id' => Current::read('Language.id', '0'),
+						),
+					)
+				)
+			), true);
+
+			$plugin = $this->find('list', array(
+				'recursive' => 0,
+				'fields' => array('Plugin.key', 'Plugin.name'),
+				'conditions' => $this->getConditions($topicFrameSetting, $conditions),
+				'order' => 'weight'
+			));
+		} else {
+			$this->loadModels([
+				'Plugin' => 'PluginManager.Plugin',
+			]);
+
+			$conditions = Hash::merge(
+				array('display_topics' => true, 'language_id' => Current::read('Language.id', '0')),
+				$conditions
+			);
+			$plugin = $this->Plugin->find('list', array(
+				'recursive' => -1,
+				'fields' => array('key', 'name'),
+				'conditions' => $conditions,
+				'order' => 'weight'
+			));
+		}
+
+		return $plugin;
 	}
 
 /**

@@ -49,6 +49,13 @@ class Topic extends TopicsAppModel {
 	const DISPLAY_TITLE_LENGTH = 64;
 
 /**
+ * 概要の文字数
+ *
+ * @var int
+ */
+	const DISPLAY_SUMMARY_LENGTH = 128;
+
+/**
  * ルーム名表示時の文字数
  *
  * @var int
@@ -97,7 +104,7 @@ class Topic extends TopicsAppModel {
  *
  * @var array
  */
-	public static $statuses = array();
+	public $statuses = array();
 
 /**
  * Validation rules
@@ -196,7 +203,7 @@ class Topic extends TopicsAppModel {
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 
-		self::$statuses = array(
+		$this->statuses = array(
 			WorkflowComponent::STATUS_IN_DRAFT => array(
 				'key' => WorkflowComponent::STATUS_IN_DRAFT,
 				'class' => 'label-info',
@@ -407,7 +414,7 @@ class Topic extends TopicsAppModel {
 			$statusConditions = array(
 				'Topic.publish_start >' => $now,
 			);
-		} elseif (in_array((int)$status, array_keys(self::$statuses), true)) {
+		} elseif (in_array((int)$status, array_keys($this->statuses), true)) {
 			$statusConditions = array(
 				'Topic.status' => $status,
 			);
@@ -490,7 +497,7 @@ class Topic extends TopicsAppModel {
  * @return void
  */
 	private function __bindModel() {
-		//クエリ
+		//ページネーションで使うため、第二引数をfalseとする
 		$this->bindModel(array(
 			'belongsTo' => array(
 				'RoomsLanguage' => array(

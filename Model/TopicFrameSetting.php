@@ -356,6 +356,7 @@ class TopicFrameSetting extends TopicsAppModel {
 			$options['limit'] = (int)$topicFrameSetting[$this->alias]['display_number'];
 		} else {
 			$options['limit'] = 1000;
+			$options['maxLimit'] = 1000;
 		}
 
 		return $options;

@@ -74,7 +74,7 @@
 <?php if ($topicFrameSetting['display_summary']) : ?>
 	<div class="row topic-row">
 		<div class="col-xs-12 text-muted topic-summary topic-row">
-			<?php echo $item['topic']['summary']; ?>
+			<?php echo $item['topic']['displaySummary']; ?>
 		</div>
 	</div>
 <?php endif;
