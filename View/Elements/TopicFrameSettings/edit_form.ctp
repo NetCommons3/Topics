@@ -84,51 +84,78 @@
 
 		<div class="panel-body">
 			<div class="clearfix topics-display">
-				<?php
-					echo $this->NetCommonsForm->input('TopicFrameSetting.display_title', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'Title'),
-						'disabled' => true,
-					));
-				?>
-				<?php
-					echo $this->NetCommonsForm->input('TopicFrameSetting.display_summary', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'Detail'),
-					));
-				?>
-				<?php
-					echo $this->NetCommonsForm->input('TopicFrameSetting.display_room_name', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'Room name'),
-						'ng-disabled' => $displayTypeDomId . ' === ' . TopicFrameSetting::DISPLAY_TYPE_ROOMS,
-					));
-				?>
-				<?php
-					echo $this->NetCommonsForm->input('TopicFrameSetting.display_category_name', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'Category name'),
-					));
-				?>
-				<?php
-					echo $this->NetCommonsForm->input('TopicFrameSetting.display_plugin_name', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'Plugin name'),
-						'ng-disabled' => $displayTypeDomId . ' === ' . TopicFrameSetting::DISPLAY_TYPE_PLUGIN,
-					));
-				?>
-				<?php
-					echo $this->NetCommonsForm->input('TopicFrameSetting.display_created_user', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'Creator'),
-					));
-				?>
-				<?php
-					echo $this->NetCommonsForm->input('TopicFrameSetting.display_created', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'Creation datetime'),
-					));
-				?>
+				<div class="form-group">
+					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_title', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'Title'),
+							'disabled' => true,
+							'inline' => false,
+						));
+					?>
+				</div>
+
+				<div class="form-group">
+					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_summary', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'Detail'),
+							'inline' => false,
+						));
+					?>
+				</div>
+
+				<div class="form-group">
+					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_room_name', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'Room name'),
+							'ng-disabled' => $displayTypeDomId . ' === ' . TopicFrameSetting::DISPLAY_TYPE_ROOMS,
+							'inline' => false,
+						));
+					?>
+				</div>
+
+				<div class="form-group">
+					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_category_name', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'Category name'),
+							'inline' => false,
+						));
+					?>
+				</div>
+
+				<div class="form-group">
+					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_plugin_name', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'Plugin name'),
+							'ng-disabled' => $displayTypeDomId . ' === ' . TopicFrameSetting::DISPLAY_TYPE_PLUGIN,
+							'inline' => false,
+						));
+					?>
+				</div>
+
+				<div class="form-group">
+					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_created_user', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'Creator'),
+							'inline' => false,
+						));
+					?>
+				</div>
+
+				<div class="form-group">
+					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_created', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'Creation datetime'),
+							'inline' => false,
+						));
+					?>
+				</div>
 			</div>
 
 			<?php echo $this->NetCommonsForm->help(
@@ -139,15 +166,16 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.select_room', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Select room to show'),
-					'div' => 'form-inline',
-					'ng-checked' => $selectRoomDomId,
-					'ng-click' => $selectRoomDomId . ' = checked($event); ' . $selectBlockDomId . ' = 0;',
-				));
-			?>
+			<div class="form-inline">
+				<?php
+					echo $this->NetCommonsForm->checkbox('TopicFrameSetting.select_room', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Select room to show'),
+						'ng-checked' => $selectRoomDomId,
+						'ng-click' => $selectRoomDomId . ' = checked($event); ' . $selectBlockDomId . ' = 0;',
+					));
+				?>
+			</div>
 		</div>
 
 		<div class="panel-body" ng-show="<?php echo $selectRoomDomId; ?>">
@@ -164,7 +192,7 @@
 			</div>
 			<hr>
 			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.show_my_room', array(
+				echo $this->NetCommonsForm->checkbox('TopicFrameSetting.show_my_room', array(
 					'type' => 'checkbox',
 					'label' => __d('topics', 'Display my room as new arrival.'),
 					'div' => false
@@ -175,16 +203,16 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.select_plugin', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Select plugin to show'),
-					'class' => false,
-					'div' => 'form-inline',
-					'ng-checked' => $selectPluginDomId,
-					'ng-click' => $selectPluginDomId . ' = checked($event); ' . $selectBlockDomId . ' = 0;',
-				));
-			?>
+			<div class="form-inline">
+				<?php
+					echo $this->NetCommonsForm->checkbox('TopicFrameSetting.select_plugin', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Select plugin to show'),
+						'ng-checked' => $selectPluginDomId,
+						'ng-click' => $selectPluginDomId . ' = checked($event); ' . $selectBlockDomId . ' = 0;',
+					));
+				?>
+			</div>
 		</div>
 
 		<div class="panel-body" ng-show="<?php echo $selectPluginDomId; ?>">
@@ -206,15 +234,16 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<?php
-				echo $this->NetCommonsForm->input('TopicFrameSetting.select_block', array(
-					'type' => 'checkbox',
-					'label' => __d('topics', 'Select block to show'),
-					'div' => 'form-inline',
-					'ng-checked' => $selectBlockDomId,
-					'ng-click' => $selectBlockDomId . ' = checked($event); ' . $selectRoomDomId . ' = 0;' . $selectPluginDomId . ' = 0;',
-				));
-			?>
+			<div class="form-inline">
+				<?php
+					echo $this->NetCommonsForm->checkbox('TopicFrameSetting.select_block', array(
+						'type' => 'checkbox',
+						'label' => __d('topics', 'Select block to show'),
+						'ng-checked' => $selectBlockDomId,
+						'ng-click' => $selectBlockDomId . ' = checked($event); ' . $selectRoomDomId . ' = 0;' . $selectPluginDomId . ' = 0;',
+					));
+				?>
+			</div>
 		</div>
 
 		<div class="panel-body" ng-show="<?php echo $selectBlockDomId; ?>">
@@ -224,16 +253,15 @@
 	<?php if (Current::read('Space.id') === Space::PUBLIC_SPACE_ID) : ?>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<?php
-					echo $this->NetCommonsForm->input('TopicFrameSetting.use_rss_feed', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'RSS feed'),
-						'class' => false,
-						'div' => false,
-						'childDiv' => array('class' => 'form-inline'),
-						'ng-click' => $rssFeedDomId . ' = checked($event)',
-					));
-				?>
+				<div class="form-inline">
+					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.use_rss_feed', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'RSS feed'),
+							'ng-click' => $rssFeedDomId . ' = checked($event)',
+						));
+					?>
+				</div>
 			</div>
 
 			<div class="panel-body" ng-show="<?php echo $rssFeedDomId; ?>">
