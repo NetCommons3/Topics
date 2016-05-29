@@ -119,6 +119,10 @@ class TopicsController extends TopicsAppController {
 
 			$this->view = 'index';
 		}
+
+		if (! $this->viewVars['topics']) {
+			$this->view = 'not_found';
+		}
 	}
 
 /**
