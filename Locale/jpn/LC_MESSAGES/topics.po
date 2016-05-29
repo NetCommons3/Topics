@@ -125,3 +125,6 @@ msgstr "埋め込みキーワードとは？"
 
 msgid "Each of the embedded keywords, will be sent is converted to the corresponding content. <br />"
 msgstr "それぞれの埋め込みキーワードは、対応する内容に変換されて送信されます。<br />"
+
+msgid "No topic found."
+msgstr "一件もトピックがありません。"
