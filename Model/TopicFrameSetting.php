@@ -271,7 +271,7 @@ class TopicFrameSetting extends TopicsAppModel {
 			$topicFrameSetting = $this->create([
 				'display_type' => self::DISPLAY_TYPE_FLAT,
 				'unit_type' => self::UNIT_TYPE_DAYS,
-				'display_days' => '5',
+				'display_days' => '3',
 				'display_number' => '10',
 				'feed_title' => __d('topics', '[{X-SITE_NAME}]What\'s new'),
 				'feed_summary' => __d('topics', 'What\'s new today?'),
