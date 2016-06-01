@@ -26,12 +26,12 @@ article > .topic-row {
 	/*line-height: 1.0em;*/
 }
 article .topic-plugin-name,
-article .topic-datetime,
-article .topic-status {
+article .topic-datetime {
 	margin-left: 8px;
 }
 
 article .topic-status {
+	margin-right: 8px;
 	margin-bottom: 2px;
 }
 
