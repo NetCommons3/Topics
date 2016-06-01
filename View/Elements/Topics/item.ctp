@@ -12,8 +12,10 @@
 
 <h3 class="clearfix topic-row">
 	<div class="pull-left">
+		<div class="pull-left topic-status small">
+			<?php echo $item['topic']['displayStatus']; ?>
+		</div>
 		<div class="pull-left topic-title">
-			<?php echo $item['topic']['titleIcon']; ?>
 			<a href="<?php echo $item['topic']['path']; ?>" target="_tabs">
 				<?php echo h($item['topic']['displayTitle']); ?>
 			</a>
@@ -21,10 +23,6 @@
 	</div>
 
 	<div class="pull-right">
-		<div class="pull-left topic-status small">
-			<?php echo $item['topic']['displayStatus']; ?>
-		</div>
-
 		<?php if ($topicFrameSetting['display_plugin_name']) : ?>
 			<div class="pull-left topic-plugin-name small">
 				<span class="label label-default">

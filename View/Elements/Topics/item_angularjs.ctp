@@ -11,9 +11,12 @@
 ?>
 
 <h3 class="clearfix topic-row">
+	<div class="pull-left topic-status small">
+		<span ng-bind-html="item.topic.displayStatus | ncHtmlContent"></span>
+	</div>
+
 	<div class="pull-left">
 		<div class="pull-left topic-title">
-			<span ng-bind-html="item.topic.titleIcon | ncHtmlContent"></span>
 			<a ng-href="{{item.topic.path}}" target="_tabs">
 				{{item.topic.displayTitle}}
 			</a>
@@ -21,10 +24,6 @@
 	</div>
 
 	<div class="pull-right">
-		<div class="pull-left topic-status small">
-			<span ng-bind-html="item.topic.displayStatus | ncHtmlContent"></span>
-		</div>
-
 		<?php if ($topicFrameSetting['display_plugin_name']) : ?>
 			<div class="pull-left topic-plugin-name small">
 				<span class="label label-default">
