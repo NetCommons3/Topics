@@ -75,8 +75,8 @@ msgstr "指定したブロックのみ表示する"
 msgid "Select plugin to show"
 msgstr "指定したプラグインのみ表示する"
 
-msgid "Display my room as new arrival."
-msgstr "マイルームの新着を表示する"
+msgid "Display private room as new arrival."
+msgstr "プライベートルームの新着を表示する"
 
 msgid "Title"
 msgstr "件名"
