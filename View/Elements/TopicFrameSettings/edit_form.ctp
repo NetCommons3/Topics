@@ -194,7 +194,7 @@
 			<?php
 				echo $this->NetCommonsForm->checkbox('TopicFrameSetting.show_my_room', array(
 					'type' => 'checkbox',
-					'label' => __d('topics', 'Display my room as new arrival.'),
+					'label' => __d('topics', 'Display private room as new arrival.'),
 					'div' => false
 				));
 			?>
