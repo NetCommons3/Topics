@@ -12,7 +12,7 @@
 
 <h3 class="clearfix topic-row">
 	<div class="pull-left">
-		<div class="pull-left topic-status small">
+		<div class="pull-left topic-status small" ng-show="<?php echo (bool)$item['topic']['displayStatus']; ?>">
 			<?php echo $item['topic']['displayStatus']; ?>
 		</div>
 		<div class="pull-left topic-title">
