@@ -11,7 +11,7 @@
 ?>
 
 <h3 class="clearfix topic-row">
-	<div class="pull-left topic-status small">
+	<div class="pull-left topic-status small" ng-show="(item.topic.displayStatus !== '')">
 		<span ng-bind-html="item.topic.displayStatus | ncHtmlContent"></span>
 	</div>
 
