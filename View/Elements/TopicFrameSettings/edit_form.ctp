@@ -232,24 +232,6 @@
 		</div>
 	</div>
 
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<div class="form-inline">
-				<?php
-					echo $this->NetCommonsForm->checkbox('TopicFrameSetting.select_block', array(
-						'type' => 'checkbox',
-						'label' => __d('topics', 'Select block to show'),
-						'ng-checked' => $selectBlockDomId,
-						'ng-click' => $selectBlockDomId . ' = checked($event); ' . $selectRoomDomId . ' = 0;' . $selectPluginDomId . ' = 0;',
-					));
-				?>
-			</div>
-		</div>
-
-		<div class="panel-body" ng-show="<?php echo $selectBlockDomId; ?>">
-		</div>
-	</div>
-
 	<?php if (Current::read('Space.id') === Space::PUBLIC_SPACE_ID) : ?>
 		<div class="panel panel-default">
 			<div class="panel-heading">
