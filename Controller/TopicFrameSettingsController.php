@@ -135,5 +135,13 @@ class TopicFrameSettingsController extends TopicsAppController {
 		}
 
 		$this->RoomsForm->setRoomsForCheckbox();
+		$this->PluginsForm->setPluginsRoomForCheckbox($this, $this->PluginsForm->findOptions);
+
+		$options = Hash::extract(
+			$this->viewVars['pluginsRoom'], '{n}.Plugin.key'
+		);
+
+		$blocks = $this->TopicFrameSetting->getBlocks($options);
+		$this->set('selectBlocks', $blocks);
 	}
 }

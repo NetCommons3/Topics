@@ -247,6 +247,12 @@
 		</div>
 
 		<div class="panel-body" ng-show="<?php echo $selectBlockDomId; ?>">
+			<div class="form-inline">
+				<?php
+					echo $this->PluginsForm->selectPluginsRoom('_block_plugin_key');
+				?>
+			</div>
+
 		</div>
 	</div>
 

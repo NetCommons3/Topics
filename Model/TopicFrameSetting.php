@@ -366,4 +366,47 @@ class TopicFrameSetting extends TopicsAppModel {
 		return $options;
 	}
 
+/**
+ * 新着に表示するブロックデータ取得
+ *
+ * @param array $pluginKeys プラグインキーリスト
+ * @return array ブロックデータ
+ */
+	public function getBlocks($pluginKeys) {
+		$this->loadModels([
+			'Block' => 'Blocks.Block',
+		]);
+
+		//TODO:除外するプラグインを羅列する
+
+		$conditions = array(
+			'room_id' => Current::read('Room.id'),
+			'language_id' => Current::read('Language.id'),
+			'plugin_key' => $pluginKeys,
+		);
+
+		if (! Current::permission('block_editable')) {
+			$now = gmdate('Y-m-d H:i:s');
+			//ブロック公開設定の条件生成
+			$conditions['OR'] = array(
+				$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
+				array(
+					$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
+					$this->Block->alias . '.publish_start <=' => $now,
+					$this->Block->alias . '.publish_end >=' => $now,
+				),
+			);
+		}
+
+		$blocks = $this->Block->find('all', array(
+			'recursive' => -1,
+			'fields' => array('plugin_key', 'key', 'name'),
+			'conditions' => $conditions,
+		));
+
+		$blocks = Hash::combine($blocks, '{n}.Block.key', '{n}.Block', '{n}.Block.plugin_key');
+
+		return $blocks;
+	}
+
 }
