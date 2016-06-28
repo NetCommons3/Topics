@@ -246,13 +246,50 @@
 			</div>
 		</div>
 
-		<div class="panel-body" ng-show="<?php echo $selectBlockDomId; ?>">
-			<div class="form-inline">
+		<?php
+			$selectBlocksByJson = h(json_encode($selectBlocks, true));
+			$selectBlockKey = '\'' . Hash::get($this->request->data, 'TopicFramesBlock.block_key') . '\'';
+		?>
+		<div class="panel-body" ng-show="<?php echo $selectBlockDomId; ?>"
+				ng-init="initBlocks(<?php echo $selectBlocksByJson . ', ' . $selectBlockKey; ?>)">
+
+			<div class="form-inline form-group">
 				<?php
-					echo $this->PluginsForm->selectPluginsRoom('_block_plugin_key');
+					$options = Hash::combine(
+						$pluginsRoom, '{n}.Plugin.key', '{n}.Plugin.name'
+					);
+					foreach (TopicFrameSetting::$outPlugins as $plugin) {
+						$options = Hash::remove($options, $plugin);
+					}
+					$first = array_slice(array_keys($options), 0, 1);
+					echo $this->PluginsForm->selectPluginsRoom('_Topic.block_plugin_key',
+						array(
+							'label' => false,
+							'options' => $options,
+							'ng-model' => 'selectBlockPluginKey',
+							'ng-init' => 'selectBlockPluginKey = \'' . Hash::get($first, '0') . '\'',
+							'ng-click' => 'blockOptions = optionBlocks(selectBlockPluginKey)',
+						)
+					);
 				?>
 			</div>
 
+			<div class="form-group" ng-init="blockOptions = optionBlocks(selectBlockPluginKey)">
+				<?php
+					echo $this->NetCommonsForm->select('TopicFramesBlock.block_key',
+						Hash::combine($selectBlocks, '{s}.{s}.key', '{s}.{s}.name'),
+						array(
+							'size' => 10, 'class' => 'form-control', 'empty' => false,
+							'ng-options' => 'item as item.name for item in blockOptions track by item.key',
+							'ng-model' => 'selectBlockKey',
+							'ng-show' => 'blockOptions'
+						)
+					);
+				?>
+				<div ng-hide="blockOptions">
+					<?php echo __d('topics', 'No block found.'); ?>
+				</div>
+			</div>
 		</div>
 	</div>
 

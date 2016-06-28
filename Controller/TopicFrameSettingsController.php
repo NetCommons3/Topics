@@ -126,12 +126,13 @@ class TopicFrameSettingsController extends TopicsAppController {
 			$this->request->data['TopicFramesPlugin']['plugin_key'] = array_unique(array_values($result));
 
 			//表示するブロックを取得
-			$result = $this->TopicFramesBlock->find('list', array(
+			$result = $this->TopicFramesBlock->find('first', array(
 				'recursive' => -1,
 				'fields' => array('id', 'block_key'),
 				'conditions' => ['frame_key' => Current::read('Frame.key')],
 			));
-			$this->request->data['TopicFramesBlock']['block_id'] = array_unique(array_values($result));
+			$blockKey = Hash::get($result, 'TopicFramesBlock.block_key');
+			$this->request->data['TopicFramesBlock']['block_key'] = $blockKey;
 		}
 
 		$this->RoomsForm->setRoomsForCheckbox();

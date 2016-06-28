@@ -55,6 +55,21 @@ class TopicFrameSetting extends TopicsAppModel {
 	const UNIT_TYPE_NUMBERS = '1';
 
 /**
+ * 除外するプラグイン
+ *
+ * @var array
+ */
+	public static $outPlugins = array(
+		'announcements',
+		'calendars',
+		'circular_notices',
+		'questionnaires',
+		'quizzes',
+		'registrations',
+		'rss_readers',
+	);
+
+/**
  * Validation rules
  *
  * @var array
@@ -377,7 +392,8 @@ class TopicFrameSetting extends TopicsAppModel {
 			'Block' => 'Blocks.Block',
 		]);
 
-		//TODO:除外するプラグインを羅列する
+		//除外するプラグイン
+		$pluginKeys = array_diff($pluginKeys, self::$outPlugins);
 
 		$conditions = array(
 			'room_id' => Current::read('Room.id'),
@@ -398,14 +414,13 @@ class TopicFrameSetting extends TopicsAppModel {
 			);
 		}
 
-		$blocks = $this->Block->find('all', array(
+		$result = $this->Block->find('all', array(
 			'recursive' => -1,
-			'fields' => array('plugin_key', 'key', 'name'),
+			'fields' => array('id', 'plugin_key', 'key', 'name'),
 			'conditions' => $conditions,
 		));
 
-		$blocks = Hash::combine($blocks, '{n}.Block.key', '{n}.Block', '{n}.Block.plugin_key');
-
+		$blocks = Hash::combine($result, '{n}.Block.key', '{n}.Block', '{n}.Block.plugin_key');
 		return $blocks;
 	}
 
