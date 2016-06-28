@@ -167,8 +167,8 @@ class TopicFramesPlugin extends TopicsAppModel {
 		$delete = array_diff($saved, $pluginKeys);
 		if (count($delete) > 0) {
 			$conditions = array(
-				'TopicFrameSetting' . '.frame_key' => Current::read('Frame.key'),
-				'TopicFrameSetting' . '.plugin_key' => $delete,
+				'TopicFramesPlugin' . '.frame_key' => Current::read('Frame.key'),
+				'TopicFramesPlugin' . '.plugin_key' => $delete,
 			);
 			if (! $this->deleteAll($conditions, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));

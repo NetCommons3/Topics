@@ -22,6 +22,41 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
   };
 
   /**
+   * Initialize
+   *
+   * @return {void}
+   */
+  $scope.initBlocks = function(blocks, blockKey) {
+    $scope.blocks = blocks;
+    $scope.blockKey = blockKey;
+  };
+
+  /**
+   * Initialize
+   *
+   * @return {void}
+   */
+  $scope.optionBlocks = function(pluginKey) {
+    if (angular.isDefined($scope.blocks[pluginKey])) {
+      if (angular.isDefined($scope.blocks[pluginKey][$scope.blockKey])) {
+        var blockKey = $scope.blockKey;
+      } else {
+        var blockKey = null;
+        angular.forEach($scope.blocks[pluginKey], function(value, key) {
+          if (! blockKey) {
+            blockKey = key;
+          }
+        });
+      }
+
+      $scope.selectBlockKey = $scope.blocks[pluginKey][blockKey];
+      return $scope.blocks[pluginKey];
+    } else {
+      return null;
+    }
+  };
+
+  /**
    * Radio click
    *
    * @return {void}

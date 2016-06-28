@@ -62,9 +62,9 @@ class TopicFramesBlock extends TopicsAppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
-			'block_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
+			'block_key' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
@@ -122,7 +122,12 @@ class TopicFramesBlock extends TopicsAppModel {
  * @throws InternalErrorException
  */
 	public function saveTopicFramesBlock($data) {
-		$blockKeys = Hash::get($data, $this->alias . '.block_key', array());
+		$blockKey = Hash::get($data, $this->alias . '.block_key');
+		if ($blockKey && Hash::get($data, 'TopicFrameSetting.select_block')) {
+			$blockKeys = [$blockKey];
+		} else {
+			$blockKeys = [];
+		}
 
 		$saved = $this->find('list', array(
 			'recursive' => -1,
@@ -134,8 +139,8 @@ class TopicFramesBlock extends TopicsAppModel {
 		$delete = array_diff($saved, $blockKeys);
 		if (count($delete) > 0) {
 			$conditions = array(
-				'TopicFrameSetting' . '.frame_key' => Current::read('Frame.key'),
-				'TopicFrameSetting' . '.block_key' => $delete,
+				'TopicFramesBlock' . '.frame_key' => Current::read('Frame.key'),
+				'TopicFramesBlock' . '.block_key' => $delete,
 			);
 			if (! $this->deleteAll($conditions, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
