@@ -49,7 +49,26 @@ class TopicsController extends TopicsAppController {
 	public $helpers = array(
 		'NetCommons.DisplayNumber',
 		'Topics.Topics',
+		'Rss',
+		'Text'
 	);
+
+/**
+ * beforeFilter
+ *
+ * @return void
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		$topicFrameSetting = $this->TopicFrameSetting->getTopicFrameSetting();
+		$this->set('topicFrameSetting', $topicFrameSetting['TopicFrameSetting']);
+
+		if ($this->request->is('xml')) {
+			$this->viewVars['topicFrameSetting']['display_type'] = TopicFrameSetting::DISPLAY_TYPE_FLAT;
+			$this->Components->unload('Pages.PageLayout');
+		}
+	}
 
 /**
  * index
@@ -57,8 +76,7 @@ class TopicsController extends TopicsAppController {
  * @return void
  */
 	public function index() {
-		$topicFrameSetting = $this->TopicFrameSetting->getTopicFrameSetting();
-		$this->set('topicFrameSetting', $topicFrameSetting['TopicFrameSetting']);
+		$topicFrameSetting = $this->viewVars['topicFrameSetting'];
 		$displayType = $this->viewVars['topicFrameSetting']['display_type'];
 
 		$conditions = array();
@@ -78,14 +96,18 @@ class TopicsController extends TopicsAppController {
 				$conditions['Room.id'] = $roomId;
 			}
 
-			$rooms = $this->TopicFramesRoom->getRooms($topicFrameSetting, $conditions);
+			$rooms = $this->TopicFramesRoom->getRooms(
+				['TopicFrameSetting' => $topicFrameSetting], $conditions
+			);
 			$this->set('rooms', $rooms);
 
 			$topics = array();
 			$roomIds = array_keys($rooms);
 			foreach ($roomIds as $roomId) {
 				$conditions['Topic.room_id'] = $roomId;
-				$topics[$roomId] = $this->__getTopics($topicFrameSetting, $conditions);
+				$topics[$roomId] = $this->__getTopics(
+					['TopicFrameSetting' => $topicFrameSetting], $conditions
+				);
 			}
 			$this->set('topics', $topics);
 
@@ -98,14 +120,18 @@ class TopicsController extends TopicsAppController {
 				$conditions['Plugin.key'] = $pluginKey;
 			}
 
-			$plugins = $this->TopicFramesPlugin->getPlugins($topicFrameSetting, $conditions);
+			$plugins = $this->TopicFramesPlugin->getPlugins(
+				['TopicFrameSetting' => $topicFrameSetting], $conditions
+			);
 			$this->set('plugins', $plugins);
 
 			$topics = array();
 			$pluginKeys = array_keys($plugins);
 			foreach ($pluginKeys as $pluginKey) {
 				$conditions['Plugin.key'] = $pluginKey;
-				$topics[$pluginKey] = $this->__getTopics($topicFrameSetting, $conditions);
+				$topics[$pluginKey] = $this->__getTopics(
+					['TopicFrameSetting' => $topicFrameSetting], $conditions
+				);
 			}
 			$this->set('topics', $topics);
 
@@ -113,7 +139,7 @@ class TopicsController extends TopicsAppController {
 
 		} else {
 			//フラット表示
-			$result = $this->__getTopics($topicFrameSetting, $conditions);
+			$result = $this->__getTopics(['TopicFrameSetting' => $topicFrameSetting], $conditions);
 			$this->set('topics', $result['topics']);
 			$this->set('paging', $result['paging']);
 

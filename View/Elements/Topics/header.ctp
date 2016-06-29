@@ -18,4 +18,10 @@
 	<?php endif; ?>
 
 	<?php echo $this->Topics->dropdownStatus(); ?>
+
+	<?php if ($topicFrameSetting['use_rss_feed']) : ?>
+		<a target="_blank" class="btn btn-info btn-xs" href="<?php echo $this->NetCommonsHtml->url(['action' => 'index.xml']); ?>">
+			<?php echo __d('topics', 'RSS2.0'); ?>
+		</a>
+	<?php endif; ?>
 </header>
