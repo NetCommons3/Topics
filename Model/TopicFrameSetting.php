@@ -355,7 +355,7 @@ class TopicFrameSetting extends TopicsAppModel {
 		$conditions = $this->TopicFramesBlock->getConditions($topicFrameSetting, $conditions);
 
 		//期間指定
-		if (! Hash::get($conditions, 'Topic.publish_start >=') &&
+		if (! isset($conditions['Topic.publish_start >=']) &&
 				$topicFrameSetting[$this->alias]['unit_type'] === self::UNIT_TYPE_DAYS) {
 
 			$date = new DateTime();
