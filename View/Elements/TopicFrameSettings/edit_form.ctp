@@ -276,15 +276,17 @@
 
 			<div class="form-group" ng-init="blockOptions = optionBlocks(selectBlockPluginKey)">
 				<?php
-					echo $this->NetCommonsForm->select('TopicFramesBlock.block_key',
-						Hash::combine($selectBlocks, '{s}.{s}.key', '{s}.{s}.name'),
-						array(
-							'size' => 10, 'class' => 'form-control', 'empty' => false,
-							'ng-options' => 'item as item.name for item in blockOptions track by item.key',
-							'ng-model' => 'selectBlockKey',
-							'ng-show' => 'blockOptions'
-						)
-					);
+					if ($selectBlocks) {
+						echo $this->NetCommonsForm->select('TopicFramesBlock.block_key',
+							Hash::combine($selectBlocks, '{s}.{s}.key', '{s}.{s}.name'),
+							array(
+								'size' => 10, 'class' => 'form-control', 'empty' => false,
+								'ng-options' => 'item as item.name for item in blockOptions track by item.key',
+								'ng-model' => 'selectBlockKey',
+								'ng-show' => 'blockOptions'
+							)
+						);
+					}
 				?>
 				<div ng-hide="blockOptions">
 					<?php echo __d('topics', 'No block found.'); ?>
