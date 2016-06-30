@@ -70,7 +70,7 @@ msgid "Select room to show"
 msgstr "指定したルームのみ表示する"
 
 msgid "Select block to show"
-msgstr "指定したブロックのみ表示する"
+msgstr "特定のルームの特定のブロックを表示する"
 
 msgid "No block found."
 msgstr "ブロックがありません。"
@@ -79,7 +79,7 @@ msgid "Select plugin to show"
 msgstr "指定したプラグインのみ表示する"
 
 msgid "Display private room as new arrival."
-msgstr "プライベートルームの新着を表示する"
+msgstr "プライベート"
 
 msgid "Title"
 msgstr "件名"

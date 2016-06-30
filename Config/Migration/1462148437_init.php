@@ -9,7 +9,6 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-
 App::uses('NetCommonsMigration', 'NetCommons.Config/Migration');
 
 /**
@@ -39,7 +38,7 @@ class Init extends NetCommonsMigration {
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'unsigned' => false, 'key' => 'primary'),
 					'frame_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'display_type' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'unsigned' => false, 'comment' => '表示タイプ 0: フラット, 1: プラグインごとに表示, 2: ルームごとに表示'),
-					'unit_type' => array('type' => 'integer', 'null' => false, 'default' => null, 'comment' => 'Whether to handle (n days / n counts) as new topics.'),
+					'unit_type' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'comment' => 'Whether to handle (n days / n counts) as new topics.'),
 					'display_days' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 3, 'unsigned' => false),
 					'display_number' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 3, 'unsigned' => false),
 					'display_title' => array('type' => 'boolean', 'null' => false, 'default' => '1'),
@@ -151,7 +150,7 @@ class Init extends NetCommonsMigration {
 					'counts' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 					'path' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'public_type' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 4, 'unsigned' => false),
-					'publish_start' => array('type' => 'datetime', 'null' => true, 'default' => null),
+					'publish_start' => array('type' => 'datetime', 'null' => true, 'default' => null, 'key' => 'index'),
 					'publish_end' => array('type' => 'datetime', 'null' => true, 'default' => null),
 					'is_no_member_allow' => array('type' => 'boolean', 'null' => false, 'default' => '1', 'comment' => '非会員を受け付けるかどうか'),
 					'is_answer' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'comment' => '回答かどうか'),
@@ -187,46 +186,51 @@ class Init extends NetCommonsMigration {
  * @return bool Should process continue
  */
 	public function before($direction) {
-		$Model = ClassRegistry::init('SiteManager.SiteSetting');
-		$dataSource = $Model->getDataSource();
+		if ($direction === 'up') {
+			$Model = ClassRegistry::init('SiteManager.SiteSetting');
+			$dataSource = $Model->getDataSource();
 
-		$searchType = 'like';
-		$hasMroonga = false;
+			$searchType = 'like';
+			$hasMroonga = false;
 
-		if ($dataSource->config['datasource'] === 'Database/Mysql') {
-			$result = $Model->query('SELECT * FROM information_schema.ENGINES');
-			$engines = Hash::extract($result, '{n}.ENGINES.ENGINE');
-			$mysql56 = (bool)version_compare($dataSource->getVersion(), '5.6', '>=');
-			if ($mysql56) {
-				$searchType = 'match_against';
-			} elseif (in_array('Mroonga', $engines, true)) {
-				//$searchType = 'match_against';
-				//$hasMroonga = true;
+			if ($dataSource->config['datasource'] === 'Database/Mysql') {
+				$result = $Model->query('SELECT * FROM information_schema.ENGINES');
+				$engines = Hash::extract($result, '{n}.ENGINES.ENGINE');
+				$mysql56 = (bool)version_compare($dataSource->getVersion(), '5.6', '>=');
+				if ($mysql56) {
+					$searchType = 'match_against';
+				} elseif (in_array('Mroonga', $engines, true)) {
+					//$searchType = 'match_against';
+					//$hasMroonga = true;
+				}
+				$this->migration = Hash::insert(
+					$this->migration, 'up.create_table.topics.tableParameters.engine', 'InnoDB'
+				);
 			}
-		}
-		if ($searchType === 'like') {
-			//インデックスが使われないため、検索用のインデックス(FullText)は削除する
-			$this->migration = Hash::remove(
-				$this->migration, 'up.create_table.topics.indexes.search'
-			);
-		}
-		if (! $hasMroonga) {
-			$this->migration = Hash::insert(
-				$this->migration, 'up.create_table.topics.tableParameters.engine', 'InnoDB'
-			);
-			$this->migration = Hash::remove(
-				$this->migration, 'up.create_table.topics.tableParameters.comment', null
-			);
-		}
+			if ($searchType === 'like') {
+				//インデックスが使われないため、検索用のインデックス(FullText)は削除する
+				$this->migration = Hash::remove(
+					$this->migration, 'up.create_table.topics.indexes.search'
+				);
+			}
+			if (! $hasMroonga) {
+				$this->migration = Hash::insert(
+					$this->migration, 'up.create_table.topics.tableParameters.engine', 'InnoDB'
+				);
+				$this->migration = Hash::remove(
+					$this->migration, 'up.create_table.topics.tableParameters.comment', null
+				);
+			}
 
-		$record = array(
-			'language_id' => 0,
-			'key' => 'Search.type',
-			'value' => $searchType,
-		);
-		$Model->create();
-		if (!$Model->save($record, false)) {
-			return false;
+			$record = array(
+				'language_id' => 0,
+				'key' => 'Search.type',
+				'value' => $searchType,
+			);
+			$Model->create();
+			if (!$Model->save($record, false)) {
+				return false;
+			}
 		}
 
 		return true;
@@ -239,6 +243,21 @@ class Init extends NetCommonsMigration {
  * @return bool Should process continue
  */
 	public function after($direction) {
+		if ($direction === 'up') {
+			$Model = $this->generateModel('Topic');
+			$dataSource = $Model->getDataSource();
+			if ($dataSource->config['datasource'] === 'Database/Mysql') {
+				$sql = 'ALTER TABLE `topics` CHANGE COLUMN `summary` `summary` MEDIUMTEXT NULL DEFAULT NULL;';
+				if (! $Model->query($sql)) {
+					return false;
+				}
+				$sql = 'ALTER TABLE `topics` CHANGE COLUMN `search_contents` `search_contents` MEDIUMTEXT NULL DEFAULT NULL;';
+				if (! $Model->query($sql)) {
+					return false;
+				}
+			}
+		}
+
 		return true;
 	}
 }

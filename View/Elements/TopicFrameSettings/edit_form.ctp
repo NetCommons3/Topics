@@ -190,7 +190,6 @@
 					);
 				?>
 			</div>
-			<hr>
 			<?php
 				echo $this->NetCommonsForm->checkbox('TopicFrameSetting.show_my_room', array(
 					'type' => 'checkbox',
@@ -262,7 +261,7 @@
 						$options = Hash::remove($options, $plugin);
 					}
 					$first = array_slice(array_keys($options), 0, 1);
-					echo $this->PluginsForm->selectPluginsRoom('_Topic.block_plugin_key',
+					echo $this->PluginsForm->selectPluginsRoom('TopicFramesBlock.plugin_key',
 						array(
 							'label' => false,
 							'options' => $options,
