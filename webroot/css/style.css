@@ -9,43 +9,54 @@
 /**
  * 新着一覧
  */
-article.topic-row-outer:first-child {
-	margin-top: 0px;
-}
 article.topic-row-outer {
-	margin-top: 24px;
-	margin-bottom: 10px;
+	padding-top: 8px;
+	padding-bottom: 16px;
+	border-top: 1px solid #ccc;
+}
+article.topic-row-outer:first-child {
+	border-top: none;
 }
 
-h3.topic-row > div {
-	margin-top: 4px;
+article.topic-row-outer .pull-left {
+	margin-right: 12px;
+	line-height: 24px;
 }
 
-article > .topic-row {
-	margin-bottom: 4px;
-	/*line-height: 1.0em;*/
-}
-article .topic-plugin-name,
-article .topic-datetime {
-	margin-left: 8px;
+article.topic-row-outer .pull-left:last-child {
+	margin-right: 0px;
 }
 
-article .topic-status {
-	margin-right: 8px;
-	margin-bottom: 2px;
+article .topic-title {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	max-width: 100%;
+	font-size: 16px;
 }
 
-article .topic-category-name:first-child {
-	/*padding-left: 0px;*/
-}
-article .topic-category-name,
-article .topic-handle-name {
-	/*padding-left: 2em;*/
-}
-
-article h3 .topic-plugin-name.small > .label,
-article h3 .topic-status.small > .label {
+article .topic-plugin-name.small > .label,
+article .topic-status.small > .label {
 	font-size: 90%;
+}
+
+.topic-summary {
+	margin-left: 16px;
+	margin-top: 4px;
+	/*display: block;*/
+	max-height: 4em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	/*white-space: nowrap;*/
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.frame.nc-content-list article h1.topic-plugin-name,
+.frame.nc-content-list article h1.topic-room-name {
+	margin-top: 16px;
+	margin-bottom: 0px;
 }
 
 /**
