@@ -26,9 +26,9 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
    *
    * @return {void}
    */
-  $scope.initBlocks = function(blocks, blockKey) {
+  $scope.initBlocks = function(blocks, topicFramesBlock) {
     $scope.blocks = blocks;
-    $scope.blockKey = blockKey;
+    $scope.topicFramesBlock = topicFramesBlock['topicFramesBlock'];
   };
 
   /**
@@ -36,10 +36,12 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
    *
    * @return {void}
    */
-  $scope.optionBlocks = function(pluginKey) {
+  $scope.optionBlocks = function() {
+    var pluginKey = $scope.topicFramesBlock.pluginKey + $scope.topicFramesBlock.roomId;
+
     if (angular.isDefined($scope.blocks[pluginKey])) {
       if (angular.isDefined($scope.blocks[pluginKey][$scope.blockKey])) {
-        var blockKey = $scope.blockKey;
+        var blockKey = $scope.topicFramesBlock.blockKey;
       } else {
         var blockKey = null;
         angular.forEach($scope.blocks[pluginKey], function(value, key) {
@@ -49,7 +51,7 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
         });
       }
 
-      $scope.selectBlockKey = $scope.blocks[pluginKey][blockKey];
+      $scope.topicFramesBlock.blockKey = $scope.blocks[pluginKey][blockKey];
       return $scope.blocks[pluginKey];
     } else {
       return null;

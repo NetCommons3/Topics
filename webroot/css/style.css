@@ -69,3 +69,7 @@ article h3 .topic-status.small > .label {
 .topics-frame-rooms dl dd.form-group:last-child {
 	margin-bottom: 0px;
 }
+
+.topics-frame-block select:not(:first-child) {
+	margin-left: 8px;
+}
