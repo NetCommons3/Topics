@@ -79,6 +79,16 @@ class TopicFrameSettingsController extends TopicsAppController {
  * @return void
  */
 	public function edit() {
+		$this->RoomsForm->setRoomsForCheckbox();
+		$this->PluginsForm->setPluginsRoomForCheckbox($this, $this->PluginsForm->findOptions);
+
+		$options = Hash::extract(
+			$this->viewVars['pluginsRoom'], '{n}.Plugin.key'
+		);
+
+		$blocks = $this->TopicFrameSetting->getBlocks($options, array_keys($this->viewVars['rooms']));
+		$this->set('selectBlocks', $blocks);
+
 		if ($this->request->is('put') || $this->request->is('post')) {
 			//登録処理
 			$data = $this->data;
@@ -93,10 +103,7 @@ class TopicFrameSettingsController extends TopicsAppController {
 				$data['TopicFramesPlugin']['plugin_key'] = array();
 			}
 
-			$data['TopicFramesBlock']['block_key'] = Hash::get($data, 'TopicFramesBlock.block_key');
-			if (! $data['TopicFramesBlock']['block_key']) {
-				$data['TopicFramesBlock']['block_key'] = array();
-			}
+			$data['TopicFramesBlock'] = Hash::get($data, 'TopicFramesBlock');
 
 			if ($this->TopicFrameSetting->saveTopicFrameSetting($data)) {
 				$this->redirect(NetCommonsUrl::backToPageUrl());
@@ -128,21 +135,19 @@ class TopicFrameSettingsController extends TopicsAppController {
 			//表示するブロックを取得
 			$result = $this->TopicFramesBlock->find('first', array(
 				'recursive' => -1,
-				'fields' => array('id', 'block_key'),
+				'fields' => array('id', 'block_key', 'plugin_key', 'room_id'),
 				'conditions' => ['frame_key' => Current::read('Frame.key')],
 			));
-			$blockKey = Hash::get($result, 'TopicFramesBlock.block_key');
-			$this->request->data['TopicFramesBlock']['block_key'] = $blockKey;
+
+			$this->request->data['TopicFramesBlock'] = Hash::get($result, 'TopicFramesBlock', array());
+			if (! $this->request->data['TopicFramesBlock']) {
+				$block = Hash::extract($blocks, '{s}.{s}');
+				$this->request->data['TopicFramesBlock'] = array(
+					'block_key' => Hash::get($block, '0.key'),
+					'plugin_key' => Hash::get($block, '0.plugin_key'),
+					'room_id' => Hash::get($block, '0.room_id'),
+				);
+			}
 		}
-
-		$this->RoomsForm->setRoomsForCheckbox();
-		$this->PluginsForm->setPluginsRoomForCheckbox($this, $this->PluginsForm->findOptions);
-
-		$options = Hash::extract(
-			$this->viewVars['pluginsRoom'], '{n}.Plugin.key'
-		);
-
-		$blocks = $this->TopicFrameSetting->getBlocks($options);
-		$this->set('selectBlocks', $blocks);
 	}
 }

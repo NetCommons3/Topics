@@ -33,7 +33,10 @@ class TopicsHelper extends AppHelper {
  * @var array
  */
 	public $helpers = array(
+		'NetCommons.NetCommonsForm',
 		'NetCommons.NetCommonsHtml',
+		'Rooms.RoomsForm',
+		'PluginManager.PluginsForm',
 		'Users.DisplayUser',
 		'Workflow.Workflow',
 	);
@@ -222,6 +225,89 @@ class TopicsHelper extends AppHelper {
 			'current' => Hash::get($named, 'status', '0'),
 			'url' => $named,
 		));
+	}
+
+/**
+ * 特定のブロックを表示する選択ボックス群の初期処理
+ *
+ * @return string HTML出力
+ */
+	public function initSelectBlock() {
+		$selectBlocks = NetCommonsAppController::camelizeKeyRecursive(
+			$this->_View->viewVars['selectBlocks']
+		);
+		$topicFramesBlock['topicFramesBlock'] = NetCommonsAppController::camelizeKeyRecursive(
+			$this->_View->request->data['TopicFramesBlock']
+		);
+
+		$html = 'initBlocks(' .
+			h(json_encode($selectBlocks, true)) . ', ' .
+			h(json_encode($topicFramesBlock, true)) .
+		')';
+		return $html;
+	}
+
+/**
+ * 特定のブロックを表示する選択ボックス群の
+ *
+ * @return string HTML出力
+ */
+	public function selectBlock() {
+		$html = '';
+
+		if ($this->_View->viewVars['selectBlocks']) {
+			$html .= '<div class="form-inline form-group">';
+			//ルーム選択
+			$html .= $this->RoomsForm->selectRooms('TopicFramesBlock.room_id',
+				array(
+					'ng-model' => 'topicFramesBlock.roomId',
+					//'ng-init' => 'selectBlockPluginKey = \'' . Hash::get($first, '0') . '\'',
+					'ng-click' => 'blockOptions = optionBlocks()',
+				)
+			);
+
+			//プラグイン選択
+			$options = Hash::combine(
+				$this->_View->viewVars['pluginsRoom'], '{n}.Plugin.key', '{n}.Plugin.name'
+			);
+			foreach (TopicFrameSetting::$outPlugins as $plugin) {
+				$options = Hash::remove($options, $plugin);
+			}
+			$html .= $this->PluginsForm->selectPluginsRoom('TopicFramesBlock.plugin_key',
+				array(
+					'div' => false,
+					'label' => false,
+					'options' => $options,
+					'ng-model' => 'topicFramesBlock.pluginKey',
+					//'ng-init' => 'selectBlockPluginKey = \'' . Hash::get($first, '0') . '\'',
+					'ng-click' => 'blockOptions = optionBlocks()',
+				)
+			);
+
+			$html .= '</div>';
+		}
+
+		//ブロック選択
+		$html .= '<div class="form-group" ng-init="blockOptions = optionBlocks()">';
+
+		if ($this->_View->viewVars['selectBlocks']) {
+			$html .= $this->NetCommonsForm->select('TopicFramesBlock.block_key',
+				Hash::combine($this->_View->viewVars['selectBlocks'], '{s}.{s}.key', '{s}.{s}.name'),
+				array(
+					'size' => 10, 'class' => 'form-control', 'empty' => false,
+					'ng-options' => 'item as item.name for item in blockOptions track by item.key',
+					'ng-model' => 'topicFramesBlock.blockKey',
+					'ng-show' => 'blockOptions',
+				)
+			);
+		}
+		$html .= '<div ng-hide="blockOptions">';
+		$html .= __d('topics', 'No block found.');
+		$html .= '</div>';
+
+		$html .= '</div>';
+
+		return $html;
 	}
 
 }

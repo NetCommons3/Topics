@@ -384,10 +384,11 @@ class TopicFrameSetting extends TopicsAppModel {
 /**
  * 新着に表示するブロックデータ取得
  *
- * @param array $pluginKeys プラグインキーリスト
+ * @param array $pluginKeys plugin_keyリスト
+ * @param array $roomIds room_idリスト
  * @return array ブロックデータ
  */
-	public function getBlocks($pluginKeys) {
+	public function getBlocks($pluginKeys, $roomIds) {
 		$this->loadModels([
 			'Block' => 'Blocks.Block',
 		]);
@@ -396,7 +397,7 @@ class TopicFrameSetting extends TopicsAppModel {
 		$pluginKeys = array_diff($pluginKeys, self::$outPlugins);
 
 		$conditions = array(
-			'room_id' => Current::read('Room.id'),
+			'room_id' => $roomIds,
 			'language_id' => Current::read('Language.id'),
 			'plugin_key' => $pluginKeys,
 		);
@@ -416,11 +417,16 @@ class TopicFrameSetting extends TopicsAppModel {
 
 		$result = $this->Block->find('all', array(
 			'recursive' => -1,
-			'fields' => array('id', 'plugin_key', 'key', 'name'),
+			'fields' => array('id', 'plugin_key', 'room_id', 'key', 'name'),
 			'conditions' => $conditions,
 		));
 
-		$blocks = Hash::combine($result, '{n}.Block.key', '{n}.Block', '{n}.Block.plugin_key');
+		$blocks = array();
+		foreach ($result as $block) {
+			$key = $block['Block']['plugin_key'] . $block['Block']['room_id'];
+			$blocks[$key][$block['Block']['key']] = $block['Block'];
+		}
+
 		return $blocks;
 	}
 

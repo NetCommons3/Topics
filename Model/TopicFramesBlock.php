@@ -124,40 +124,29 @@ class TopicFramesBlock extends TopicsAppModel {
 	public function saveTopicFramesBlock($data) {
 		$blockKey = Hash::get($data, $this->alias . '.block_key');
 		if ($blockKey && Hash::get($data, 'TopicFrameSetting.select_block')) {
-			$blockKeys = [$blockKey];
-		} else {
-			$blockKeys = [];
-		}
-
-		$saved = $this->find('list', array(
-			'recursive' => -1,
-			'fields' => array('id', 'block_key'),
-			'conditions' => ['frame_key' => Current::read('Frame.key')],
-		));
-		$saved = array_unique(array_values($saved));
-
-		$delete = array_diff($saved, $blockKeys);
-		if (count($delete) > 0) {
 			$conditions = array(
 				'TopicFramesBlock' . '.frame_key' => Current::read('Frame.key'),
-				'TopicFramesBlock' . '.block_key' => $delete,
+				'TopicFramesBlock' . '.block_key !=' => $blockKey,
 			);
 			if (! $this->deleteAll($conditions, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
-		}
 
-		$new = array_diff($blockKeys, $saved);
-		if (count($new) > 0) {
-			$saveDate = array();
-			foreach ($new as $i => $blockKey) {
-				$saveDate[$i] = array(
-					'id' => null,
-					'block_key' => $blockKey,
-					'frame_key' => Current::read('Frame.key')
-				);
+			$conditions = array(
+				'TopicFramesBlock' . '.frame_key' => Current::read('Frame.key'),
+				'TopicFramesBlock' . '.block_key' => $blockKey,
+			);
+			if (! $this->find('count', ['recursive' => -1, 'conditions' => $conditions])) {
+				$saveData = $this->create(Hash::get($data, $this->alias));
+				if (! $this->save($saveData)) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
 			}
-			if (! $this->saveMany($saveDate)) {
+		} else {
+			$conditions = array(
+				'TopicFramesBlock' . '.frame_key' => Current::read('Frame.key'),
+			);
+			if (! $this->deleteAll($conditions, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 		}
