@@ -11,7 +11,9 @@
 
 $camelizeData = $this->Topics->camelizeKeyRecursive($topics);
 
-$documentData = array();
+$documentData = array(
+	'xmlns:content' => 'http://purl.org/rss/1.0/modules/content/'
+);
 
 $siteName = SiteSettingUtil::read('App.site_name');
 $channelData = array(
@@ -35,6 +37,7 @@ foreach ($camelizeData as $item) {
 		'guid' => array('url' => $item['topic']['path'], 'isPermaLink' => 'true'),
 		'description' => $bodyText,
 		'pubDate' => $item['topic']['publishStart'],
+		'content::encoded' => array('value' => $item['topic']['summary']),
 	);
 	if ($item['category']['name']) {
 		$contentData['category'] = h($item['category']['displayName']);
@@ -44,4 +47,4 @@ foreach ($camelizeData as $item) {
 }
 
 $channel = $this->Rss->channel(array(), $channelData, $content);
-echo $this->Rss->document($documentData, $channel);
+echo preg_replace('/::/', ':', $this->Rss->document($documentData, $channel));

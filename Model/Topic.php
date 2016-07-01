@@ -53,7 +53,7 @@ class Topic extends TopicsAppModel {
  *
  * @var int
  */
-	const DISPLAY_SUMMARY_LENGTH = 999999;
+	const DISPLAY_SUMMARY_LENGTH = 1000;
 
 /**
  * ルーム名表示時の文字数

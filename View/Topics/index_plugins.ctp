@@ -14,24 +14,25 @@
 
 <?php foreach ($plugins as $key => $name) : ?>
 	<?php if ($topics[$key]['paging']['count'] > 0) : ?>
-		<hr>
-		<h3><?php echo h($name); ?></h3>
+		<article>
+			<h1 class="topic-plugin-name"><?php echo h($name); ?></h1>
 
-		<?php
-			$camelizeData = $this->Topics->camelizeKeyRecursive($topics[$key]['topics']);
-			$params = array(
-				'named' => $this->request->params['named'],
-				'paging' => $topics[$key]['paging'],
-				'params' => array(
-					'frame_id' => Current::read('Frame.id'),
-					'plugin_key' => $key,
-				),
-			);
+			<?php
+				$camelizeData = $this->Topics->camelizeKeyRecursive($topics[$key]['topics']);
+				$params = array(
+					'named' => $this->request->params['named'],
+					'paging' => $topics[$key]['paging'],
+					'params' => array(
+						'frame_id' => Current::read('Frame.id'),
+						'plugin_key' => $key,
+					),
+				);
 
-			echo $this->element('Topics.Topics/index_article', array(
-				'camelizeData' => $camelizeData,
-				'params' => $params
-			));
-		?>
+				echo $this->element('Topics.Topics/index_article', array(
+					'camelizeData' => $camelizeData,
+					'params' => $params
+				));
+			?>
+		</article>
 	<?php endif; ?>
 <?php endforeach;

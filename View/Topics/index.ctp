@@ -19,7 +19,6 @@ $params = array(
 ?>
 
 <?php echo $this->element('Topics.Topics/header'); ?>
-<hr>
 
 <?php echo $this->element('Topics.Topics/index_article', array(
 		'camelizeData' => $camelizeData,

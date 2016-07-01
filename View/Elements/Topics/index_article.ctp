@@ -12,16 +12,11 @@
 
 <article ng-controller="TopicsController" ng-init="initialize(<?php echo h(json_encode($params, true)); ?>)" ng-cloak>
 	<?php foreach ($camelizeData as $item) : ?>
-		<article class="topic-row-outer">
-			<?php echo $this->element('Topics.Topics/item', array('item' => $item)); ?>
-		</article>
+		<?php echo $this->element('Topics.Topics/item', array('item' => $item)); ?>
 	<?php endforeach; ?>
 
-	<article class="topic-row-outer" ng-repeat="item in topics track by $index">
-		<?php echo $this->element('Topics.Topics/item_angularjs'); ?>
-	</article>
+	<?php echo $this->element('Topics.Topics/item_angularjs'); ?>
 
-	<br ng-show="paging.nextPage">
 	<div class="form-group" ng-show="paging.nextPage">
 		<button type="button" class="btn btn-info btn-block btn-sm" ng-click="more()">
 			<?php echo __d('net_commons', 'More'); ?>
