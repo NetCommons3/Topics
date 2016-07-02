@@ -47,4 +47,5 @@ foreach ($camelizeData as $item) {
 }
 
 $channel = $this->Rss->channel(array(), $channelData, $content);
+echo '<?xml version="1.0"?>' . chr(13);
 echo preg_replace('/::/', ':', $this->Rss->document($documentData, $channel));
