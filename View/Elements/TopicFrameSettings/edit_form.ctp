@@ -268,7 +268,7 @@
 				<?php echo $this->NetCommonsForm->input('TopicFrameSetting.feed_summary', array(
 						'type' => 'textarea',
 						'label' => __d('topics', 'Feed summary'),
-						'help' => $this->Topics->rssSettingHelp(__d('topics', '{X-SITE_NAME} : Site name'))
+						'help' => $this->Topics->rssSettingHelp(__d('net_commons', '{X-SITE_NAME} : Site name'))
 					)); ?>
 			</div>
 		</div>
