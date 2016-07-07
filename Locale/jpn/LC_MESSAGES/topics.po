@@ -117,9 +117,6 @@ msgstr "RSSのタイトル"
 msgid "Feed summary"
 msgstr "RSSの概要"
 
-msgid "{X-SITE_NAME} : Site name"
-msgstr "{X-SITE_NAME} : サイト名"
-
 msgid "Can use an embedded keyword in the channel title line and summary"
 msgstr "RSSの件名と概要には埋め込みキーワードが使えます。"
 
