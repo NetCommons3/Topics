@@ -89,7 +89,7 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
  * @param {function($scope, $http)} Controller
  */
 NetCommonsApp.controller('TopicsController',
-    ['$scope', '$http', '$location', function($scope, $http, $location) {
+    ['$scope', '$http', function($scope, $http) {
 
       /**
        * 新着データ
