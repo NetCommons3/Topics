@@ -63,9 +63,28 @@ class TopicsHelper extends AppHelper {
  */
 	public function camelizeKeyRecursive($orig) {
 		$newResult = [];
-		$callback = ['Inflector', 'variable'];
 
 		$this->__orig = $orig;
+		foreach (array_keys($orig) as $key) {
+			$newResult[$key] = $this->__camelizeKeyRecursive($orig[$key]);
+
+			$displayStatus = $this->__getStatusLabel($newResult[$key]);
+			$newResult[$key]['topic']['displayStatus'] = $displayStatus;
+		}
+
+		return $newResult;
+	}
+
+/**
+ * Camelize処理
+ *
+ * @param array $orig 変換元データ
+ * @return array 変換後データ
+ */
+	private function __camelizeKeyRecursive($orig) {
+		$newResult = [];
+		$callback = ['Inflector', 'variable'];
+
 		foreach ($orig as $key => $value) {
 			$camelKey = call_user_func($callback, $key);
 
@@ -78,10 +97,7 @@ class TopicsHelper extends AppHelper {
 					$avatar = $this->DisplayUser->avatar($value, [], 'TrackableUpdater.id');
 					$value = Hash::insert($value, 'TrackableUpdater.avatar', $avatar);
 				}
-				$newResult[$camelKey] = $this->camelizeKeyRecursive($value);
-
-				$displayStatus = $this->__getStatusLabel($newResult[$camelKey]);
-				$newResult[$camelKey]['topic']['displayStatus'] = $displayStatus;
+				$newResult[$camelKey] = $this->__camelizeKeyRecursive($value);
 			} else {
 				$newResult = $this->__parseValueForCamelize($newResult, $camelKey, $value);
 			}
@@ -153,12 +169,11 @@ class TopicsHelper extends AppHelper {
 		$publishStart = Hash::get($newResult, 'topic.publishStart');
 		//$answerPeriodStart = Hash::get($newResult, 'topic.answerPeriodStart');
 		$answerPeriodEnd = Hash::get($newResult, 'topic.answerPeriodEnd');
-
 		$labels = (new Topic())->statuses;
 
 		$now = gmdate('Y-m-d H:i:s');
 
-		if (in_array($status, array_keys($labels), true)) {
+		if (in_array((int)$status, array_keys($labels), true)) {
 			//承認待ち、差し戻し、一時保存
 
 		} elseif ($now < $publishStart) {
