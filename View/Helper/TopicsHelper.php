@@ -21,13 +21,6 @@ App::uses('Topic', 'Topics.Model');
 class TopicsHelper extends AppHelper {
 
 /**
- * camelizeKeyRecursiveで使用する変数
- *
- * @var array
- */
-	private $__orig = array();
-
-/**
  * Other helpers used by FormHelper
  *
  * @var array
@@ -64,9 +57,20 @@ class TopicsHelper extends AppHelper {
 	public function camelizeKeyRecursive($orig) {
 		$newResult = [];
 
-		$this->__orig = $orig;
-		foreach (array_keys($orig) as $key) {
-			$newResult[$key] = $this->__camelizeKeyRecursive($orig[$key]);
+		foreach ($orig as $key => $value) {
+			if (Hash::get($value, 'TrackableCreator')) {
+				$avatar = $this->DisplayUser->avatar($value, [], 'TrackableCreator.id');
+				$value = Hash::insert(
+					$value, 'TrackableCreator.avatar', $avatar
+				);
+			}
+			if (Hash::get($value, 'TrackableUpdater')) {
+				$avatar = $this->DisplayUser->avatar($value, [], 'TrackableUpdater.id');
+				$value = Hash::insert(
+					$value, 'TrackableUpdater.avatar', $avatar
+				);
+			}
+			$newResult[$key] = $this->__camelizeKeyRecursive($value);
 
 			$displayStatus = $this->__getStatusLabel($newResult[$key]);
 			$newResult[$key]['topic']['displayStatus'] = $displayStatus;
@@ -89,14 +93,6 @@ class TopicsHelper extends AppHelper {
 			$camelKey = call_user_func($callback, $key);
 
 			if (is_array($value)) {
-				if (Hash::get($value, 'TrackableCreator')) {
-					$avatar = $this->DisplayUser->avatar($value, [], 'TrackableCreator.id');
-					$value = Hash::insert($value, 'TrackableCreator.avatar', $avatar);
-				}
-				if (Hash::get($value, 'TrackableUpdater')) {
-					$avatar = $this->DisplayUser->avatar($value, [], 'TrackableUpdater.id');
-					$value = Hash::insert($value, 'TrackableUpdater.avatar', $avatar);
-				}
 				$newResult[$camelKey] = $this->__camelizeKeyRecursive($value);
 			} else {
 				$newResult = $this->__parseValueForCamelize($newResult, $camelKey, $value);
