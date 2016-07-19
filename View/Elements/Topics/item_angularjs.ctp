@@ -49,7 +49,7 @@
 		<?php if ($topicFrameSetting['display_created_user']) : ?>
 			<div class="pull-left topic-handle-name">
 				<span ng-bind-html="item.trackableCreator.avatar | ncHtmlContent"></span>
-				<a ng-click="showUser(item.trackableCreator.id)" ng-controller="Users.controller" href="#">
+				<a ng-click="showUser($event, item.trackableCreator.id)" ng-controller="Users.controller" href="#">
 					{{item.trackableCreator.handlename}}
 				</a>
 			</div>

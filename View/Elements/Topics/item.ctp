@@ -51,7 +51,7 @@
 		<?php if ($topicFrameSetting['display_created_user']) : ?>
 			<div class="pull-left topic-handle-name">
 				<?php echo $item['trackableCreator']['avatar']; ?>
-				<a ng-click="showUser(<?php echo $item['trackableCreator']['id']; ?>)" ng-controller="Users.controller" href="#">
+				<a ng-click="showUser($event, <?php echo $item['trackableCreator']['id']; ?>)" ng-controller="Users.controller" href="#">
 					<?php echo h($item['trackableCreator']['handlename']); ?>
 				</a>
 			</div>
