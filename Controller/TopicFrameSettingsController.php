@@ -106,7 +106,7 @@ class TopicFrameSettingsController extends TopicsAppController {
 			$data['TopicFramesBlock'] = Hash::get($data, 'TopicFramesBlock');
 
 			if ($this->TopicFrameSetting->saveTopicFrameSetting($data)) {
-				$this->redirect(NetCommonsUrl::backToPageUrl());
+				$this->redirect(NetCommonsUrl::backToPageUrl(true));
 				return;
 			}
 			$this->NetCommons->handleValidationError($this->TopicFrameSetting->validationErrors);
