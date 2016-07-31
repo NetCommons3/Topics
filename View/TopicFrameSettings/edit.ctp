@@ -19,7 +19,7 @@ echo $this->NetCommonsHtml->script('/topics/js/topics.js');
 		<?php echo $this->BlockForm->displayEditForm(array(
 				'model' => 'TopicFrameSetting',
 				'callback' => 'Topics.TopicFrameSettings/edit_form',
-				'cancelUrl' => NetCommonsUrl::backToPageUrl(),
+				'cancelUrl' => NetCommonsUrl::backToPageUrl(true),
 			)); ?>
 	</div>
 </article>
