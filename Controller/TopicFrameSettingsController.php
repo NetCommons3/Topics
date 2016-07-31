@@ -67,7 +67,7 @@ class TopicFrameSettingsController extends TopicsAppController {
 		'Blocks.BlockForm',
 		'Blocks.BlockTabs' => array(
 			'mainTabs' => array(
-				'frame_settings' => array('url' => array('controller' => 'bbs_frame_settings')),
+				'frame_settings' => array('url' => array('controller' => 'topic_frame_settings')),
 			),
 		),
 		'NetCommons.DisplayNumber',
