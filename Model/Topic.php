@@ -337,13 +337,14 @@ class Topic extends TopicsAppModel {
  * @param mixed $results The results of the find operation
  * @param bool $primary Whether this model is being queried directly (vs. being queried as an association)
  * @return mixed Result of the find operation
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#afterfind
  */
 	public function afterFind($results, $primary = false) {
 		foreach ($results as $key => $value) {
 			if (isset($results[$key][$this->alias]['path'])) {
-				$url = Router::fullBaseUrl() . $results[$key][$this->alias]['path'] .
-						'?frame_id=' . $results[$key][$this->alias]['frame_id'];
+				$url = Router::fullBaseUrl() .
+						$value[$this->alias]['path'] . '?frame_id=' . $value[$this->alias]['frame_id'];
 				$results[$key][$this->alias]['url'] = $url;
 			}
 		}
