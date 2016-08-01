@@ -130,13 +130,6 @@ class TopicsHelper extends AppHelper {
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
 			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_SUMMARY_LENGTH, '...');
 
-		} elseif ($camelKey === 'path') {
-			$url = $value;
-			if (Hash::get($newResult, 'frameId')) {
-				$url .= '?frame_id=' . Hash::get($newResult, 'frameId');
-			}
-			$newResult[$camelKey] = $this->NetCommonsHtml->url($url);
-
 		} elseif (in_array($camelKey, ['publishStart', 'created', 'modified'], true)) {
 			$newResult[$camelKey] = $value;
 			$camelKey = call_user_func($callback, 'display_' . $camelKey);
