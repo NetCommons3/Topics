@@ -331,6 +331,26 @@ class Topic extends TopicsAppModel {
 	}
 
 /**
+ * Called after each find operation. Can be used to modify any results returned by find().
+ * Return value should be the (modified) results.
+ *
+ * @param mixed $results The results of the find operation
+ * @param bool $primary Whether this model is being queried directly (vs. being queried as an association)
+ * @return mixed Result of the find operation
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#afterfind
+ */
+	public function afterFind($results, $primary = false) {
+		foreach ($results as $key => $value) {
+			if (isset($results[$key][$this->alias]['path'])) {
+				$url = Router::fullBaseUrl() . $results[$key][$this->alias]['path'] .
+						'?frame_id=' . $results[$key][$this->alias]['frame_id'];
+				$results[$key][$this->alias]['url'] = $url;
+			}
+		}
+		return $results;
+	}
+
+/**
  * 新着データ取得のオプション生成
  *
  * @param int $status ステータス
