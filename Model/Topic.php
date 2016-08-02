@@ -525,7 +525,7 @@ class Topic extends TopicsAppModel {
 					'className' => 'Rooms.RoomsLanguage',
 					'fields' => array('id', 'name'),
 					'foreignKey' => false,
-					'type' => 'LEFT',
+					'type' => 'INNER',
 					'conditions' => array(
 						'RoomsLanguage.room_id' . ' = ' . $this->alias . '.room_id',
 						'RoomsLanguage.language_id' => Current::read('Language.id', '0'),
@@ -535,7 +535,7 @@ class Topic extends TopicsAppModel {
 					'className' => 'PluginManager.Plugin',
 					'fields' => array('id', 'key', 'name'),
 					'foreignKey' => false,
-					'type' => 'LEFT',
+					'type' => 'INNER',
 					'conditions' => array(
 						'Plugin.key' . ' = ' . $this->alias . '.plugin_key',
 						'Plugin.language_id' => Current::read('Language.id', '0'),
