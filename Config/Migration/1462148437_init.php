@@ -190,7 +190,7 @@ class Init extends NetCommonsMigration {
 			$Model = ClassRegistry::init('SiteManager.SiteSetting');
 			$dataSource = $Model->getDataSource();
 
-			$searchType = 'like';
+			$searchType = SiteSetting::DATABASE_SEARCH_LIKE;
 			$hasMroonga = false;
 
 			if ($dataSource->config['datasource'] === 'Database/Mysql') {
@@ -198,16 +198,13 @@ class Init extends NetCommonsMigration {
 				$engines = Hash::extract($result, '{n}.ENGINES.ENGINE');
 				$mysql56 = (bool)version_compare($dataSource->getVersion(), '5.6', '>=');
 				if ($mysql56) {
-					$searchType = 'match_against';
+					$searchType = SiteSetting::DATABASE_SEARCH_MATCH_AGAIN;
 				} elseif (in_array('Mroonga', $engines, true)) {
-					//$searchType = 'match_against';
-					//$hasMroonga = true;
+					$searchType = 'match_against';
+					$hasMroonga = true;
 				}
-				$this->migration = Hash::insert(
-					$this->migration, 'up.create_table.topics.tableParameters.engine', 'InnoDB'
-				);
 			}
-			if ($searchType === 'like') {
+			if ($searchType === SiteSetting::DATABASE_SEARCH_LIKE) {
 				//インデックスが使われないため、検索用のインデックス(FullText)は削除する
 				$this->migration = Hash::remove(
 					$this->migration, 'up.create_table.topics.indexes.search'
