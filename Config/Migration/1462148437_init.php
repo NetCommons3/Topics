@@ -200,8 +200,8 @@ class Init extends NetCommonsMigration {
 				if ($mysql56) {
 					$searchType = SiteSetting::DATABASE_SEARCH_MATCH_AGAIN;
 				} elseif (in_array('Mroonga', $engines, true)) {
-					$searchType = 'match_against';
-					$hasMroonga = true;
+					//$searchType = 'match_against';
+					//$hasMroonga = true;
 				}
 			}
 			if ($searchType === SiteSetting::DATABASE_SEARCH_LIKE) {
