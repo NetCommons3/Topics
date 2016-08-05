@@ -89,7 +89,7 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
  * @param {function($scope, $http)} Controller
  */
 NetCommonsApp.controller('TopicsController',
-    ['$scope', '$http', function($scope, $http) {
+    ['$scope', '$http', 'NC3_URL', function($scope, $http, NC3_URL) {
 
       /**
        * 新着データ
@@ -119,7 +119,7 @@ NetCommonsApp.controller('TopicsController',
         });
         url = url + '/page:' + ($scope.paging['page'] + 1);
 
-        $http.get($scope.baseUrl + url + '.json', {params: $scope.params})
+        $http.get(NC3_URL + url + '.json', {params: $scope.params})
           .success(function(data) {
               $scope.paging = data['paging'];
               angular.forEach(data['topics'], function(value) {

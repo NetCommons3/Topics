@@ -244,12 +244,12 @@ class Init extends NetCommonsMigration {
 			$Model = $this->generateModel('Topic');
 			$dataSource = $Model->getDataSource();
 			if ($dataSource->config['datasource'] === 'Database/Mysql') {
-				$sql = 'ALTER TABLE `topics` ' .
+				$sql = 'ALTER TABLE `' . $Model->tablePrefix . 'topics` ' .
 						'CHANGE COLUMN `summary` `summary` MEDIUMTEXT NULL DEFAULT NULL;';
 				if (! $Model->query($sql)) {
 					return false;
 				}
-				$sql = 'ALTER TABLE `topics` ' .
+				$sql = 'ALTER TABLE `' . $Model->tablePrefix . 'topics` ' .
 						'CHANGE COLUMN `search_contents` `search_contents` MEDIUMTEXT NULL DEFAULT NULL;';
 				if (! $Model->query($sql)) {
 					return false;
