@@ -11,6 +11,7 @@
 ?>
 
 <?php echo $this->element('Topics.Topics/header'); ?>
-<hr>
 
-<?php echo __d('topics', 'No topic found.');
+<article>
+	<?php echo __d('topics', 'No topic found.'); ?>
+</article>
