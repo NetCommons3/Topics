@@ -12,6 +12,6 @@
 
 <?php echo $this->element('Topics.Topics/header'); ?>
 
-<article>
+<article class="nc-not-found">
 	<?php echo __d('topics', 'No topic found.'); ?>
 </article>
