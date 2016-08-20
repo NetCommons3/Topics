@@ -15,7 +15,7 @@
 <?php foreach ($rooms as $key => $name) : ?>
 	<?php if ($topics[$key]['paging']['count'] > 0) : ?>
 		<article>
-			<h1 class="topic-room-name"><?php echo h($name); ?></h1>
+			<h2 class="topic-room-name"><?php echo h($name); ?></h2>
 
 			<?php
 				$camelizeData = $this->Topics->camelizeKeyRecursive($topics[$key]['topics']);

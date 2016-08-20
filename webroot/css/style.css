@@ -53,8 +53,8 @@ article .topic-status.small > .label {
     -webkit-line-clamp: 3;
 }
 
-.frame.nc-content-list article h1.topic-plugin-name,
-.frame.nc-content-list article h1.topic-room-name {
+.frame.nc-content-list article h2.topic-plugin-name,
+.frame.nc-content-list article h2.topic-room-name {
 	margin-top: 16px;
 	margin-bottom: 0px;
 }
