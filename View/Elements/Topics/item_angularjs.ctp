@@ -42,9 +42,11 @@
 			</div>
 		<?php endif; ?>
 
-		<div class="pull-left topic-category-name" ng-show="item.category.name">
-			{{item.category.displayName}}
-		</div>
+		<?php if ($topicFrameSetting['display_category_name']) : ?>
+			<div class="pull-left topic-category-name" ng-show="item.category.name">
+				{{item.category.displayName}}
+			</div>
+		<?php endif; ?>
 
 		<?php if ($topicFrameSetting['display_created_user']) : ?>
 			<div class="pull-left topic-handle-name">

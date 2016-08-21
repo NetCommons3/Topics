@@ -42,10 +42,12 @@
 			</div>
 		<?php endif; ?>
 
-		<?php if ($item['category']['name']) : ?>
-			<div class="pull-left topic-category-name">
-				<?php echo h($item['category']['displayName']); ?>
-			</div>
+		<?php if ($topicFrameSetting['display_category_name']) : ?>
+			<?php if ($item['category']['name']) : ?>
+				<div class="pull-left topic-category-name">
+					<?php echo h($item['category']['displayName']); ?>
+				</div>
+			<?php endif; ?>
 		<?php endif; ?>
 
 		<?php if ($topicFrameSetting['display_created_user']) : ?>
