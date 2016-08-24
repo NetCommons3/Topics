@@ -94,47 +94,9 @@ class TopicsBehavior extends TopicsBaseBehavior {
  * saveTopics
  *
  * @param Model $model 呼び出し元のモデル
- * @return void
+ * @return bool
  */
 	public function saveTopics(Model $model) {
-		$this->afterSave($model, false, array('fieldList' => false));
-	}
-
-/**
- * beforeDeleteTopics
- *
- * @param Model $model 呼び出し元のモデル
- * @return void
- */
-	public function beforeDeleteTopics(Model $model) {
-		$this->beforeDelete($model, true);
-	}
-
-/**
- * afterDeleteTopics
- *
- * @param Model $model 呼び出し元のモデル
- * @return void
- */
-	public function afterDeleteTopics(Model $model) {
-		$this->afterDelete($model);
-	}
-
-/**
- * afterSave is called after a model is saved.
- *
- * @param Model $model 呼び出し元のモデル
- * @param bool $created True if this save created a new record
- * @param array $options Options passed from Model::save().
- * @return bool
- * @see Model::save()
- */
-	public function afterSave(Model $model, $created, $options = array()) {
-		//$options['fieldList']がセットされているときは、saveFieldから実行されたとして判断し、処理しない
-		if ($options['fieldList']) {
-			return true;
-		}
-
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 			'TopicUserStatus' => 'Topics.TopicUserStatus',
@@ -153,20 +115,16 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			$this->_saveTopicReadable($model, $topicId);
 		}
 
-		return parent::afterSave($model, $created, $options);
+		return true;
 	}
 
 /**
- * Before delete is called before any delete occurs on the attached model, but after the model's
- * beforeDelete is called. Returning false from a beforeDelete will abort the delete.
+ * beforeDeleteTopics
  *
- * @param Model $model Model using this behavior
- * @param bool $cascade If true records that depend on this record will also be deleted
- * @return mixed False if the operation should abort. Any other result will continue.
- * @throws InternalErrorException
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ * @param Model $model 呼び出し元のモデル
+ * @return bool
  */
-	public function beforeDelete(Model $model, $cascade = true) {
+	public function beforeDeleteTopics(Model $model) {
 		$model->loadModels([
 			'Block' => 'Blocks.Block',
 			'Topic' => 'Topics.Topic',
@@ -219,13 +177,13 @@ class TopicsBehavior extends TopicsBaseBehavior {
 	}
 
 /**
- * After delete is called after any delete occurs on the attached model.
+ * afterDeleteTopics
  *
- * @param Model $model Model using this behavior
+ * @param Model $model 呼び出し元のモデル
  * @return void
  * @throws InternalErrorException
  */
-	public function afterDelete(Model $model) {
+	public function afterDeleteTopics(Model $model) {
 		$model->loadModels([
 			'Topic' => 'Topics.Topic',
 			'TopicReadable' => 'Topics.TopicReadable',
@@ -254,6 +212,50 @@ class TopicsBehavior extends TopicsBaseBehavior {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 		}
+	}
+
+/**
+ * afterSave is called after a model is saved.
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param bool $created True if this save created a new record
+ * @param array $options Options passed from Model::save().
+ * @return bool
+ * @see Model::save()
+ */
+	public function afterSave(Model $model, $created, $options = array()) {
+		//$options['fieldList']がセットされているときは、saveFieldから実行されたとして判断し、処理しない
+		if ($options['fieldList']) {
+			return true;
+		}
+
+		$this->saveTopics($model);
+
+		return parent::afterSave($model, $created, $options);
+	}
+
+/**
+ * Before delete is called before any delete occurs on the attached model, but after the model's
+ * beforeDelete is called. Returning false from a beforeDelete will abort the delete.
+ *
+ * @param Model $model Model using this behavior
+ * @param bool $cascade If true records that depend on this record will also be deleted
+ * @return mixed False if the operation should abort. Any other result will continue.
+ * @throws InternalErrorException
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function beforeDelete(Model $model, $cascade = true) {
+		return $this->beforeDeleteTopics($model);
+	}
+
+/**
+ * After delete is called after any delete occurs on the attached model.
+ *
+ * @param Model $model Model using this behavior
+ * @return void
+ */
+	public function afterDelete(Model $model) {
+		$this->afterDeleteTopics($model);
 	}
 
 /**
