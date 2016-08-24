@@ -91,6 +91,36 @@ class TopicsBehavior extends TopicsBaseBehavior {
 	}
 
 /**
+ * saveTopics
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @return void
+ */
+	public function saveTopics(Model $model) {
+		$this->afterSave($model, false, array('fieldList' => false));
+	}
+
+/**
+ * beforeDeleteTopics
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @return void
+ */
+	public function beforeDeleteTopics(Model $model) {
+		$this->beforeDelete($model, true);
+	}
+
+/**
+ * afterDeleteTopics
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @return void
+ */
+	public function afterDeleteTopics(Model $model) {
+		$this->afterDelete($model);
+	}
+
+/**
  * afterSave is called after a model is saved.
  *
  * @param Model $model 呼び出し元のモデル
