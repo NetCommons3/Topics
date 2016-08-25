@@ -455,7 +455,7 @@ class Topic extends TopicsAppModel {
 		//閲覧できるルームリスト取得
 		$rooms = $this->Room->find('all',
 			Hash::merge(
-				$this->Room->getReadableRoomsConditions(),
+				$this->Room->getReadableRoomsConditions(array('Room.page_id_top NOT' => false)),
 				array(
 					'recursive' => -1,
 					'fields' => ['Room.id', 'Room.space_id', 'RolesRoom.room_id', 'RolesRoom.role_key']
