@@ -482,20 +482,24 @@ class Topic extends TopicsAppModel {
 
 		//is_latestのデータが見れる条件生成
 		if ($adminRoomIds) {
-			$roomConditions['OR'][0] = array(
+			$roomConditions['OR'][] = array(
 				$this->alias . '.room_id' => array_unique($adminRoomIds),
 				$this->alias . '.is_latest' => true
 			);
 		}
 		if (Current::read('User.id')) {
-			$roomConditions['OR'][1] = array(
+			$roomConditions['OR'][] = array(
+				'TopicReadable.user_id' => Current::read('User.id'),
+				$this->alias . '.is_active' => true
+			);
+			$roomConditions['OR'][] = array(
 				$this->alias . '.created_user' => Current::read('User.id'),
 				$this->alias . '.is_latest' => true
 			);
 		}
 		//is_activeの条件生成
 		if ($readableRoomIds) {
-			$roomConditions['OR'][2] = array(
+			$roomConditions['OR'][] = array(
 				$this->alias . '.room_id' => array_unique($readableRoomIds),
 				$this->alias . '.is_active' => true,
 				//公開設定の条件生成
