@@ -90,14 +90,16 @@ class TopicsController extends TopicsAppController {
 		}
 
 		if ($displayType === TopicFrameSetting::DISPLAY_TYPE_ROOMS) {
-			//プラグインごとに表示する
+			//ルームごとに表示する
 			$roomId = Hash::get($this->request->query, 'room_id');
 			if ($roomId) {
-				$conditions['Room.id'] = $roomId;
+				$conditionsByRoom['Room.id'] = $roomId;
+			} else {
+				$conditionsByRoom = array();
 			}
 
 			$rooms = $this->TopicFramesRoom->getRooms(
-				['TopicFrameSetting' => $topicFrameSetting], $conditions
+				['TopicFrameSetting' => $topicFrameSetting], $conditionsByRoom
 			);
 			$this->set('rooms', $rooms);
 
@@ -117,11 +119,13 @@ class TopicsController extends TopicsAppController {
 			//プラグインごとに表示する
 			$pluginKey = Hash::get($this->request->query, 'plugin_key');
 			if ($pluginKey) {
-				$conditions['Plugin.key'] = $pluginKey;
+				$conditionsByPlugin['Plugin.key'] = $pluginKey;
+			} else {
+				$conditionsByPlugin = array();
 			}
 
 			$plugins = $this->TopicFramesPlugin->getPlugins(
-				['TopicFrameSetting' => $topicFrameSetting], $conditions
+				['TopicFrameSetting' => $topicFrameSetting], $conditionsByPlugin
 			);
 			$this->set('plugins', $plugins);
 
