@@ -50,7 +50,8 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		),
 		'users' => array('0'),
 		'is_workflow' => true,
-		'data' => array()
+		'data' => array(),
+		'titleHtml' => false,
 	);
 
 /**
@@ -490,11 +491,16 @@ class TopicsBaseBehavior extends ModelBehavior {
  */
 	protected function _parseTitle(Model $model) {
 		$title = $this->_getSaveData($model, 'title');
-		$result = mb_strimwidth(strip_tags($title), 0, self::MAX_TITLE_LENGTH);
-		if (preg_replace('/(\s|　)/', '', $result) === '') {
-			$result = mb_strimwidth($title, 0, self::MAX_TITLE_LENGTH);
+
+		if (Hash::get($this->settings[$model->alias], 'titleHtml')) {
+			$result = mb_strimwidth(strip_tags($title), 0, self::MAX_TITLE_LENGTH);
+			if (preg_replace('/(\s|　)/', '', $result) === '') {
+				$result = mb_strimwidth($title, 0, self::MAX_TITLE_LENGTH);
+			}
+			$result = trim($result);
+		} else {
+			$result = $title;
 		}
-		$result = trim($result);
 
 		return $result;
 	}
