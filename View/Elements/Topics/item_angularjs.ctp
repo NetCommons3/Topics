@@ -59,7 +59,8 @@
 	</div>
 
 	<?php if ($topicFrameSetting['display_summary']) : ?>
-		<div class="text-muted topic-summary" ng-bind-html="item.topic.displaySummary | ncHtmlContent">
+		<div class="text-muted topic-summary">
+			{{item.topic.displaySummary}}
 		</div>
 	<?php endif; ?>
 </article>

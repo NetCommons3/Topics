@@ -52,6 +52,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		'is_workflow' => true,
 		'data' => array(),
 		'titleHtml' => false,
+		'summaryWysiwyg' => false,
 	);
 
 /**
@@ -342,6 +343,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Model\Behavior
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class TopicsBaseBehavior extends ModelBehavior {
 
@@ -523,7 +525,11 @@ class TopicsBaseBehavior extends ModelBehavior {
 			$result .= chr(10);
 		}
 
-		return strip_tags($result);
+		if (Hash::get($this->settings[$model->alias], 'summaryWysiwyg')) {
+			return strip_tags($result);
+		} else {
+			return $result;
+		}
 	}
 
 /**

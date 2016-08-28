@@ -62,7 +62,7 @@
 
 	<?php if ($topicFrameSetting['display_summary']) : ?>
 		<div class="text-muted topic-summary">
-			<?php echo $item['topic']['displaySummary']; ?>
+			<?php echo h($item['topic']['displaySummary']); ?>
 		</div>
 	<?php endif; ?>
 </article>
