@@ -525,11 +525,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 			$result .= chr(10);
 		}
 
-		if (Hash::get($this->settings[$model->alias], 'summaryWysiwyg')) {
-			return strip_tags($result);
-		} else {
-			return $result;
-		}
+		return strip_tags($result);
 	}
 
 /**
