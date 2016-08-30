@@ -114,6 +114,18 @@ class Topic extends TopicsAppModel {
 	public $validate = array();
 
 /**
+ * use behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Wysiwyg.Purifiable' => array(
+			'fields' => array('Topic' => array('summary')),
+			'forcePurify' => true
+		),
+	);
+
+/**
  * belongsTo associations
  *
  * @var array
