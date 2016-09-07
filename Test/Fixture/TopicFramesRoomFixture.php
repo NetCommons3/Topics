@@ -24,7 +24,7 @@ class TopicFramesRoomFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => '6',
+			'id' => '3',
 			'frame_key' => 'frame_3',
 			'room_id' => '1',
 			'created_user' => '1',

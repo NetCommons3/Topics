@@ -24,8 +24,8 @@ class TopicFrameSettingFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => '1',
-			'frame_key' => 'Lorem ipsum dolor sit amet',
+			'id' => '3',
+			'frame_key' => 'frame_3',
 			'display_type' => '1',
 			'unit_type' => '1',
 			'display_days' => '1',
