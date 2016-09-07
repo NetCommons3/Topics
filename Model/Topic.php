@@ -513,6 +513,7 @@ class Topic extends TopicsAppModel {
 		if ($readableRoomIds) {
 			$roomConditions['OR'][] = array(
 				$this->alias . '.room_id' => array_unique($readableRoomIds),
+				$this->alias . '.created_user !=' => Current::read('User.id'),
 				$this->alias . '.is_active' => true,
 				//公開設定の条件生成
 				array(
