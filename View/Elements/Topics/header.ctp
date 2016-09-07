@@ -17,7 +17,9 @@
 		<?php echo $this->DisplayNumber->dropDownToggle(array('currentLimit' => $topicFrameSetting['display_number'])); ?>
 	<?php endif; ?>
 
-	<?php echo $this->Topics->dropdownStatus(); ?>
+	<?php if (Current::read('User.id')) : ?>
+		<?php echo $this->Topics->dropdownStatus(); ?>
+	<?php endif; ?>
 
 	<?php if ($topicFrameSetting['use_rss_feed']) : ?>
 		<a target="_blank" class="btn btn-info btn-xs" href="<?php echo $this->NetCommonsHtml->url(['action' => 'index.xml']); ?>">
