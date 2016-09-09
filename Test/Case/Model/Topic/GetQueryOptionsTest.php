@@ -78,17 +78,15 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 	public function dataProviderByFlat() {
 		$result = array();
 
-		/**
-		 * 絞り込みなし
-		 */
-		//ログインなし
+		//絞り込みなし
+		// * ログインなし
 		$result[0]['userId'] = null;
 		$result[0]['status'] = null;
 		$result[0]['options'] = array();
 		$result[0]['expected'] = array(
 			0 => array('Topic' => array('id' => '1')),
 		);
-		//管理者
+		// * 管理者
 		$result[1]['userId'] = '1';
 		$result[1]['status'] = null;
 		$result[1]['options'] = array();

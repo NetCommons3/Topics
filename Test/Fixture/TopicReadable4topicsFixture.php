@@ -39,9 +39,7 @@ class TopicReadable4topicsFixture extends TopicReadableFixture {
  * @var array
  */
 	public $records = array(
-		/**
-		 * 掲示板
-		 */
+		//掲示板
 		// * 管理者が投稿(公開中)
 		array('id' => '1', 'topic_id' => '1', 'user_id' => '0'),
 		// * 一般が投稿(未承認)

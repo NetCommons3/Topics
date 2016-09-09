@@ -39,9 +39,7 @@ class Topic4topicsFixture extends TopicFixture {
  * @var array
  */
 	public $records = array(
-		/**
-		 * 掲示板
-		 */
+		//掲示板
 		// * 管理者が投稿(公開中)
 		array(
 			'id' => '1', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '2',
@@ -52,7 +50,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'summary' => 'Content Summary 1',
 			'search_contents' => '', //init()でセット
 			'counts' => '1',
-			'path' => '',  //init()でセット
+			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => '2016-09-07 03:52:37', 'publish_end' => null,
 			'is_no_member_allow' => '1', 'is_answer' => '0',
 			'answer_period_start' => null, 'answer_period_end' => null,
@@ -70,7 +68,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'summary' => 'Content Summary 2',
 			'search_contents' => '', //init()でセット
 			'counts' => '1',
-			'path' => '',  //init()でセット
+			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => '2016-09-07 03:52:37', 'publish_end' => null,
 			'is_no_member_allow' => '1', 'is_answer' => '0',
 			'answer_period_start' => null, 'answer_period_end' => null,
@@ -88,7 +86,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'summary' => 'Content Summary 3',
 			'search_contents' => '', //init()でセット
 			'counts' => '1',
-			'path' => '',  //init()でセット
+			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => '2016-09-07 03:52:37', 'publish_end' => null,
 			'is_no_member_allow' => '1', 'is_answer' => '0',
 			'answer_period_start' => null, 'answer_period_end' => null,
@@ -105,7 +103,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'summary' => 'Content Summary 3',
 			'search_contents' => '', //init()でセット
 			'counts' => '1',
-			'path' => '',  //init()でセット
+			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => '2016-09-07 03:52:37', 'publish_end' => null,
 			'is_no_member_allow' => '1', 'is_answer' => '0',
 			'answer_period_start' => null, 'answer_period_end' => null,
