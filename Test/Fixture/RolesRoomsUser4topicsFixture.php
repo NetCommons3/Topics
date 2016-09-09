@@ -1,6 +1,6 @@
 <?php
 /**
- * RolesRoomsUser4testFixture
+ * トピックス用のRolesRoomsUserFixture
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,10 +12,10 @@
 App::uses('RolesRoomsUserFixture', 'Rooms.Test/Fixture');
 
 /**
- * RolesRoomsUser4testFixture
+ * トピックス用のRolesRoomsUserFixture
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Topics\\Test\Fixture
+ * @package NetCommons\Topics\Test\Fixture
  */
 class RolesRoomsUser4topicsFixture extends RolesRoomsUserFixture {
 
@@ -85,6 +85,15 @@ class RolesRoomsUser4topicsFixture extends RolesRoomsUserFixture {
 		array('id' => '33', 'roles_room_id' => '30', 'user_id' => '3','room_id' => '11'),
 		array('id' => '34', 'roles_room_id' => '30', 'user_id' => '4','room_id' => '11'),
 		//array('id' => '35', 'roles_room_id' => '31', 'user_id' => '5','room_id' => '11'),
+
+		//一般二人目
+		array('id' => '36', 'roles_room_id' => '4', 'user_id' => '6','room_id' => '1'),
+		array('id' => '37', 'roles_room_id' => '15', 'user_id' => '6','room_id' => '4'),
+		array('id' => '38', 'roles_room_id' => '6', 'user_id' => '6','room_id' => '2'),
+		array('id' => '39', 'roles_room_id' => '20', 'user_id' => '6','room_id' => '8'),
+		array('id' => '40', 'roles_room_id' => '10', 'user_id' => '6','room_id' => '3'),
+		//array('id' => '41', 'roles_room_id' => '25', 'user_id' => '6','room_id' => '10'),
+		array('id' => '42', 'roles_room_id' => '30', 'user_id' => '6','room_id' => '11'),
 	);
 
 }

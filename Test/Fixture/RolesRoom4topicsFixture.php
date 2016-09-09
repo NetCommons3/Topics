@@ -1,6 +1,6 @@
 <?php
 /**
- * RolesRoom4testFixture
+ * トピックス用のRolesRoomFixture
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,10 +12,10 @@
 App::uses('RolesRoomFixture', 'Rooms.Test/Fixture');
 
 /**
- * RolesRoom4testFixture
+ * トピックス用のRolesRoomFixture
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Rooms\Test\Fixture
+ * @package NetCommons\Topics\Test\Fixture
  */
 class RolesRoom4topicsFixture extends RolesRoomFixture {
 
