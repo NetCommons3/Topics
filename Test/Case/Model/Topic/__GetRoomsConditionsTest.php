@@ -88,23 +88,47 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		$result[0]['now'] = $now;
 		$result[0]['userId'] = null;
 		$result[0]['expected'] = array(
-			'OR' => array(
-				0 => array(
-					'Topic.room_id' => array(
-						0 => '1',
-						1 => '4',
-					),
-					'Topic.created_user !=' => null,
-					'Topic.is_active' => true,
+			array(
+				'OR' => array(
 					0 => array(
-						'Topic.public_type' => array(
+						'Topic.room_id' => array(
 							0 => '1',
-							1 => '2',
+							1 => '4',
 						),
-						'Topic.publish_start <=' => $now,
-						'OR' => array(
-							'Topic.publish_end >=' => $now,
-							'Topic.publish_end' => null,
+						'Topic.created_user !=' => null,
+						'Topic.is_active' => true,
+						0 => array(
+							'Topic.public_type' => array(
+								0 => '1',
+								1 => '2',
+							),
+							'Topic.publish_start <=' => $now,
+							'OR' => array(
+								'Topic.publish_end >=' => $now,
+								'Topic.publish_end' => null,
+							),
+						),
+					),
+				),
+			),
+			array(
+				'OR' => array(
+					0 => array(
+						'Block.public_type' => '1',
+					),
+					1 => array(
+						'Block.public_type' => '2',
+						0 => array(
+							'OR' => array(
+								'Block.publish_start <=' => $now,
+								'Block.publish_start' => null,
+							),
+						),
+						1 => array(
+							'OR' => array(
+								'Block.publish_end >=' => $now,
+								'Block.publish_end' => null,
+							),
 						),
 					),
 				),
@@ -116,24 +140,58 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		$result[1]['now'] = $now;
 		$result[1]['userId'] = $userId;
 		$result[1]['expected'] = array(
-			'OR' => array(
-				0 => array(
-					'Topic.room_id' => array(
-						0 => '1',
-						1 => '4',
-						2 => '3',
-						3 => '10',
-						4 => '11',
+			array(
+				'OR' => array(
+					0 => array(
+						'Topic.room_id' => array(
+							0 => '1',
+							1 => '4',
+							2 => '3',
+							3 => '10',
+							4 => '11',
+						),
+						'Topic.is_latest' => true,
 					),
-					'Topic.is_latest' => true,
+					1 => array(
+						'TopicReadable.user_id' => $userId,
+						'Topic.is_active' => true,
+					),
+					2 => array(
+						'Topic.created_user' => $userId,
+						'Topic.is_latest' => true,
+					),
 				),
-				1 => array(
-					'TopicReadable.user_id' => $userId,
-					'Topic.is_active' => true,
-				),
-				2 => array(
-					'Topic.created_user' => $userId,
-					'Topic.is_latest' => true,
+			),
+			array(
+				'OR' => array(
+					0 => array(
+						'Block.public_type' => '1',
+					),
+					1 => array(
+						'Block.public_type' => '2',
+						0 => array(
+							'OR' =>
+							array(
+								'Block.publish_start <=' => $now,
+								'Block.publish_start' => null,
+							),
+						),
+						1 => array(
+							'OR' => array(
+								'Block.publish_end >=' => $now,
+								'Block.publish_end' => null,
+							),
+						),
+					),
+					2 => array(
+						'Block.room_id' => array(
+							0 => '1',
+							1 => '4',
+							2 => '3',
+							3 => '10',
+							4 => '11',
+						),
+					),
 				),
 			),
 		);
@@ -143,24 +201,57 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		$result[2]['now'] = $now;
 		$result[2]['userId'] = $userId;
 		$result[2]['expected'] = array(
-			'OR' => array(
-				0 => array(
-					'Topic.room_id' => array(
-						0 => '1',
-						1 => '4',
-						2 => '3',
-						3 => '10',
-						4 => '11',
+			array(
+				'OR' => array(
+					0 => array(
+						'Topic.room_id' => array(
+							0 => '1',
+							1 => '4',
+							2 => '3',
+							3 => '10',
+							4 => '11',
+						),
+						'Topic.is_latest' => true,
 					),
-					'Topic.is_latest' => true,
+					1 => array(
+						'TopicReadable.user_id' => $userId,
+						'Topic.is_active' => true,
+					),
+					2 => array(
+						'Topic.created_user' => $userId,
+						'Topic.is_latest' => true,
+					),
 				),
-				1 => array(
-					'TopicReadable.user_id' => $userId,
-					'Topic.is_active' => true,
-				),
-				2 => array(
-					'Topic.created_user' => $userId,
-					'Topic.is_latest' => true,
+			),
+			array(
+				'OR' => array(
+					0 => array(
+						'Block.public_type' => '1',
+					),
+					1 => array(
+						'Block.public_type' => '2',
+						0 => array(
+							'OR' =>
+							array(
+								'Block.publish_start <=' => $now,
+								'Block.publish_start' => null,
+							),
+						),
+						1 => array(
+							'OR' => array(
+								'Block.publish_end >=' => $now,
+								'Block.publish_end' => null,
+							),
+						),
+					),
+					2 => array(
+						'Block.room_id' => array(
+							0 => '1',
+							1 => '4',
+							2 => '3',
+							3 => '10',
+						),
+					),
 				),
 			),
 		);
@@ -171,39 +262,63 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		$result[3]['now'] = $now;
 		$result[3]['userId'] = $userId;
 		$result[3]['expected'] = array(
-			'OR' => array(
-				0 => array(
-					'Topic.room_id' => array(
-						0 => '1',
-						1 => '4',
-						2 => '3',
-						3 => '10',
-					),
-					'Topic.is_latest' => true,
-				),
-				1 => array(
-					'TopicReadable.user_id' => $userId,
-					'Topic.is_active' => true,
-				),
-				2 => array(
-					'Topic.created_user' => $userId,
-					'Topic.is_latest' => true,
-				),
-				3 => array(
-					'Topic.room_id' => array(
-						4 => '11',
-					),
-					'Topic.created_user !=' => $userId,
-					'Topic.is_active' => true,
+			array(
+				'OR' => array(
 					0 => array(
-						'Topic.public_type' => array(
+						'Topic.room_id' => array(
 							0 => '1',
-							1 => '2',
+							1 => '4',
+							2 => '3',
+							3 => '10',
 						),
-						'Topic.publish_start <=' => $now,
-						'OR' => array(
-							'Topic.publish_end >=' => $now,
-							'Topic.publish_end' => null,
+						'Topic.is_latest' => true,
+					),
+					1 => array(
+						'TopicReadable.user_id' => $userId,
+						'Topic.is_active' => true,
+					),
+					2 => array(
+						'Topic.created_user' => $userId,
+						'Topic.is_latest' => true,
+					),
+					3 => array(
+						'Topic.room_id' => array(
+							4 => '11',
+						),
+						'Topic.created_user !=' => $userId,
+						'Topic.is_active' => true,
+						0 => array(
+							'Topic.public_type' => array(
+								0 => '1',
+								1 => '2',
+							),
+							'Topic.publish_start <=' => $now,
+							'OR' => array(
+								'Topic.publish_end >=' => $now,
+								'Topic.publish_end' => null,
+							),
+						),
+					),
+				),
+			),
+			array(
+				'OR' => array(
+					0 => array(
+						'Block.public_type' => '1',
+					),
+					1 => array(
+						'Block.public_type' => '2',
+						0 => array(
+							'OR' => array(
+								'Block.publish_start <=' => $now,
+								'Block.publish_start' => null,
+							),
+						),
+						1 => array(
+							'OR' => array(
+								'Block.publish_end >=' => $now,
+								'Block.publish_end' => null,
+							),
 						),
 					),
 				),
@@ -216,33 +331,57 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		$result[4]['now'] = $now;
 		$result[4]['userId'] = $userId;
 		$result[4]['expected'] = array(
-			'OR' => array(
-				0 => array(
-					'TopicReadable.user_id' => $userId,
-					'Topic.is_active' => true,
-				),
-				1 => array(
-					'Topic.created_user' => $userId,
-					'Topic.is_latest' => true,
-				),
-				2 => array(
-					'Topic.room_id' => array(
-						0 => '1',
-						1 => '4',
-						2 => '3',
-						3 => '11',
-					),
-					'Topic.created_user !=' => $userId,
-					'Topic.is_active' => true,
+			array(
+				'OR' => array(
 					0 => array(
-						'Topic.public_type' => array(
+						'TopicReadable.user_id' => $userId,
+						'Topic.is_active' => true,
+					),
+					1 => array(
+						'Topic.created_user' => $userId,
+						'Topic.is_latest' => true,
+					),
+					2 => array(
+						'Topic.room_id' => array(
 							0 => '1',
-							1 => '2',
+							1 => '4',
+							2 => '3',
+							3 => '11',
 						),
-						'Topic.publish_start <=' => $now,
-						'OR' => array(
-							'Topic.publish_end >=' => $now,
-							'Topic.publish_end' => null,
+						'Topic.created_user !=' => $userId,
+						'Topic.is_active' => true,
+						0 => array(
+							'Topic.public_type' => array(
+								0 => '1',
+								1 => '2',
+							),
+							'Topic.publish_start <=' => $now,
+							'OR' => array(
+								'Topic.publish_end >=' => $now,
+								'Topic.publish_end' => null,
+							),
+						),
+					),
+				),
+			),
+			array(
+				'OR' => array(
+					0 => array(
+						'Block.public_type' => '1',
+					),
+					1 => array(
+						'Block.public_type' => '2',
+						0 => array(
+							'OR' => array(
+								'Block.publish_start <=' => $now,
+								'Block.publish_start' => null,
+							),
+						),
+						1 => array(
+							'OR' => array(
+								'Block.publish_end >=' => $now,
+								'Block.publish_end' => null,
+							),
 						),
 					),
 				),
@@ -255,32 +394,56 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		$result[5]['now'] = $now;
 		$result[5]['userId'] = $userId;
 		$result[5]['expected'] = array(
-			'OR' => array(
-				0 => array(
-					'TopicReadable.user_id' => $userId,
-					'Topic.is_active' => true,
-				),
-				1 => array(
-					'Topic.created_user' => $userId,
-					'Topic.is_latest' => true,
-				),
-				2 => array(
-					'Topic.room_id' => array(
-						0 => '1',
-						1 => '4',
-						2 => '3',
-					),
-					'Topic.created_user !=' => $userId,
-					'Topic.is_active' => true,
+			array(
+				'OR' => array(
 					0 => array(
-						'Topic.public_type' => array(
+						'TopicReadable.user_id' => $userId,
+						'Topic.is_active' => true,
+					),
+					1 => array(
+						'Topic.created_user' => $userId,
+						'Topic.is_latest' => true,
+					),
+					2 => array(
+						'Topic.room_id' => array(
 							0 => '1',
-							1 => '2',
+							1 => '4',
+							2 => '3',
 						),
-						'Topic.publish_start <=' => $now,
-						'OR' => array(
-							'Topic.publish_end >=' => $now,
-							'Topic.publish_end' => null,
+						'Topic.created_user !=' => $userId,
+						'Topic.is_active' => true,
+						0 => array(
+							'Topic.public_type' => array(
+								0 => '1',
+								1 => '2',
+							),
+							'Topic.publish_start <=' => $now,
+							'OR' => array(
+								'Topic.publish_end >=' => $now,
+								'Topic.publish_end' => null,
+							),
+						),
+					),
+				),
+			),
+			array(
+				'OR' => array(
+					0 => array(
+						'Block.public_type' => '1',
+					),
+					1 => array(
+						'Block.public_type' => '2',
+						0 => array(
+							'OR' => array(
+								'Block.publish_start <=' => $now,
+								'Block.publish_start' => null,
+							),
+						),
+						1 => array(
+							'OR' => array(
+								'Block.publish_end >=' => $now,
+								'Block.publish_end' => null,
+							),
 						),
 					),
 				),

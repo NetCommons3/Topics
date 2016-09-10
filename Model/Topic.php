@@ -382,17 +382,7 @@ class Topic extends TopicsAppModel {
 		$statusConditions = $this->__getStatusConditions($now, $status);
 
 		//閲覧可のルームの条件生成
-		$roomConditions = $this->__getRoomsConditions($now);
-
-		//ブロック公開設定の条件生成
-		$blockPubConditions['OR'] = array(
-			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
-			array(
-				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
-				$this->Block->alias . '.publish_start <=' => $now,
-				$this->Block->alias . '.publish_end >=' => $now,
-			),
-		);
+		list($roomConditions, $blockPubConditions) = $this->__getRoomsConditions($now);
 
 		//クエリ
 		$this->__bindModel();
@@ -474,8 +464,9 @@ class Topic extends TopicsAppModel {
 				)
 			)
 		);
+
 		//room_idの取得
-		$adminRoomIds = array_merge(
+		$editableRoomIds = array_merge(
 			Hash::extract(
 				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR . '].room_id'
 			),
@@ -487,15 +478,15 @@ class Topic extends TopicsAppModel {
 			)
 		);
 		$readableRoomIds = array_diff(
-			Hash::extract($rooms, '{n}.Room.id'), $adminRoomIds
+			Hash::extract($rooms, '{n}.Room.id'), $editableRoomIds
 		);
 
 		$roomConditions = array();
 
 		//is_latestのデータが見れる条件生成
-		if ($adminRoomIds) {
+		if ($editableRoomIds) {
 			$roomConditions['OR'][] = array(
-				$this->alias . '.room_id' => array_unique($adminRoomIds),
+				$this->alias . '.room_id' => array_unique($editableRoomIds),
 				$this->alias . '.is_latest' => true
 			);
 		}
@@ -527,7 +518,35 @@ class Topic extends TopicsAppModel {
 			);
 		}
 
-		return $roomConditions;
+		//ブロック公開設定の条件生成
+		$blockEditableRoomIds = array_merge(
+			Hash::extract(
+				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR . '].room_id'
+			),
+			Hash::extract(
+				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_CHIEF_EDITOR . '].room_id'
+			)
+		);
+
+		$blockPubConditions['OR'] = array(
+			array($this->Block->alias . '.public_type' => self::TYPE_PUBLIC),
+			array(
+				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
+				array('OR' => array(
+					$this->Block->alias . '.publish_start <=' => $now,
+					$this->Block->alias . '.publish_start' => null,
+				)),
+				array('OR' => array(
+					$this->Block->alias . '.publish_end >=' => $now,
+					$this->Block->alias . '.publish_end' => null,
+				)),
+			),
+		);
+		if ($blockEditableRoomIds) {
+			$blockPubConditions['OR'][2][$this->Block->alias . '.room_id'] = $blockEditableRoomIds;
+		}
+
+		return array($roomConditions, $blockPubConditions);
 	}
 
 /**

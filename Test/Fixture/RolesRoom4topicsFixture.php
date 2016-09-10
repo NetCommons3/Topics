@@ -59,10 +59,12 @@ class RolesRoom4topicsFixture extends RolesRoomFixture {
 		array('id' => '18', 'room_id' => '6', 'role_key' => 'room_administrator'),
 		//プライベートルーム、編集者(room_id=7)
 		array('id' => '19', 'room_id' => '7', 'role_key' => 'room_administrator'),
-		//プライベートルーム、一般(room_id=8)
+		//プライベートルーム、一般1(room_id=8)
 		array('id' => '20', 'room_id' => '8', 'role_key' => 'room_administrator'),
 		//プライベートルーム、参観者(room_id=9)
 		array('id' => '21', 'room_id' => '9', 'role_key' => 'room_administrator'),
+		//プライベートルーム、一般2(room_id=12)
+		array('id' => '32', 'room_id' => '12', 'role_key' => 'room_administrator'),
 		//コミュニティスペース
 		array('id' => '7', 'room_id' => '3', 'role_key' => 'room_administrator'),
 		array('id' => '8', 'room_id' => '3', 'role_key' => 'chief_editor'),

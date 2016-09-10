@@ -63,7 +63,7 @@ class RolesRoomsUser4topicsFixture extends RolesRoomsUserFixture {
 		array('id' => '17', 'roles_room_id' => '18', 'user_id' => '2', 'room_id' => '6'),
 		//プライベートルーム、編集者(room_id=7)
 		array('id' => '18', 'roles_room_id' => '19', 'user_id' => '3', 'room_id' => '7'),
-		//プライベートルーム、一般(room_id=8)
+		//プライベートルーム、一般1(room_id=8)
 		array('id' => '19', 'roles_room_id' => '20', 'user_id' => '4', 'room_id' => '8'),
 		//プライベートルーム、参観者(room_id=9)
 		array('id' => '20', 'roles_room_id' => '21', 'user_id' => '5', 'room_id' => '9'),
@@ -90,10 +90,10 @@ class RolesRoomsUser4topicsFixture extends RolesRoomsUserFixture {
 		array('id' => '36', 'roles_room_id' => '4', 'user_id' => '6', 'room_id' => '1'),
 		array('id' => '37', 'roles_room_id' => '15', 'user_id' => '6', 'room_id' => '4'),
 		array('id' => '38', 'roles_room_id' => '6', 'user_id' => '6', 'room_id' => '2'),
-		array('id' => '39', 'roles_room_id' => '20', 'user_id' => '6', 'room_id' => '8'),
+		array('id' => '39', 'roles_room_id' => '32', 'user_id' => '6', 'room_id' => '12'),
 		array('id' => '40', 'roles_room_id' => '10', 'user_id' => '6', 'room_id' => '3'),
 		//array('id' => '41', 'roles_room_id' => '25', 'user_id' => '6', 'room_id' => '10'),
-		array('id' => '42', 'roles_room_id' => '30', 'user_id' => '6', 'room_id' => '11'),
+		//array('id' => '42', 'roles_room_id' => '30', 'user_id' => '6', 'room_id' => '11'),
 	);
 
 }

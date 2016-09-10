@@ -78,7 +78,7 @@ class Room4topicsFixture extends RoomFixture {
 			'page_id_top' => null,
 			'parent_id' => null,
 			'lft' => '5',
-			'rght' => '16',
+			'rght' => '18',
 			'active' => '1',
 			'default_role_key' => 'room_administrator',
 			'need_approval' => '0',
@@ -134,7 +134,7 @@ class Room4topicsFixture extends RoomFixture {
 			'page_layout_permitted' => '0',
 			'theme' => null,
 		),
-		//プライベートルーム、一般(room_id=8)
+		//プライベートルーム、一般1(room_id=8)
 		array(
 			'id' => '8',
 			'space_id' => '3',
@@ -166,6 +166,22 @@ class Room4topicsFixture extends RoomFixture {
 			'page_layout_permitted' => '0',
 			'theme' => null,
 		),
+		//プライベートルーム、一般2(room_id=12)
+		array(
+			'id' => '12',
+			'space_id' => '3',
+			'page_id_top' => '0',
+			'root_id' => '2',
+			'parent_id' => '2',
+			'lft' => '16',
+			'rght' => '17',
+			'active' => true,
+			'default_role_key' => 'room_administrator',
+			'need_approval' => '0',
+			'default_participation' => '0',
+			'page_layout_permitted' => '0',
+			'theme' => null,
+		),
 
 		//コミュニティスペース
 		array(
@@ -173,8 +189,8 @@ class Room4topicsFixture extends RoomFixture {
 			'space_id' => '4',
 			'page_id_top' => null,
 			'parent_id' => null,
-			'lft' => '17',
-			'rght' => '22',
+			'lft' => '19',
+			'rght' => '24',
 			'active' => '1',
 			'default_role_key' => 'general_user',
 			'need_approval' => '1',
@@ -189,22 +205,6 @@ class Room4topicsFixture extends RoomFixture {
 			'page_id_top' => '0',
 			'root_id' => '3',
 			'parent_id' => '3',
-			'lft' => '18',
-			'rght' => '19',
-			'active' => '1',
-			'default_role_key' => 'general_user',
-			'need_approval' => '0',
-			'default_participation' => '0',
-			'page_layout_permitted' => null,
-			'theme' => null,
-		),
-		//コミュニティスペース、ルーム1(room_id=11)
-		array(
-			'id' => '11',
-			'space_id' => '4',
-			'page_id_top' => '0',
-			'root_id' => '3',
-			'parent_id' => '3',
 			'lft' => '20',
 			'rght' => '21',
 			'active' => '1',
@@ -214,6 +214,21 @@ class Room4topicsFixture extends RoomFixture {
 			'page_layout_permitted' => null,
 			'theme' => null,
 		),
+		//コミュニティスペース、ルーム2(room_id=11)
+		array(
+			'id' => '11',
+			'space_id' => '4',
+			'page_id_top' => '0',
+			'root_id' => '3',
+			'parent_id' => '3',
+			'lft' => '22',
+			'rght' => '23',
+			'active' => '1',
+			'default_role_key' => 'general_user',
+			'need_approval' => '0',
+			'default_participation' => '0',
+			'page_layout_permitted' => null,
+			'theme' => null,
+		),
 	);
-
 }

@@ -48,6 +48,24 @@ class Plugin4topicsFixture extends PluginFixture {
 			'default_action' => 'test_bbses/index',
 			'default_setting_action' => '',
 		),
+		array(
+			'language_id' => '2',
+			'key' => 'test_blogs',
+			'name' => 'Test blogs',
+			'weight' => '1',
+			'type' => '1',
+			'default_action' => 'test_blogs/index',
+			'default_setting_action' => '',
+		),
+		array(
+			'language_id' => '2',
+			'key' => 'test_announcements',
+			'name' => 'Test announcements',
+			'weight' => '1',
+			'type' => '1',
+			'default_action' => 'test_announcements/index',
+			'default_setting_action' => '',
+		),
 	);
 
 }
