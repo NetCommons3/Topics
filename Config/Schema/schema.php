@@ -214,6 +214,7 @@ class TopicsSchema extends CakeSchema {
 		'publish_end' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'is_no_member_allow' => array('type' => 'boolean', 'null' => false, 'default' => '1', 'comment' => '非会員を受け付けるかどうか'),
 		'is_answer' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'comment' => '回答かどうか'),
+		'is_in_room' => array('type' => 'boolean', 'null' => false, 'default' => '1', 'comment' => 'ルーム内で完結するかどうか。カレンダーのプライベートの予定を共有するときは、0にする'),
 		'answer_period_start' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'answer_period_end' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'is_active' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'comment' => '公開中データか否か'),
