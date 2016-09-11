@@ -98,6 +98,12 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
  *  - content_key_24[block_id=10,room_id=5] 管理者プライベート
  *  - content_key_25[block_id=11,room_id=8] 一般1プライベート
  *  - content_key_26[block_id=12,room_id=11] ルーム2
+ * #### FAQ（カテゴリ）
+ *  - content_key_27 カテゴリなし
+ *  - content_key_28 カテゴリ１
+ *  - content_key_29 カテゴリ１
+ *  - content_key_30 カテゴリ２
+ *  - content_key_31 存在しないカテゴリ
  *
  * @param array $topicIds トピックID
  * @param int $userId ユーザID
@@ -110,104 +116,131 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		foreach ($topicIds as $topicId) {
 			$data = array();
 
-			if ($topicId === '1') {
+			if (in_array($topicId, ['1', '2', '3', '4', '5', '6', '7', '8'], true)) {
 				//#### 掲示板
-				// - content_key_1 管理者が投稿(公開中)
-				// ** is_latest
-				$data = array(
-					'Topic' => array('id' => '1', 'content_key' => 'content_key_1'),
-					'TopicReadable' => array('id' => '1'), 'TopicUserStatus' => array('id' => null),
-				);
-				if ($userId === '1') {
-					$data['TopicUserStatus']['id'] = '1';
+				if ($topicId === '1') {
+					// - content_key_1 管理者が投稿(公開中)
+					// ** is_latest
+					$data = array(
+						'Topic' => array('id' => '1', 'content_key' => 'content_key_1', 'category_id' => null),
+						'TopicReadable' => array('id' => '1'), 'TopicUserStatus' => array('id' => null),
+						'Category' => array('id' => null),
+					);
+					if ($userId === '1') {
+						$data['TopicUserStatus']['id'] = '1';
+					}
+
+				} elseif ($topicId === '2') {
+					// - content_key_1 管理者が投稿(公開中)
+					// ** is_active
+					$data = array(
+						'Topic' => array('id' => '2', 'content_key' => 'content_key_1', 'category_id' => null),
+						'TopicReadable' => array('id' => '2'), 'TopicUserStatus' => array('id' => null),
+						'Category' => array('id' => null),
+					);
+
+				} elseif ($topicId === '3') {
+					// - content_key_2 一般1が投稿(未承認)
+					// ** is_latestのみ
+					$data = array(
+						'Topic' => array('id' => '3', 'content_key' => 'content_key_2', 'category_id' => null),
+						'TopicReadable' => array('id' => '3'), 'TopicUserStatus' => array('id' => null),
+						'Category' => array('id' => null),
+					);
+					if ($userId === '4') {
+						$data['TopicUserStatus']['id'] = '2';
+					}
+
+				} elseif ($topicId === '4') {
+					// - content_key_3 一般1が投稿(承認待ち⇒差し戻し)
+					// ** is_latestのみ
+					$data = array(
+						'Topic' => array('id' => '4', 'content_key' => 'content_key_3', 'category_id' => null),
+						'TopicReadable' => array('id' => '4'), 'TopicUserStatus' => array('id' => null),
+						'Category' => array('id' => null),
+					);
+					if ($userId === '1') {
+						$data['TopicUserStatus']['id'] = '3';
+					} elseif ($userId === '4') {
+						$data['TopicUserStatus']['id'] = '4';
+					}
+
+				} elseif ($topicId === '5') {
+					// - content_key_4 一般1が投稿(承認待ち⇒公開)
+					// ** is_latest
+					$data = array(
+						'Topic' => array('id' => '5', 'content_key' => 'content_key_4', 'category_id' => null),
+						'TopicReadable' => array('id' => '5'), 'TopicUserStatus' => array('id' => null),
+						'Category' => array('id' => null),
+					);
+					if ($userId === '1') {
+						$data['TopicUserStatus']['id'] = '5';
+					} elseif ($userId === '4') {
+						$data['TopicUserStatus']['id'] = '6';
+					}
+
+				} elseif ($topicId === '6') {
+					// - content_key_4 一般1が投稿(承認待ち⇒公開)
+					// ** is_active
+					$data = array(
+						'Topic' => array('id' => '6', 'content_key' => 'content_key_4', 'category_id' => null),
+						'TopicReadable' => array('id' => '6'), 'TopicUserStatus' => array('id' => null),
+						'Category' => array('id' => null),
+					);
+					if ($userId === '6') {
+						$data['TopicUserStatus']['id'] = '7';
+					}
+
+				} elseif ($topicId === '7') {
+					// - content_key_5 一般1が投稿(承認待ち⇒公開⇒承認待ち(編集者が修正))
+					// ** is_latest
+					$data = array(
+						'Topic' => array('id' => '7', 'content_key' => 'content_key_5', 'category_id' => null),
+						'TopicReadable' => array('id' => '7'), 'TopicUserStatus' => array('id' => null),
+						'Category' => array('id' => null),
+					);
+					if ($userId === '1') {
+						$data['TopicUserStatus']['id'] = '8';
+					} elseif ($userId === '4') {
+						$data['TopicUserStatus']['id'] = '9';
+					} elseif ($userId === '3') {
+						$data['TopicUserStatus']['id'] = '10';
+					}
+
+				} elseif ($topicId === '8') {
+					// - content_key_5 一般1が投稿(承認待ち⇒公開⇒承認待ち(編集者が修正))
+					// ** is_active
+					$data = array(
+						'Topic' => array('id' => '8', 'content_key' => 'content_key_5', 'category_id' => null),
+						'TopicReadable' => array('id' => '8'), 'TopicUserStatus' => array('id' => null),
+						'Category' => array('id' => null),
+					);
 				}
-
-			} elseif ($topicId === '2') {
-				//#### 掲示板
-				// - content_key_1 管理者が投稿(公開中)
-				// ** is_active
-				$data = array(
-					'Topic' => array('id' => '2', 'content_key' => 'content_key_1'),
-					'TopicReadable' => array('id' => '2'), 'TopicUserStatus' => array('id' => null),
-				);
-
-			} elseif ($topicId === '3') {
-				//#### 掲示板
-				// - content_key_2 一般1が投稿(未承認)
-				// ** is_latestのみ
-				$data = array(
-					'Topic' => array('id' => '3', 'content_key' => 'content_key_2'),
-					'TopicReadable' => array('id' => '3'), 'TopicUserStatus' => array('id' => null),
-				);
-				if ($userId === '4') {
-					$data['TopicUserStatus']['id'] = '2';
+			} elseif (in_array($topicId, ['27', '28', '29', '30', '31'], true)) {
+				//#### FAQ（カテゴリ）
+				if ($topicId === '27') {
+					// - content_key_27 カテゴリなし
+					$topicCateId = null;
+					$categoryId = null;
+				} elseif ($topicId === '28' || $topicId === '29') {
+					// - content_key_28 カテゴリ１
+					// - content_key_29 カテゴリ１
+					$topicCateId = '1';
+					$categoryId = '1';
+				} elseif ($topicId === '30') {
+					// - content_key_30 カテゴリ２
+					$topicCateId = '2';
+					$categoryId = '2';
+				} else {
+					// - content_key_31 存在しないカテゴリ
+					$topicCateId = '9999';
+					$categoryId = null;
 				}
-
-			} elseif ($topicId === '4') {
-				//#### 掲示板
-				// - content_key_3 一般1が投稿(承認待ち⇒差し戻し)
-				// ** is_latestのみ
 				$data = array(
-					'Topic' => array('id' => '4', 'content_key' => 'content_key_3'),
-					'TopicReadable' => array('id' => '4'), 'TopicUserStatus' => array('id' => null),
+					'Topic' => array('id' => $topicId, 'content_key' => 'content_key_' . $topicId, 'category_id' => $topicCateId),
+					'TopicReadable' => array('id' => $topicId), 'TopicUserStatus' => array('id' => null),
+					'Category' => array('id' => $categoryId),
 				);
-				if ($userId === '1') {
-					$data['TopicUserStatus']['id'] = '3';
-				} elseif ($userId === '4') {
-					$data['TopicUserStatus']['id'] = '4';
-				}
-
-			} elseif ($topicId === '5') {
-				//#### 掲示板
-				// - content_key_4 一般1が投稿(承認待ち⇒公開)
-				// ** is_latest
-				$data = array(
-					'Topic' => array('id' => '5', 'content_key' => 'content_key_4'),
-					'TopicReadable' => array('id' => '5'), 'TopicUserStatus' => array('id' => null),
-				);
-				if ($userId === '1') {
-					$data['TopicUserStatus']['id'] = '5';
-				} elseif ($userId === '4') {
-					$data['TopicUserStatus']['id'] = '6';
-				}
-
-			} elseif ($topicId === '6') {
-				//#### 掲示板
-				// - content_key_4 一般1が投稿(承認待ち⇒公開)
-				// ** is_active
-				$data = array(
-					'Topic' => array('id' => '6', 'content_key' => 'content_key_4'),
-					'TopicReadable' => array('id' => '6'), 'TopicUserStatus' => array('id' => null),
-				);
-				if ($userId === '6') {
-					$data['TopicUserStatus']['id'] = '7';
-				}
-
-			} elseif ($topicId === '7') {
-				//#### 掲示板
-				// - content_key_5 一般1が投稿(承認待ち⇒公開⇒承認待ち(編集者が修正))
-				// ** is_latest
-				$data = array(
-					'Topic' => array('id' => '7', 'content_key' => 'content_key_5'),
-					'TopicReadable' => array('id' => '7'), 'TopicUserStatus' => array('id' => null),
-				);
-				if ($userId === '1') {
-					$data['TopicUserStatus']['id'] = '8';
-				} elseif ($userId === '4') {
-					$data['TopicUserStatus']['id'] = '9';
-				} elseif ($userId === '3') {
-					$data['TopicUserStatus']['id'] = '10';
-				}
-
-			} elseif ($topicId === '8') {
-				//#### 掲示板
-				// - content_key_5 一般1が投稿(承認待ち⇒公開⇒承認待ち(編集者が修正))
-				// ** is_active
-				$data = array(
-					'Topic' => array('id' => '8', 'content_key' => 'content_key_5'),
-					'TopicReadable' => array('id' => '8'), 'TopicUserStatus' => array('id' => null),
-				);
-
 			} else {
 				//#### ブログ（公開日のチェック）
 				// - content_key_9 管理者が投稿(公開中、現在)
@@ -230,8 +263,9 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 				// - content_key_25[block_id=11,room_id=8] 一般1プライベート
 				// - content_key_26[block_id=12,room_id=11] ルーム2
 				$data = array(
-					'Topic' => array('id' => $topicId, 'content_key' => 'content_key_' . $topicId),
+					'Topic' => array('id' => $topicId, 'content_key' => 'content_key_' . $topicId, 'category_id' => null),
 					'TopicReadable' => array('id' => $topicId), 'TopicUserStatus' => array('id' => null),
+					'Category' => array('id' => null),
 				);
 			}
 			$result[] = $data;
@@ -274,6 +308,12 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
  *  - content_key_24[block_id=10,room_id=5] 管理者プライベート
  *  - content_key_25[block_id=11,room_id=8] 一般1プライベート
  *  - content_key_26[block_id=12,room_id=11] ルーム2
+ * #### FAQ（カテゴリ）
+ *  - content_key_27 カテゴリなし
+ *  - content_key_28 カテゴリ１
+ *  - content_key_29 カテゴリ１
+ *  - content_key_30 カテゴリ２
+ *  - content_key_31 存在しないカテゴリ
  *
  * @return array データ
  */
@@ -285,6 +325,7 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		$index = 'Not login';
 		$result[$index]['userId'] = null;
 		$result[$index]['expected'] = $this->__data([
+			'31', '30', '29', '28', '27',
 			'21', '20', '19', '17',
 			'9',
 			'8', '6', '2',
@@ -296,6 +337,7 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		$result[$index]['userId'] = '1';
 		$result[$index]['expected'] = $this->__data([
 			'10',
+			'31', '30', '29', '28', '27',
 			'26', '24', '23', '22', '21', '20', '19', '18', '17',
 			'9',
 			'7', '5', '4', '3', '1',
@@ -307,6 +349,7 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		$result[$index]['userId'] = '2';
 		$result[$index]['expected'] = $this->__data([
 			'10',
+			'31', '30', '29', '28', '27',
 			'26', '23', '22', '21', '20', '19', '18', '17',
 			'9',
 			'7', '5', '4', '3', '1',
@@ -318,6 +361,7 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		$result[$index]['userId'] = '3';
 		$result[$index]['expected'] = $this->__data([
 			'10',
+			'31', '30', '29', '28', '27',
 			'26', '21', '20', '19', '17',
 			'9',
 			'7', '5', '4', '3', '1',
@@ -328,6 +372,7 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		$index = 'General user 1 login';
 		$result[$index]['userId'] = '4';
 		$result[$index]['expected'] = $this->__data([
+			'31', '30', '29', '28', '27',
 			'26', '25', '21', '20', '19', '17',
 			'9',
 			'7', '5', '4', '3', '2',
@@ -338,6 +383,7 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		$index = 'General user 2 login';
 		$result[$index]['userId'] = '6';
 		$result[$index]['expected'] = $this->__data([
+			'31', '30', '29', '28', '27',
 			'21', '20', '19', '17',
 			'9',
 			'8', '6', '2',
@@ -348,6 +394,7 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		$index = 'Visitor login';
 		$result[$index]['userId'] = '5';
 		$result[$index]['expected'] = $this->__data([
+			'31', '30', '29', '28', '27',
 			'21', '20', '19', '17',
 			'9',
 			'8', '6', '2',
@@ -396,7 +443,9 @@ class TopicGetQueryOptionsTest extends NetCommonsGetTest {
 		//テスト実施
 		$result = $this->$model->find('all',
 			Hash::merge(
-				array('fields' => array('Topic.id', 'Topic.content_key', 'TopicReadable.id', 'TopicUserStatus.id')),
+				array('fields' => array(
+					'Topic.id', 'Topic.content_key', 'Topic.category_id', 'TopicReadable.id', 'TopicUserStatus.id', 'Category.id'
+				)),
 				//array('fields' => array('Topic.*')),
 				$this->$model->$methodName($status, $options)
 			)

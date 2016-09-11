@@ -66,6 +66,15 @@ class Plugin4topicsFixture extends PluginFixture {
 			'default_action' => 'test_announcements/index',
 			'default_setting_action' => '',
 		),
+		array(
+			'language_id' => '2',
+			'key' => 'test_faqs',
+			'name' => 'Test Faqs',
+			'weight' => '1',
+			'type' => '1',
+			'default_action' => 'test_faqs/index',
+			'default_setting_action' => '',
+		),
 	);
 
 }

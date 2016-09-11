@@ -41,6 +41,12 @@ App::uses('TopicUserStatusFixture', 'Topics.Test/Fixture');
  *  - content_key_24[block_id=10,room_id=5] 管理者プライベート
  *  - content_key_25[block_id=11,room_id=8] 一般1プライベート
  *  - content_key_26[block_id=12,room_id=11] ルーム2
+ * #### FAQ（カテゴリ）
+ *  - content_key_27 カテゴリなし
+ *  - content_key_28 カテゴリ１
+ *  - content_key_29 カテゴリ１
+ *  - content_key_30 カテゴリ２
+ *  - content_key_31 存在しないカテゴリ
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -104,6 +110,12 @@ class TopicUserStatus4topicsFixture extends TopicUserStatusFixture {
 		// - content_key_24[block_id=10,room_id=5] 管理者プライベート
 		// - content_key_25[block_id=11,room_id=8] 一般1プライベート
 		// - content_key_26[block_id=12,room_id=11] ルーム2
+		//#### FAQ（カテゴリ）
+		// - content_key_27 カテゴリなし
+		// - content_key_28 カテゴリ１
+		// - content_key_29 カテゴリ１
+		// - content_key_30 カテゴリ２
+		// - content_key_31 存在しないカテゴリ
 	);
 
 }

@@ -41,6 +41,12 @@ App::uses('TopicReadableFixture', 'Topics.Test/Fixture');
  *  - content_key_24[block_id=10,room_id=5] 管理者プライベート
  *  - content_key_25[block_id=11,room_id=8] 一般1プライベート
  *  - content_key_26[block_id=12,room_id=11] ルーム2
+ * #### FAQ（カテゴリ）
+ *  - content_key_27 カテゴリなし
+ *  - content_key_28 カテゴリ１
+ *  - content_key_29 カテゴリ１
+ *  - content_key_30 カテゴリ２
+ *  - content_key_31 存在しないカテゴリ
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -121,6 +127,17 @@ class TopicReadable4topicsFixture extends TopicReadableFixture {
 		array('id' => '25', 'topic_id' => '25', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_26[block_id=12,room_id=11] ルーム2
 		array('id' => '26', 'topic_id' => '26', 'user_id' => '0'), //is_latest,is_active
+		//#### FAQ（カテゴリ）
+		// - content_key_27 カテゴリなし
+		array('id' => '27', 'topic_id' => '27', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_28 カテゴリ１
+		array('id' => '28', 'topic_id' => '28', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_29 カテゴリ１
+		array('id' => '29', 'topic_id' => '29', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_30 カテゴリ２
+		array('id' => '30', 'topic_id' => '30', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_31 存在しないカテゴリ
+		array('id' => '31', 'topic_id' => '31', 'user_id' => '0'), //is_latest,is_active
 	);
 
 }

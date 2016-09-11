@@ -178,6 +178,18 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
+		//#### FAQ
+		array(
+			'id' => '13',
+			'language_id' => '2',
+			'room_id' => '1',
+			'plugin_key' => 'test_faqs',
+			'key' => 'block_13',
+			'name' => 'Block name 13',
+			'public_type' => '1',
+			'publish_start' => null,
+			'publish_end' => null,
+		),
 	);
 
 /**

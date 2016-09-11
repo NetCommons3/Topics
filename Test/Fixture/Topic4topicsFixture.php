@@ -41,6 +41,12 @@ App::uses('TopicFixture', 'Topics.Test/Fixture');
  *  - content_key_24[block_id=10,room_id=5] 管理者プライベート
  *  - content_key_25[block_id=11,room_id=8] 一般1プライベート
  *  - content_key_26[block_id=12,room_id=11] ルーム2
+ * #### FAQ（カテゴリ）
+ *  - content_key_27 カテゴリなし
+ *  - content_key_28 カテゴリ１
+ *  - content_key_29 カテゴリ１
+ *  - content_key_30 カテゴリ２
+ *  - content_key_31 存在しないカテゴリ
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -306,6 +312,92 @@ class Topic4topicsFixture extends TopicFixture {
 			'category_id' => null, 'plugin_key' => 'test_announcements',
 			'title' => 'Content Title 26', 'title_icon' => '',
 			'summary' => 'Content Summary 26',
+			'search_contents' => '', //init()でセット
+			'counts' => '1',
+			'path' => '', //init()でセット
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		//#### FAQ（カテゴリ）
+		// - content_key_27 カテゴリなし
+		array(
+			'id' => '27', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'content_key' => 'content_key_27', 'content_id' => '27',
+			'category_id' => null, 'plugin_key' => 'test_faqs',
+			'title' => 'Content Title 27', 'title_icon' => '',
+			'summary' => 'Content Summary 27',
+			'search_contents' => '', //init()でセット
+			'counts' => '1',
+			'path' => '', //init()でセット
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		// - content_key_28 カテゴリ１
+		array(
+			'id' => '28', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'content_key' => 'content_key_28', 'content_id' => '28',
+			'category_id' => '1', 'plugin_key' => 'test_faqs',
+			'title' => 'Content Title 28', 'title_icon' => '',
+			'summary' => 'Content Summary 28',
+			'search_contents' => '', //init()でセット
+			'counts' => '1',
+			'path' => '', //init()でセット
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		// - content_key_29 カテゴリ１
+		array(
+			'id' => '29', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'content_key' => 'content_key_29', 'content_id' => '29',
+			'category_id' => '1', 'plugin_key' => 'test_faqs',
+			'title' => 'Content Title 29', 'title_icon' => '',
+			'summary' => 'Content Summary 29',
+			'search_contents' => '', //init()でセット
+			'counts' => '1',
+			'path' => '', //init()でセット
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		// - content_key_30 カテゴリ２
+		array(
+			'id' => '30', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'content_key' => 'content_key_30', 'content_id' => '30',
+			'category_id' => '2', 'plugin_key' => 'test_faqs',
+			'title' => 'Content Title 30', 'title_icon' => '',
+			'summary' => 'Content Summary 30',
+			'search_contents' => '', //init()でセット
+			'counts' => '1',
+			'path' => '', //init()でセット
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		// - content_key_31 存在しないカテゴリ
+		array(
+			'id' => '31', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'content_key' => 'content_key_31', 'content_id' => '31',
+			'category_id' => '9999', 'plugin_key' => 'test_faqs',
+			'title' => 'Content Title 31', 'title_icon' => '',
+			'summary' => 'Content Summary 31',
 			'search_contents' => '', //init()でセット
 			'counts' => '1',
 			'path' => '', //init()でセット
