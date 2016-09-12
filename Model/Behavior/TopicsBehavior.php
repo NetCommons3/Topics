@@ -45,6 +45,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
 			'is_active' => null,
 			'is_latest' => null,
 			'status' => null,
+			'is_in_room' => null,
 		),
 		'search_contents' => array(
 			//ここにフィールドを追加、デフォルトでfields.titleとfields.summaryの内容が含まれる

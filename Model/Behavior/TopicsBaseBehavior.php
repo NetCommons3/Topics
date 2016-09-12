@@ -123,14 +123,14 @@ class TopicsBaseBehavior extends ModelBehavior {
 
 		$fields = array(
 			'category_id', 'title_icon', 'public_type', 'publish_start', 'publish_end', 'status',
-			'is_no_member_allow', 'answer_period_start', 'answer_period_end',
+			'is_no_member_allow', 'answer_period_start', 'answer_period_end', 'is_in_room',
 			'created_user', 'created', 'modified_user', 'modified'
 		);
 		foreach ($fields as $field) {
-			$value = $this->_getSaveData($model, $field);
-			if ($value === false) {
+			if ($this->_hasSaveData($model, $field) === false) {
 				continue;
 			}
+			$value = $this->_getSaveData($model, $field);
 			$merge[$field] = $value;
 		}
 
@@ -241,6 +241,32 @@ class TopicsBaseBehavior extends ModelBehavior {
 		}
 
 		return serialize($result);
+	}
+
+/**
+ * 新着データのデータを持っているかチェック
+ *
+ * self::_saveTopic()から実行される
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @param string $field フィールド名
+ * @return string
+ */
+	protected function _hasSaveData(Model $model, $field) {
+		$setting = $this->settings[$model->alias]['fields'];
+		$data = $this->settings[$model->alias]['data'];
+
+		if (in_array($field, ['created_user', 'created', 'modified_user', 'modified'], true)) {
+			$pathKey = $model->alias . '.' . $field;
+		} else {
+			$pathKey = $setting[$field];
+		}
+
+		if (array_key_exists($field, $data) || Hash::get($model->data, $pathKey) !== null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 /**
