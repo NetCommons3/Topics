@@ -29,7 +29,7 @@ class AllTopicsTest extends NetCommonsTestSuite {
 		$plugin = preg_replace('/^All([\w]+)Test$/', '$1', __CLASS__);
 		$suite = new NetCommonsTestSuite(sprintf('All %s Plugin tests', $plugin));
 
-		$Folder = new Folder($directory);
+		$Folder = new Folder(CakePlugin::path($plugin) . 'Test' . DS . 'Case');
 		$files = $Folder->tree(null, true, 'files');
 
 		foreach ($files as $file) {
