@@ -61,6 +61,15 @@ class PrivateTopicGetStatusConditionsTest extends NetCommonsModelTestCase {
 	protected $_methodName = '__getStatusConditions';
 
 /**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+	}
+
+/**
  * __getStatusConditions()テストのDataProvider
  *
  * ### 戻り値

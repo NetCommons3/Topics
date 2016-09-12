@@ -70,6 +70,15 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 	protected $_now = null;
 
 /**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+	}
+
+/**
  * __getRoomsConditions()テストのDataProvider
  *
  * ### 戻り値

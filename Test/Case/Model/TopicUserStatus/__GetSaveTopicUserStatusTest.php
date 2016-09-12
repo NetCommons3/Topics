@@ -50,6 +50,15 @@ class PrivateTopicUserStatusGetSaveTopicUserStatusTest extends NetCommonsModelTe
 	protected $_methodName = '__getSaveTopicUserStatus';
 
 /**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+	}
+
+/**
  * __getSaveTopicUserStatus()テストのDataProvider
  *
  * ### 戻り値
