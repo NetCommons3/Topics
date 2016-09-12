@@ -24,12 +24,12 @@ class TopicFramesPluginFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'frame_key' => 'Lorem ipsum dolor sit amet',
+			'id' => '3',
+			'frame_key' => 'frame_3',
 			'plugin_key' => 'Lorem ipsum dolor sit amet',
-			'created_user' => 1,
+			'created_user' => '1',
 			'created' => '2016-05-02 06:25:24',
-			'modified_user' => 1,
+			'modified_user' => '1',
 			'modified' => '2016-05-02 06:25:24'
 		),
 	);

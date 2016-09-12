@@ -94,7 +94,7 @@ class TopicReadable extends TopicsAppModel {
 			'Topic' => 'Topics.Topic',
 		]);
 
-		$topic = $this->Topic->find('first', array(
+		$topics = $this->Topic->find('all', array(
 			'recursive' => -1,
 			'fields' => array($this->Topic->alias . '.id'),
 			'joins' => array(
@@ -111,7 +111,7 @@ class TopicReadable extends TopicsAppModel {
 			'conditions' => $conditions,
 		));
 
-		return $topic;
+		return $topics;
 	}
 
 }

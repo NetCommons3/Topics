@@ -11,6 +11,7 @@
 ?>
 
 <?php echo $this->NetCommonsForm->hidden('Frame.id'); ?>
+<?php echo $this->NetCommonsForm->hidden('Frame.key'); ?>
 <?php echo $this->NetCommonsForm->hidden('TopicFrameSetting.id'); ?>
 <?php echo $this->NetCommonsForm->hidden('TopicFrameSetting.frame_key'); ?>
 

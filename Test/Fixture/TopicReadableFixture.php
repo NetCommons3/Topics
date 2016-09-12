@@ -24,12 +24,12 @@ class TopicReadableFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'topic_id' => 1,
-			'user_id' => 1,
-			'created_user' => 1,
+			'id' => '1',
+			'topic_id' => '1',
+			'user_id' => '1',
+			'created_user' => '1',
 			'created' => '2016-05-02 06:25:36',
-			'modified_user' => 1,
+			'modified_user' => '1',
 			'modified' => '2016-05-02 06:25:36'
 		),
 	);

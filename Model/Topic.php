@@ -382,17 +382,7 @@ class Topic extends TopicsAppModel {
 		$statusConditions = $this->__getStatusConditions($now, $status);
 
 		//閲覧可のルームの条件生成
-		$roomConditions = $this->__getRoomsConditions($now);
-
-		//ブロック公開設定の条件生成
-		$blockPubConditions['OR'] = array(
-			$this->Block->alias . '.public_type' => self::TYPE_PUBLIC,
-			array(
-				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
-				$this->Block->alias . '.publish_start <=' => $now,
-				$this->Block->alias . '.publish_end >=' => $now,
-			),
-		);
+		list($roomConditions, $blockPubConditions) = $this->__getRoomsConditions($now);
 
 		//クエリ
 		$this->__bindModel();
@@ -474,8 +464,9 @@ class Topic extends TopicsAppModel {
 				)
 			)
 		);
+
 		//room_idの取得
-		$adminRoomIds = array_merge(
+		$editableRoomIds = array_merge(
 			Hash::extract(
 				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR . '].room_id'
 			),
@@ -487,44 +478,128 @@ class Topic extends TopicsAppModel {
 			)
 		);
 		$readableRoomIds = array_diff(
-			Hash::extract($rooms, '{n}.Room.id'), $adminRoomIds
+			Hash::extract($rooms, '{n}.Room.id'), $editableRoomIds
 		);
 
 		$roomConditions = array();
 
+		//非会員を受け付けるどうか（パブリックスペースのみ有効）
+		if (! Current::read('User.id')) {
+			$roomConditions['Topic.is_no_member_allow'] = true;
+		}
+
 		//is_latestのデータが見れる条件生成
-		if ($adminRoomIds) {
+		$roomConditions = $this->__getIsLatestConditions($now, $roomConditions, $editableRoomIds);
+
+		//is_activeの条件生成
+		$roomConditions = $this->__getIsActiveConditions($now, $roomConditions, $readableRoomIds);
+
+		//ブロック公開設定の条件生成
+		$blockEditableRoomIds = array_merge(
+			Hash::extract(
+				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR . '].room_id'
+			),
+			Hash::extract(
+				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_CHIEF_EDITOR . '].room_id'
+			)
+		);
+
+		$blockPubConditions['OR'] = array(
+			array($this->Block->alias . '.public_type' => self::TYPE_PUBLIC),
+			array(
+				$this->Block->alias . '.public_type' => self::TYPE_LIMITED,
+				array('OR' => array(
+					$this->Block->alias . '.publish_start <=' => $now,
+					$this->Block->alias . '.publish_start' => null,
+				)),
+				array('OR' => array(
+					$this->Block->alias . '.publish_end >=' => $now,
+					$this->Block->alias . '.publish_end' => null,
+				)),
+			),
+		);
+		if ($blockEditableRoomIds) {
+			$blockPubConditions['OR'][2][$this->Block->alias . '.room_id'] = $blockEditableRoomIds;
+		}
+
+		return array($roomConditions, $blockPubConditions);
+	}
+
+/**
+ * $roomConditionsのis_latestについてセットする
+ *
+ * @param string $now 現在時刻
+ * @param array $roomConditions roomConditions配列
+ * @param array $editableRoomIds 編集権限のあるルームIDリスト
+ * @return array $roomConditions
+ */
+	private function __getIsLatestConditions($now, $roomConditions, $editableRoomIds) {
+		//is_latestのデータが見れる条件生成
+		if ($editableRoomIds) {
 			$roomConditions['OR'][] = array(
-				$this->alias . '.room_id' => array_unique($adminRoomIds),
+				$this->alias . '.room_id' => array_unique($editableRoomIds),
 				$this->alias . '.is_latest' => true
 			);
 		}
 		if (Current::read('User.id')) {
 			$roomConditions['OR'][] = array(
 				'TopicReadable.user_id' => Current::read('User.id'),
-				$this->alias . '.is_active' => true
+				$this->alias . '.is_active' => true,
+				$this->alias . '.is_in_room' => false,
 			);
 			$roomConditions['OR'][] = array(
 				$this->alias . '.created_user' => Current::read('User.id'),
 				$this->alias . '.is_latest' => true
 			);
 		}
+
+		return $roomConditions;
+	}
+
+/**
+ * is_activeについてセットする
+ *
+ * @param string $now 現在時刻
+ * @param array $roomConditions roomConditions配列
+ * @param array $readableRoomIds 閲覧権限のあるルームIDリスト
+ * @return array $roomConditions
+ */
+	private function __getIsActiveConditions($now, $roomConditions, $readableRoomIds) {
 		//is_activeの条件生成
 		if ($readableRoomIds) {
-			$roomConditions['OR'][] = array(
-				$this->alias . '.room_id' => array_unique($readableRoomIds),
-				$this->alias . '.created_user !=' => Current::read('User.id'),
-				$this->alias . '.is_active' => true,
-				//公開設定の条件生成
-				array(
-					$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
-					$this->alias . '.publish_start <=' => $now,
+			if (Current::read('User.id')) {
+				$roomConditions['OR'][] = array(
 					'OR' => array(
-						$this->alias . '.publish_end >=' => $now,
-						$this->alias . '.publish_end' => null,
+						$this->alias . '.room_id' => array_unique($readableRoomIds),
+						'TopicReadable.user_id' => Current::read('User.id')
 					),
-				)
-			);
+					$this->alias . '.created_user !=' => Current::read('User.id'),
+					$this->alias . '.is_active' => true,
+					//公開設定の条件生成
+					array(
+						$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
+						$this->alias . '.publish_start <=' => $now,
+						'OR' => array(
+							$this->alias . '.publish_end >=' => $now,
+							$this->alias . '.publish_end' => null,
+						),
+					)
+				);
+			} else {
+				$roomConditions['OR'][] = array(
+					$this->alias . '.room_id' => array_unique($readableRoomIds),
+					$this->alias . '.is_active' => true,
+					//公開設定の条件生成
+					array(
+						$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
+						$this->alias . '.publish_start <=' => $now,
+						'OR' => array(
+							$this->alias . '.publish_end >=' => $now,
+							$this->alias . '.publish_end' => null,
+						),
+					)
+				);
+			}
 		}
 
 		return $roomConditions;

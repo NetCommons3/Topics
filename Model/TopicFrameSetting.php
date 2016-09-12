@@ -364,11 +364,6 @@ class TopicFrameSetting extends TopicsAppModel {
 			$conditions['Topic.publish_start >='] = $period;
 		}
 
-		//非会員を受け付けるどうか（パブリックスペースのみ有効）
-		if (! Current::read('User.id')) {
-			$conditions['Topic.is_no_member_allow'] = true;
-		}
-
 		$options['conditions'] = $conditions;
 
 		if ($topicFrameSetting[$this->alias]['unit_type'] === self::UNIT_TYPE_NUMBERS) {

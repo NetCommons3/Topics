@@ -36,7 +36,15 @@ class TopicUserStatus extends TopicsAppModel {
  *
  * @var array
  */
-	public $belongsTo = array();
+	public $belongsTo = array(
+		'Topic' => array(
+			'className' => 'Topics.Topic',
+			'foreignKey' => 'topic_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+	);
 
 /**
  * Called during validation operations, before validation. Please note that custom
@@ -84,12 +92,55 @@ class TopicUserStatus extends TopicsAppModel {
 		}
 
 		//トピックデータのチェック
-		$topic = $this->TopicReadable->getTopicIdByReadable($conditions);
-		if (! $topic) {
+		$topics = $this->TopicReadable->getTopicIdByReadable($conditions);
+		if (! $topics) {
 			return true;
 		}
 
-		//既読になっているかどうかチェック
+		//トランザクションBegin
+		$this->begin();
+
+		try {
+			foreach ($topics as $topic) {
+				//既読になっているかどうかチェック
+				$data = $this->__getSaveTopicUserStatus($topic, $update);
+				if ($data === true) {
+					continue;
+				}
+
+				$this->create(false);
+				$result = $this->save($data);
+				if (! $result) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
+			}
+
+			//トランザクションCommit
+			$this->commit();
+
+		} catch (Exception $ex) {
+			//トランザクションRollback。ただし、throwにしない。
+			$this->rollback();
+			CakeLog::error($ex);
+		}
+
+		$this->setSlaveDataSource();
+
+		return true;
+	}
+
+/**
+ * 既読の登録データ取得
+ *
+ * @param array $topic 既存新着データ
+ * @param array $update アップデート
+ * @return array
+ */
+	private function __getSaveTopicUserStatus($topic, $update) {
+		$this->loadModels([
+			'Topic' => 'Topics.Topic',
+		]);
+
 		$data = array(
 			'topic_id' => $topic[$this->Topic->alias]['id'],
 			'user_id' => Current::read('User.id')
@@ -108,47 +159,7 @@ class TopicUserStatus extends TopicsAppModel {
 		}
 		$data = Hash::merge($data, $update, ['id' => Hash::get($topicUserStatus, 'id', null)]);
 
-		//トランザクションBegin
-		$this->begin();
-
-		try {
-			$this->create(false);
-			$result = $this->save($data);
-			if (! $result) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
-
-			//トランザクションCommit
-			$this->commit();
-
-		} catch (Exception $ex) {
-			//トランザクションRollback。ただし、throwにしない。
-			$this->rollback();
-			CakeLog::error($ex);
-		}
-
-		$this->setSlaveDataSource();
-
-		return true;
-	}
-
-/**
- * Topicデータ取得
- *
- * @param int $topicId トピックID
- * @return array 既読トピックID
- */
-	public function getTopicUserStatusId($topicId) {
-		$data = array(
-			'topic_id' => $topicId,
-			'user_id' => Current::read('User.id')
-		);
-		$result = $this->find('first', array(
-			'recursive' => -1,
-			'conditions' => $data,
-		));
-
-		return Hash::get($result, $this->alias . '.id', null);
+		return $data;
 	}
 
 }
