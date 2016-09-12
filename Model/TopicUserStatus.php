@@ -154,23 +154,4 @@ class TopicUserStatus extends TopicsAppModel {
 		return $data;
 	}
 
-/**
- * Topicデータ取得
- *
- * @param int $topicId トピックID
- * @return array 既読トピックID
- */
-	public function getTopicUserStatusId($topicId) {
-		$data = array(
-			'topic_id' => $topicId,
-			'user_id' => Current::read('User.id')
-		);
-		$result = $this->find('first', array(
-			'recursive' => -1,
-			'conditions' => $data,
-		));
-
-		return Hash::get($result, $this->alias . '.id', null);
-	}
-
 }
