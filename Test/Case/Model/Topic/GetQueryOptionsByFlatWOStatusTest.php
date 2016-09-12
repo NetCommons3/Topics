@@ -9,8 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsGetTest', 'NetCommons.TestSuite');
-App::uses('TopicGetQueryOptionsTest', 'Topics.TestSuite');
+App::uses('TopicGetQueryOptionsTestCase', 'Topics.TestSuite');
 
 /**
  * Topic::getQueryOptions()のテスト
@@ -18,7 +17,7 @@ App::uses('TopicGetQueryOptionsTest', 'Topics.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Case\Model\Topic
  */
-class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTest {
+class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCase {
 
 /**
  * フラットで表示、ステータスの絞り込みなしのテストのDataProvider
