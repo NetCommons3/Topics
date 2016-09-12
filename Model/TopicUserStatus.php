@@ -129,6 +129,10 @@ class TopicUserStatus extends TopicsAppModel {
  * @return array
  */
 	private function __getSaveTopicUserStatus($topic, $update) {
+		$this->loadModels([
+			'Topic' => 'Topics.Topic',
+		]);
+
 		$data = array(
 			'topic_id' => $topic[$this->Topic->alias]['id'],
 			'user_id' => Current::read('User.id')
