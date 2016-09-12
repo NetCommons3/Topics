@@ -47,6 +47,25 @@ App::uses('TopicFixture', 'Topics.Test/Fixture');
  *  - content_key_29 カテゴリ１
  *  - content_key_30 カテゴリ２
  *  - content_key_31 存在しないカテゴリ
+ * #### 回覧板（イレギュラー）
+ *  - content_key_32 ルームに参加している全会員(パブリック)
+ *  - content_key_33 ルームに参加している全会員(ルーム2)
+ *  - content_key_34 個別に選択(パブリック)
+ *  - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
+ *  - content_key_36 回覧期間、期間内、回答期限なし
+ *  - content_key_37 回覧期間、期間内、回答期限あり
+ *  - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
+ *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+ *  - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
+ *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+ *  - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
+ *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+ *  - content_key_44 回覧期間、期間前、回答期限なし
+ *  - content_key_45 回覧期間、期間前、回答期限あり
+ *  - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
+ *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+ *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
+ *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -86,7 +105,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '0', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -103,7 +122,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '0', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -121,7 +140,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '0', 'is_latest' => '1', 'status' => '2',
 			'created_user' => '4', 'created' => 'now()',
@@ -139,7 +158,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '0', 'is_latest' => '1', 'status' => '4',
 			'created_user' => '4', 'created' => '2016-09-07 03:52:37',
@@ -157,7 +176,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '0', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '4', 'created' => '2016-09-07 03:52:37',
@@ -174,7 +193,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '0', 'status' => '1',
 			'created_user' => '4', 'created' => '2016-09-07 03:52:37',
@@ -192,7 +211,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '0', 'is_latest' => '1', 'status' => '2',
 			'created_user' => '4', 'created' => '2016-09-07 03:52:37',
@@ -209,7 +228,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '0', 'status' => '1',
 			'created_user' => '4', 'created' => '2016-09-07 03:52:37',
@@ -238,7 +257,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -265,7 +284,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -282,7 +301,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -299,7 +318,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '4', 'created' => 'now()',
@@ -316,12 +335,13 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
 			'modified_user' => '1', 'modified' => 'now()'
 		),
+
 		//#### FAQ（カテゴリ）
 		// - content_key_27 カテゴリなし
 		array(
@@ -334,7 +354,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -351,7 +371,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -368,7 +388,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -385,7 +405,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
@@ -402,11 +422,176 @@ class Topic4topicsFixture extends TopicFixture {
 			'counts' => '1',
 			'path' => '', //init()でセット
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
-			'is_no_member_allow' => '1', 'is_answer' => '0',
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
 			'answer_period_start' => null, 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
 			'created_user' => '1', 'created' => 'now()',
 			'modified_user' => '1', 'modified' => 'now()'
+		),
+
+		//#### 回覧板（イレギュラー）
+		// - content_key_32 ルームに参加している全会員(パブリック)
+		array(
+			'id' => '32', 'language_id' => '2', 'room_id' => '1', 'block_id' => '14', 'frame_id' => '1014',
+			'content_key' => 'content_key_32', 'content_id' => '32',
+			'category_id' => null, 'plugin_key' => 'test_circular_notices',
+			'title' => '', 'title_icon' => '',
+			'summary' => '',
+			'search_contents' => '', //init()でセット
+			'counts' => '1',
+			'path' => '', //init()でセット
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '0', 'is_answer' => '1', 'is_in_room' => '1',
+			'answer_period_start' => 'now()', 'answer_period_end' => null,
+			'is_active' => '0', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		array(
+			'id' => '50', 'plugin_key' => 'test_circular_notices',
+			'content_key' => 'content_key_32', 'content_id' => '27',
+			'is_active' => '1', 'is_latest' => '0',
+		),
+		// - content_key_33 ルームに参加している全会員(ルーム2)
+		array(
+			'id' => '33', 'plugin_key' => 'test_circular_notices',
+			'room_id' => '11', 'block_id' => '15', 'frame_id' => '1015',
+			'is_active' => '0', 'is_latest' => '1',
+			'created_user' => '4', 'created' => 'now()',
+			'modified_user' => '4', 'modified' => 'now()'
+		),
+		array(
+			'id' => '51', 'plugin_key' => 'test_circular_notices',
+			'room_id' => '11', 'block_id' => '15', 'frame_id' => '1015',
+			'content_key' => 'content_key_33', 'content_id' => '33',
+			'is_active' => '1', 'is_latest' => '0',
+			'created_user' => '4', 'created' => 'now()',
+			'modified_user' => '4', 'modified' => 'now()'
+		),
+		// - content_key_34 個別に選択(パブリック)
+		array(
+			'id' => '34', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => null,
+			'is_active' => '0', 'is_latest' => '1',
+			'created_user' => '4', 'created' => 'now()',
+			'modified_user' => '4', 'modified' => 'now()'
+		),
+		array(
+			'id' => '52', 'plugin_key' => 'test_circular_notices',
+			'content_key' => 'content_key_34', 'content_id' => '34',
+			'is_active' => '1', 'is_latest' => '0',
+			'created_user' => '4', 'created' => 'now()',
+			'modified_user' => '4', 'modified' => 'now()'
+		),
+		// - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
+		array(
+			'id' => '35', 'plugin_key' => 'test_circular_notices',
+			'room_id' => '11', 'block_id' => '15', 'frame_id' => '1015',
+			'is_active' => '0', 'is_latest' => '1',
+		),
+		array(
+			'id' => '53', 'plugin_key' => 'test_circular_notices',
+			'room_id' => '11', 'block_id' => '15', 'frame_id' => '1015',
+			'content_key' => 'content_key_35', 'content_id' => '35',
+			'is_active' => '1', 'is_latest' => '0',
+		),
+		// - content_key_36 回覧期間、期間内、回答期限なし
+		array(
+			'id' => '36', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_7()', 'publish_end' => 'future_7()',
+			'answer_period_start' => 'now()', 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_37 回覧期間、期間内、回答期限あり
+		array(
+			'id' => '37', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_7()', 'publish_end' => 'future_7()',
+			'answer_period_start' => null, 'answer_period_end' => 'future()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
+		array(
+			'id' => '38', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => null,
+			'answer_period_start' => 'now()', 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+		array(
+			'id' => '39', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => null,
+			'answer_period_start' => null, 'answer_period_end' => 'future()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
+		array(
+			'id' => '40', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_7()', 'publish_end' => null,
+			'answer_period_start' => 'now()', 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+		array(
+			'id' => '41', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_7()', 'publish_end' => null,
+			'answer_period_start' => null, 'answer_period_end' => 'future()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
+		array(
+			'id' => '42', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => 'future_7()',
+			'answer_period_start' => 'now()', 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+		array(
+			'id' => '43', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => 'future_7()',
+			'answer_period_start' => null, 'answer_period_end' => 'future()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_44 回覧期間、期間前、回答期限なし
+		array(
+			'id' => '44', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'future()', 'publish_end' => 'future_14()',
+			'answer_period_start' => 'future()', 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_45 回覧期間、期間前、回答期限あり
+		array(
+			'id' => '45', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'future()', 'publish_end' => 'future_14()',
+			'answer_period_start' => null, 'answer_period_end' => 'future_7()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
+		array(
+			'id' => '46', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => 'past_3()',
+			'answer_period_start' => 'past_14()', 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+		array(
+			'id' => '47', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => 'past_3()',
+			'answer_period_start' => null, 'answer_period_end' => 'past_7()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
+		array(
+			'id' => '48', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_14()', 'publish_end' => 'past_3()',
+			'answer_period_start' => 'past_14()', 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+		array(
+			'id' => '49', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_14()', 'publish_end' => 'past_3()',
+			'answer_period_start' => null, 'answer_period_end' => 'past_7',
+			'is_active' => '1', 'is_latest' => '1',
 		),
 
 	);
@@ -473,6 +658,39 @@ class Topic4topicsFixture extends TopicFixture {
 					$record['id'] = $record['id'] + 1;
 					$index++;
 				}
+
+			} elseif ($record['plugin_key'] === 'test_circular_notices') {
+				//#### 回覧板（イレギュラー）
+				// - content_key_32 ルームに参加している全会員(パブリック)
+				// - content_key_33 ルームに参加している全会員(ルーム2)
+				// - content_key_34 個別に選択(パブリック)
+				// - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
+				// - content_key_36 回覧期間、期間内、回答期限なし
+				// - content_key_37 回覧期間、期間内、回答期限あり
+				// - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
+				// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+				// - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
+				// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+				// - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
+				// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+				// - content_key_44 回覧期間、期間前、回答期限なし
+				// - content_key_45 回覧期間、期間前、回答期限あり
+				// - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
+				// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+				// - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
+				// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+				if (! isset($circularNotice)) {
+					$circularNotice = $record;
+				}
+				$record['content_id'] = Hash::get($record, 'content_id', $record['id']);
+				$record['content_key'] = Hash::get($record, 'content_key', 'content_key_' . $record['id']);
+				$record['title'] = 'Content Title ' . $record['id'];
+				$record['summary'] = 'Content Summary ' . $record['id'];
+
+				$record = array_merge($circularNotice, $record);
+				$this->records[$index] = $this->__parseRecord($record);
+				$index++;
+
 			} else {
 				$this->records[$index] = $this->__parseRecord($record);
 				$index++;
@@ -509,7 +727,7 @@ class Topic4topicsFixture extends TopicFixture {
  * @param string $value 日付データ
  * @param string|null $now 現在時刻
  * @return string
- * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function getDateTime($value, $now = null) {
 		if ($now) {
@@ -522,6 +740,12 @@ class Topic4topicsFixture extends TopicFixture {
 			$value = $this->__now;
 		} elseif ($value === 'future()') {
 			$date->add(new DateInterval('P3D'));
+			$value = $date->format('Y-m-d H:i:s');
+		} elseif ($value === 'future_7()') {
+			$date->add(new DateInterval('P7D'));
+			$value = $date->format('Y-m-d H:i:s');
+		} elseif ($value === 'future_14()') {
+			$date->add(new DateInterval('P14D'));
 			$value = $date->format('Y-m-d H:i:s');
 		} elseif ($value === 'past_1()') {
 			$date->sub(new DateInterval('P1D'));

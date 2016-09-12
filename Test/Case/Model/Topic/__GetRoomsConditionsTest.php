@@ -89,13 +89,13 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		$result[0]['userId'] = null;
 		$result[0]['expected'] = array(
 			array(
+				'Topic.is_no_member_allow' => true,
 				'OR' => array(
 					0 => array(
 						'Topic.room_id' => array(
 							0 => '1',
 							1 => '4',
 						),
-						'Topic.created_user !=' => null,
 						'Topic.is_active' => true,
 						0 => array(
 							'Topic.public_type' => array(
@@ -155,6 +155,7 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					1 => array(
 						'TopicReadable.user_id' => $userId,
 						'Topic.is_active' => true,
+						'Topic.is_in_room' => false,
 					),
 					2 => array(
 						'Topic.created_user' => $userId,
@@ -216,6 +217,7 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					1 => array(
 						'TopicReadable.user_id' => $userId,
 						'Topic.is_active' => true,
+						'Topic.is_in_room' => false,
 					),
 					2 => array(
 						'Topic.created_user' => $userId,
@@ -276,14 +278,18 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					1 => array(
 						'TopicReadable.user_id' => $userId,
 						'Topic.is_active' => true,
+						'Topic.is_in_room' => false,
 					),
 					2 => array(
 						'Topic.created_user' => $userId,
 						'Topic.is_latest' => true,
 					),
 					3 => array(
-						'Topic.room_id' => array(
-							4 => '11',
+						'OR' => array(
+							'Topic.room_id' => array(
+								4 => '11',
+							),
+							'TopicReadable.user_id' => $userId,
 						),
 						'Topic.created_user !=' => $userId,
 						'Topic.is_active' => true,
@@ -336,17 +342,21 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					0 => array(
 						'TopicReadable.user_id' => $userId,
 						'Topic.is_active' => true,
+						'Topic.is_in_room' => false,
 					),
 					1 => array(
 						'Topic.created_user' => $userId,
 						'Topic.is_latest' => true,
 					),
 					2 => array(
-						'Topic.room_id' => array(
-							0 => '1',
-							1 => '4',
-							2 => '3',
-							3 => '11',
+						'OR' => array(
+							'Topic.room_id' => array(
+								0 => '1',
+								1 => '4',
+								2 => '3',
+								3 => '11',
+							),
+							'TopicReadable.user_id' => $userId,
 						),
 						'Topic.created_user !=' => $userId,
 						'Topic.is_active' => true,
@@ -399,16 +409,20 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					0 => array(
 						'TopicReadable.user_id' => $userId,
 						'Topic.is_active' => true,
+						'Topic.is_in_room' => false,
 					),
 					1 => array(
 						'Topic.created_user' => $userId,
 						'Topic.is_latest' => true,
 					),
 					2 => array(
-						'Topic.room_id' => array(
-							0 => '1',
-							1 => '4',
-							2 => '3',
+						'OR' => array(
+							'Topic.room_id' => array(
+								0 => '1',
+								1 => '4',
+								2 => '3',
+							),
+							'TopicReadable.user_id' => $userId,
 						),
 						'Topic.created_user !=' => $userId,
 						'Topic.is_active' => true,

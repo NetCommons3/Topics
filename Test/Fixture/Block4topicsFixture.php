@@ -190,6 +190,29 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
+		//#### 回覧板(イレギュラー)
+		array(
+			'id' => '14',
+			'language_id' => '2',
+			'room_id' => '1',
+			'plugin_key' => 'test_circular_notices',
+			'key' => 'block_14',
+			'name' => 'Block name 14',
+			'public_type' => '1',
+			'publish_start' => null,
+			'publish_end' => null,
+		),
+		array(
+			'id' => '15',
+			'language_id' => '2',
+			'room_id' => '11',
+			'plugin_key' => 'test_circular_notices',
+			'key' => 'block_15',
+			'name' => 'Block name 15',
+			'public_type' => '1',
+			'publish_start' => null,
+			'publish_end' => null,
+		),
 	);
 
 /**

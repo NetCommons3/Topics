@@ -483,40 +483,16 @@ class Topic extends TopicsAppModel {
 
 		$roomConditions = array();
 
+		//非会員を受け付けるどうか（パブリックスペースのみ有効）
+		if (! Current::read('User.id')) {
+			$roomConditions['Topic.is_no_member_allow'] = true;
+		}
+
 		//is_latestのデータが見れる条件生成
-		if ($editableRoomIds) {
-			$roomConditions['OR'][] = array(
-				$this->alias . '.room_id' => array_unique($editableRoomIds),
-				$this->alias . '.is_latest' => true
-			);
-		}
-		if (Current::read('User.id')) {
-			$roomConditions['OR'][] = array(
-				'TopicReadable.user_id' => Current::read('User.id'),
-				$this->alias . '.is_active' => true
-			);
-			$roomConditions['OR'][] = array(
-				$this->alias . '.created_user' => Current::read('User.id'),
-				$this->alias . '.is_latest' => true
-			);
-		}
+		$roomConditions = $this->__getIsLatestConditions($now, $roomConditions, $editableRoomIds);
+
 		//is_activeの条件生成
-		if ($readableRoomIds) {
-			$roomConditions['OR'][] = array(
-				$this->alias . '.room_id' => array_unique($readableRoomIds),
-				$this->alias . '.created_user !=' => Current::read('User.id'),
-				$this->alias . '.is_active' => true,
-				//公開設定の条件生成
-				array(
-					$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
-					$this->alias . '.publish_start <=' => $now,
-					'OR' => array(
-						$this->alias . '.publish_end >=' => $now,
-						$this->alias . '.publish_end' => null,
-					),
-				)
-			);
-		}
+		$roomConditions = $this->__getIsActiveConditions($now, $roomConditions, $readableRoomIds);
 
 		//ブロック公開設定の条件生成
 		$blockEditableRoomIds = array_merge(
@@ -547,6 +523,86 @@ class Topic extends TopicsAppModel {
 		}
 
 		return array($roomConditions, $blockPubConditions);
+	}
+
+/**
+ * $roomConditionsのis_latestについてセットする
+ *
+ * @param string $now 現在時刻
+ * @param array $roomConditions roomConditions配列
+ * @param array $editableRoomIds 編集権限のあるルームIDリスト
+ * @return array $roomConditions
+ */
+	private function __getIsLatestConditions($now, $roomConditions, $editableRoomIds) {
+		//is_latestのデータが見れる条件生成
+		if ($editableRoomIds) {
+			$roomConditions['OR'][] = array(
+				$this->alias . '.room_id' => array_unique($editableRoomIds),
+				$this->alias . '.is_latest' => true
+			);
+		}
+		if (Current::read('User.id')) {
+			$roomConditions['OR'][] = array(
+				'TopicReadable.user_id' => Current::read('User.id'),
+				$this->alias . '.is_active' => true,
+				$this->alias . '.is_in_room' => false,
+			);
+			$roomConditions['OR'][] = array(
+				$this->alias . '.created_user' => Current::read('User.id'),
+				$this->alias . '.is_latest' => true
+			);
+		}
+
+		return $roomConditions;
+	}
+
+/**
+ * is_activeについてセットする
+ *
+ * @param string $now 現在時刻
+ * @param array $roomConditions roomConditions配列
+ * @param array $readableRoomIds 閲覧権限のあるルームIDリスト
+ * @return array $roomConditions
+ */
+	private function __getIsActiveConditions($now, $roomConditions, $readableRoomIds) {
+		//is_activeの条件生成
+		if ($readableRoomIds) {
+			if (Current::read('User.id')) {
+				$roomConditions['OR'][] = array(
+					'OR' => array(
+						$this->alias . '.room_id' => array_unique($readableRoomIds),
+						'TopicReadable.user_id' => Current::read('User.id')
+					),
+					$this->alias . '.created_user !=' => Current::read('User.id'),
+					$this->alias . '.is_active' => true,
+					//公開設定の条件生成
+					array(
+						$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
+						$this->alias . '.publish_start <=' => $now,
+						'OR' => array(
+							$this->alias . '.publish_end >=' => $now,
+							$this->alias . '.publish_end' => null,
+						),
+					)
+				);
+			} else {
+				$roomConditions['OR'][] = array(
+					$this->alias . '.room_id' => array_unique($readableRoomIds),
+					$this->alias . '.is_active' => true,
+					//公開設定の条件生成
+					array(
+						$this->alias . '.public_type' => [self::TYPE_PUBLIC, self::TYPE_LIMITED],
+						$this->alias . '.publish_start <=' => $now,
+						'OR' => array(
+							$this->alias . '.publish_end >=' => $now,
+							$this->alias . '.publish_end' => null,
+						),
+					)
+				);
+			}
+		}
+
+		return $roomConditions;
 	}
 
 /**

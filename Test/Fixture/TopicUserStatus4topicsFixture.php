@@ -47,6 +47,25 @@ App::uses('TopicUserStatusFixture', 'Topics.Test/Fixture');
  *  - content_key_29 カテゴリ１
  *  - content_key_30 カテゴリ２
  *  - content_key_31 存在しないカテゴリ
+ * #### 回覧板（イレギュラー）
+ *  - content_key_32 ルームに参加している全会員(パブリック)
+ *  - content_key_33 ルームに参加している全会員(ルーム2)
+ *  - content_key_34 個別に選択(パブリック)
+ *  - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
+ *  - content_key_36 回覧期間、期間内、回答期限なし
+ *  - content_key_37 回覧期間、期間内、回答期限あり
+ *  - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
+ *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+ *  - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
+ *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+ *  - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
+ *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+ *  - content_key_44 回覧期間、期間前、回答期限なし
+ *  - content_key_45 回覧期間、期間前、回答期限あり
+ *  - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
+ *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+ *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
+ *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -116,6 +135,33 @@ class TopicUserStatus4topicsFixture extends TopicUserStatusFixture {
 		// - content_key_29 カテゴリ１
 		// - content_key_30 カテゴリ２
 		// - content_key_31 存在しないカテゴリ
+		//#### 回覧板（イレギュラー）
+		// - content_key_32 ルームに参加している全会員(パブリック)
+		array('id' => '32', 'topic_id' => '32', 'user_id' => '1', 'read' => '1', 'answered' => '0'),
+		array('id' => '50', 'topic_id' => '50', 'user_id' => '4', 'read' => '1', 'answered' => '1'),
+		// - content_key_33 ルームに参加している全会員(ルーム2)
+		array('id' => '33', 'topic_id' => '33', 'user_id' => '1', 'read' => '1', 'answered' => '0'),
+		array('id' => '51', 'topic_id' => '33', 'user_id' => '4', 'read' => '1', 'answered' => '1'),
+		// - content_key_34 個別に選択(パブリック)
+		array('id' => '34', 'topic_id' => '34', 'user_id' => '1', 'read' => '1', 'answered' => '0'),
+		array('id' => '52', 'topic_id' => '34', 'user_id' => '4', 'read' => '1', 'answered' => '1'),
+		// - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
+		array('id' => '35', 'topic_id' => '35', 'user_id' => '1', 'read' => '1', 'answered' => '0'),
+		array('id' => '53', 'topic_id' => '53', 'user_id' => '4', 'read' => '1', 'answered' => '1'),
+		// - content_key_36 回覧期間、期間内、回答期限なし
+		// - content_key_37 回覧期間、期間内、回答期限あり
+		// - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
+		// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+		// - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
+		// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+		// - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
+		// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+		// - content_key_44 回覧期間、期間前、回答期限なし
+		// - content_key_45 回覧期間、期間前、回答期限あり
+		// - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
+		// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+		// - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
+		// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
 	);
 
 }

@@ -134,14 +134,17 @@ class TopicsBaseBehavior extends ModelBehavior {
 			$merge[$field] = $value;
 		}
 
-		//公開日時が設定されていない場合は、更新日時をセットする
-		if (! isset($merge['publish_start'])) {
-			$merge['publish_start'] = Hash::get($model->data, $model->alias . '.modified');
-		}
-
 		//登録処理
 		foreach ($topic as $data) {
 			$saveData = Hash::merge($data[$model->Topic->alias], $merge);
+			//公開日時が設定されていない場合
+			if (! Hash::get($saveData, 'publish_start')) {
+				if (Hash::get($data, $model->alias . '.publish_start')) {
+					$saveData['publish_start'] = Hash::get($data, $model->alias . '.publish_start');
+				} else {
+					$saveData['publish_start'] = Hash::get($model->data, $model->alias . '.modified');
+				}
+			}
 			$saveData['path'] = $this->_parsePath($model, $saveData);
 
 			$model->Topic->create(false);

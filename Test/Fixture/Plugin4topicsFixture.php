@@ -75,6 +75,15 @@ class Plugin4topicsFixture extends PluginFixture {
 			'default_action' => 'test_faqs/index',
 			'default_setting_action' => '',
 		),
+		array(
+			'language_id' => '2',
+			'key' => 'test_circular_notices',
+			'name' => 'Test Circular Notices',
+			'weight' => '1',
+			'type' => '1',
+			'default_action' => 'test_circular_notices/index',
+			'default_setting_action' => '',
+		),
 	);
 
 }
