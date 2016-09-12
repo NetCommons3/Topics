@@ -28,6 +28,19 @@ class AllTopicsTest extends NetCommonsTestSuite {
 	public static function suite() {
 		$plugin = preg_replace('/^All([\w]+)Test$/', '$1', __CLASS__);
 		$suite = new NetCommonsTestSuite(sprintf('All %s Plugin tests', $plugin));
+
+		$Folder = new Folder($directory);
+		$files = $Folder->tree(null, true, 'files');
+
+		foreach ($files as $file) {
+			if (preg_match('/\/All([\w]+)Test\.php$/', $file)) {
+				continue;
+			}
+			if (substr($file, -8) === 'Test.php') {
+				var_dump($file);
+			}
+		}
+
 		$suite->addTestDirectoryRecursive(CakePlugin::path($plugin) . 'Test' . DS . 'Case');
 		return $suite;
 	}
