@@ -36,7 +36,15 @@ class TopicUserStatus extends TopicsAppModel {
  *
  * @var array
  */
-	public $belongsTo = array();
+	public $belongsTo = array(
+		'Topic' => array(
+			'className' => 'Topics.Topic',
+			'foreignKey' => 'topic_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+	);
 
 /**
  * Called during validation operations, before validation. Please note that custom
@@ -93,8 +101,8 @@ class TopicUserStatus extends TopicsAppModel {
 		$this->begin();
 
 		try {
-			//既読になっているかどうかチェック
 			foreach ($topics as $topic) {
+				//既読になっているかどうかチェック
 				$data = $this->__getSaveTopicUserStatus($topic, $update);
 				if ($data === true) {
 					continue;

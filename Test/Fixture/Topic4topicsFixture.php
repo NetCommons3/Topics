@@ -449,7 +449,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		array(
 			'id' => '50', 'plugin_key' => 'test_circular_notices',
-			'content_key' => 'content_key_32', 'content_id' => '27',
+			'content_key' => 'content_key_32', 'content_id' => '32',
 			'is_active' => '1', 'is_latest' => '0',
 		),
 		// - content_key_33[topic_id=33,51] ルームに参加している全会員(ルーム2)

@@ -59,12 +59,12 @@ class PrivateTopicUserStatusGetSaveTopicUserStatusTest extends NetCommonsModelTe
  * @return array データ
  */
 	public function dataProvider() {
-		//#### ブログ（公開日のチェック）
-		// - content_key_9 管理者が投稿(公開中、現在)
+		//#### 掲示板
+		// - content_key_1 管理者が投稿(公開中)
 		$index = 0;
 		$result[$index] = array();
 		$result[$index]['userId'] = '2';
-		$result[$index]['topic'] = array('Topic' => array('id' => '9'));
+		$result[$index]['topic'] = array('Topic' => array('id' => '1'));
 		$result[$index]['update'] = array('read' => true, 'answered' => false);
 		$result[$index]['expected'] = array (
 			'topic_id' => $result[$index]['topic']['Topic']['id'],
