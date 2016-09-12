@@ -84,12 +84,51 @@ class TopicUserStatus extends TopicsAppModel {
 		}
 
 		//トピックデータのチェック
-		$topic = $this->TopicReadable->getTopicIdByReadable($conditions);
-		if (! $topic) {
+		$topics = $this->TopicReadable->getTopicIdByReadable($conditions);
+		if (! $topics) {
 			return true;
 		}
 
-		//既読になっているかどうかチェック
+		//トランザクションBegin
+		$this->begin();
+
+		try {
+			//既読になっているかどうかチェック
+			foreach ($topics as $topic) {
+				$data = $this->__getSaveTopicUserStatus($topic, $update);
+				if ($data === true) {
+					continue;
+				}
+
+				$this->create(false);
+				$result = $this->save($data);
+				if (! $result) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
+			}
+
+			//トランザクションCommit
+			$this->commit();
+
+		} catch (Exception $ex) {
+			//トランザクションRollback。ただし、throwにしない。
+			$this->rollback();
+			CakeLog::error($ex);
+		}
+
+		$this->setSlaveDataSource();
+
+		return true;
+	}
+
+/**
+ * 既読の登録データ取得
+ *
+ * @param array $topic 既存新着データ
+ * @param array $update アップデート
+ * @return array
+ */
+	private function __getSaveTopicUserStatus($topic, $update) {
 		$data = array(
 			'topic_id' => $topic[$this->Topic->alias]['id'],
 			'user_id' => Current::read('User.id')
@@ -108,28 +147,7 @@ class TopicUserStatus extends TopicsAppModel {
 		}
 		$data = Hash::merge($data, $update, ['id' => Hash::get($topicUserStatus, 'id', null)]);
 
-		//トランザクションBegin
-		$this->begin();
-
-		try {
-			$this->create(false);
-			$result = $this->save($data);
-			if (! $result) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
-
-			//トランザクションCommit
-			$this->commit();
-
-		} catch (Exception $ex) {
-			//トランザクションRollback。ただし、throwにしない。
-			$this->rollback();
-			CakeLog::error($ex);
-		}
-
-		$this->setSlaveDataSource();
-
-		return true;
+		return $data;
 	}
 
 /**

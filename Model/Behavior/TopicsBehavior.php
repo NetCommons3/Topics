@@ -286,13 +286,6 @@ class TopicsBehavior extends TopicsBaseBehavior {
 				$content, $this->settings[$model->alias]['fields']['content_id'], '0'
 			),
 		);
-		if ($model->Behaviors->loaded('Workflow.Workflow')) {
-			if ($model->canEditWorkflowContent($content) && $this->settings[$model->alias]['is_workflow']) {
-				$conditions[$topicAlias . '.is_latest'] = true;
-			} else {
-				$conditions[$topicAlias . '.is_active'] = true;
-			}
-		}
 
 		//既読データ登録
 		$update = array(
