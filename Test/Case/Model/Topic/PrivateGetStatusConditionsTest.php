@@ -19,7 +19,7 @@ App::uses('Topic', 'Topics.Model');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Case\Model\Topic
  */
-class PrivateTopicGetStatusConditionsTest extends NetCommonsModelTestCase {
+class TopicPrivateGetStatusConditionsTest extends NetCommonsModelTestCase {
 
 /**
  * Fixtures

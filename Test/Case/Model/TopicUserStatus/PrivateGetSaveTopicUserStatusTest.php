@@ -17,7 +17,7 @@ App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Case\Model\TopicUserStatus
  */
-class PrivateTopicUserStatusGetSaveTopicUserStatusTest extends NetCommonsModelTestCase {
+class TopicUserStatusPrivateGetSaveTopicUserStatusTest extends NetCommonsModelTestCase {
 
 /**
  * Fixtures

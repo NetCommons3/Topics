@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
+App::uses('NetCommonsCakeTestCase', 'NetCommons.TestSuite');
 App::uses('TopicsBaseBehavior', 'Topics.Model/Behavior');
 
 /**
@@ -18,7 +18,7 @@ App::uses('TopicsBaseBehavior', 'Topics.Model/Behavior');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Case\Model\Behavior\TopicsBaseBehavior
  */
-class ProtectedTopicsBaseBehaviorGetSaveDataTest extends NetCommonsModelTestCase {
+class TopicsBaseBehaviorProtectedGetSaveDataTest extends NetCommonsCakeTestCase {
 
 /**
  * Fixtures
