@@ -98,6 +98,41 @@ class Topic extends TopicsAppModel {
 	const STATUS_UNANSWERED = '8';
 
 /**
+ * 未確認ステータス
+ *
+ * @var string
+ */
+	const STATUS_UNCONFIRMED = '13';
+
+/**
+ * ブロック非公開ステータス
+ *
+ * @var string
+ */
+	const STATUS_BLOCK_PRIVATE = '9';
+
+/**
+ * ブロック期限付き公開(公開前)ステータス
+ *
+ * @var string
+ */
+	const STATUS_BLOCK_BEFORE_PUBLISH = '10';
+
+/**
+ * ブロック期限付き公開(公開中)ステータス
+ *
+ * @var string
+ */
+	const STATUS_BLOCK_PUBLISH = '11';
+
+/**
+ * ブロック期限付き公開(公開終了)ステータス
+ *
+ * @var string
+ */
+	const STATUS_BLOCK_END_PUBLISH = '12';
+
+/**
  * ステータス配列
  *
  * __constractorでセットする
@@ -216,40 +251,77 @@ class Topic extends TopicsAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->statuses = array(
+			//一時保存
 			WorkflowComponent::STATUS_IN_DRAFT => array(
 				'key' => WorkflowComponent::STATUS_IN_DRAFT,
 				'class' => 'label-info',
 				'message' => __d('net_commons', 'Temporary'),
 			),
+			//承認待ち
 			WorkflowComponent::STATUS_APPROVED => array(
 				'key' => WorkflowComponent::STATUS_APPROVED,
 				'class' => 'label-warning',
 				'message' => __d('net_commons', 'Approving'),
 			),
+			//差し戻し
 			WorkflowComponent::STATUS_DISAPPROVED => array(
 				'key' => WorkflowComponent::STATUS_DISAPPROVED,
 				'class' => 'label-warning',
 				'message' => __d('net_commons', 'Disapproving'),
 			),
+			//公開前
 			self::STATUS_BEFORE_PUBLISH => array(
 				'key' => self::STATUS_BEFORE_PUBLISH,
 				'class' => 'label-default',
 				'message' => __d('topics', 'Before publishing'),
 			),
+			//受付終了
 			self::STATUS_ANSWER_END => array(
 				'key' => self::STATUS_ANSWER_END,
 				'class' => 'label-default',
 				'message' => __d('topics', 'Answer end'),
 			),
+			//回答済み
 			self::STATUS_ANSWERED => array(
 				'key' => self::STATUS_ANSWERED,
 				'class' => 'label-default',
 				'message' => __d('topics', 'Answered'),
 			),
+			//未回答
 			self::STATUS_UNANSWERED => array(
 				'key' => self::STATUS_UNANSWERED,
 				'class' => 'label-success',
 				'message' => __d('topics', 'Unanswered'),
+			),
+			//未確認
+			self::STATUS_UNCONFIRMED => array(
+				'key' => self::STATUS_UNCONFIRMED,
+				'class' => 'label-primary',
+				'message' => __d('topics', 'Unconfirmed'),
+			),
+			//ブロック非公開
+			self::STATUS_BLOCK_PRIVATE => array(
+				'key' => self::STATUS_BLOCK_PRIVATE,
+				'class' => 'label-default',
+				'message' => __d('blocks', 'Private'),
+			),
+			//ブロック期限付き公開(公開前)
+			self::STATUS_BLOCK_BEFORE_PUBLISH => array(
+				'key' => self::STATUS_BLOCK_BEFORE_PUBLISH,
+				'class' => 'label-default',
+				'message' => __d('blocks', 'Public before'),
+			),
+			//ブロック期限付き公開(公開中)
+			self::STATUS_BLOCK_PUBLISH => array(
+				'key' => self::STATUS_BLOCK_PUBLISH,
+				'class' => 'label-default',
+				'message' => __d('blocks', 'Limited'),
+			),
+			//ブロック期限付き公開(公開終了)
+			self::STATUS_BLOCK_END_PUBLISH => array(
+				'key' => self::STATUS_BLOCK_END_PUBLISH,
+				'class' => 'label-default',
+				'message' => __d('blocks', 'Public end'),
 			),
 		);
 	}

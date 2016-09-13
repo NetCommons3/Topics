@@ -40,6 +40,9 @@ msgstr "回答済み"
 msgid "Unanswered"
 msgstr "未回答"
 
+msgid "Unconfirmed"
+msgstr "未確認"
+
 
 #
 #: 表示方法変更

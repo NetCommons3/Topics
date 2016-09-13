@@ -83,7 +83,7 @@ class TopicUserStatusPrivateGetSaveTopicUserStatusTest extends NetCommonsModelTe
 			'id' => null,
 		);
 
-		//#### 回覧板（イレギュラー）
+		//#### 回覧板（イレギュラープラグイン）
 		// - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
 		$index = 1;
 		$result[$index] = array();

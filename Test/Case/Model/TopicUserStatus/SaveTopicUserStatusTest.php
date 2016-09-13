@@ -90,7 +90,7 @@ class TopicUserStatusSaveTopicUserStatusTest extends NetCommonsModelTestCase {
 			)
 		);
 
-		//#### 回覧板（イレギュラー）
+		//#### 回覧板（イレギュラープラグイン）
 		// - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
 		$userId = '2';
 		$index = 1;

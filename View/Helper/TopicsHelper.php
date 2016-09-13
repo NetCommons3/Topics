@@ -11,6 +11,7 @@
 
 App::uses('AppHelper', 'View/Helper');
 App::uses('Topic', 'Topics.Model');
+App::uses('Block', 'Blocks.Model');
 
 /**
  * Workflow Helper
@@ -147,42 +148,65 @@ class TopicsHelper extends AppHelper {
 
 /**
  * keyによる変換処理
+ * ※self::camelizeKeyRecursiveから実行される
  *
- * self::camelizeKeyRecursiveから実行される
+ * PHPMDでエラーになるが、別関数にすると見づらくなるため、PHPMD.CyclomaticComplexityで除外する
  *
  * @param array $newResult keyをcamel形式に変換して戻す配列
  * @return string 変換後の値
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	private function __getStatusLabel($newResult) {
-		$status = Hash::get($newResult, 'topic.status');
-		$publishStart = Hash::get($newResult, 'topic.publishStart');
-		//$answerPeriodStart = Hash::get($newResult, 'topic.answerPeriodStart');
+		$topicStatus = Hash::get($newResult, 'topic.status');
+		$blockPublicType = Hash::get($newResult, 'block.publicType');
+		$topicPublishStart = Hash::get($newResult, 'topic.publishStart');
+		$topicPublishEnd = Hash::get($newResult, 'topic.publishEnd');
 		$answerPeriodEnd = Hash::get($newResult, 'topic.answerPeriodEnd');
 		$labels = (new Topic())->statuses;
 
 		$now = gmdate('Y-m-d H:i:s');
 
-		if (in_array((int)$status, array_keys($labels), true)) {
+		if (in_array((int)$topicStatus, array_keys($labels), true)) {
 			//承認待ち、差し戻し、一時保存
-
-		} elseif ($now < $publishStart) {
+		} elseif ($now < $topicPublishStart) {
 			//公開前
-			$status = Topic::STATUS_BEFORE_PUBLISH;
-
+			$topicStatus = Topic::STATUS_BEFORE_PUBLISH;
 		} elseif (Hash::get($newResult, 'topic.isAnswer')) {
-			if ($answerPeriodEnd && $answerPeriodEnd < $now) {
-				//終了
-				$status = Topic::STATUS_ANSWER_END;
+			if ($topicPublishEnd && $topicPublishEnd < $now) {
+				//公開終了
+				$topicStatus = Topic::STATUS_BLOCK_END_PUBLISH;
 			} elseif (Hash::get($newResult, 'topicUserStatus.answered')) {
 				//回答済み
-				$status = Topic::STATUS_ANSWERED;
-			} elseif (Current::read('User.id')) {
+				$topicStatus = Topic::STATUS_ANSWERED;
+			} elseif ($answerPeriodEnd && $answerPeriodEnd < $now) {
+				//受付終了
+				$topicStatus = Topic::STATUS_ANSWER_END;
+			} elseif (Hash::get($newResult, 'topicUserStatus.read')) {
 				//未回答
-				$status = Topic::STATUS_UNANSWERED;
+				$topicStatus = Topic::STATUS_UNANSWERED;
+			} elseif (Current::read('User.id')) {
+				//未確認
+				$topicStatus = Topic::STATUS_UNCONFIRMED;
 			}
+		} elseif ($blockPublicType === Block::TYPE_PRIVATE) {
+			//ブロック非公開
+			$topicStatus = Topic::STATUS_BLOCK_PRIVATE;
+		} elseif ($blockPublicType === Block::TYPE_LIMITED) {
+			if ($now <= Hash::get($newResult, 'block.publishStart', '0000-00-00 00:00:00')) {
+				//ブロック期限付き公開(公開前)
+				$topicStatus = Topic::STATUS_BLOCK_BEFORE_PUBLISH;
+			} elseif ($now > Hash::get($newResult, 'block.publishEnd', '9999-99-99 99:99:99')) {
+				//ブロック期限付き公開(公開終了)
+				$topicStatus = Topic::STATUS_BLOCK_END_PUBLISH;
+			} else {
+				//ブロック期限付き公開(公開中)
+				$topicStatus = Topic::STATUS_BLOCK_PUBLISH;
+			}
+		} else {
+			//公開中
 		}
 
-		return $this->Workflow->label($status, $labels);
+		return $this->Workflow->label($topicStatus, $labels);
 	}
 
 /**

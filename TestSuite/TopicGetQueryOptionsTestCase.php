@@ -105,25 +105,32 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
  *  - content_key_29 カテゴリ１
  *  - content_key_30 カテゴリ２
  *  - content_key_31 存在しないカテゴリ
- * #### 回覧板（イレギュラー）
+ * #### 回覧板（イレギュラープラグイン）
  *  - content_key_32 ルームに参加している全会員(パブリック)
  *  - content_key_33 ルームに参加している全会員(ルーム2)
  *  - content_key_34 個別に選択(パブリック)
  *  - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
  *  - content_key_36 回覧期間、期間内、回答期限なし
- *  - content_key_37 回覧期間、期間内、回答期限あり
+ *  - content_key_37 回覧期間、期間内、回答期限あり(期間内)
+ *  - content_key_54 回覧期間、期間内、回答期限あり(期間外)
  *  - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
- *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+ *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり(期間内)
+ *  - content_key_55 回覧期間、期間内(start、end指定なし)、回答期限あり(期間外)
  *  - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
- *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+ *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり(期間内)
+ *  - content_key_56 回覧期間、期間内(startのみ指定)、回答期限あり(期間外)
  *  - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
- *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+ *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり(期間内)
+ *  - content_key_57 回覧期間、期間内(endのみ指定)、回答期限あり(期間外)
  *  - content_key_44 回覧期間、期間前、回答期限なし
- *  - content_key_45 回覧期間、期間前、回答期限あり
+ *  - content_key_45 回覧期間、期間前、回答期限あり(期間内)
+ *  - content_key_58 回覧期間、期間前、回答期限あり(期間外)
  *  - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
- *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+ *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲内)
+ *  - content_key_59 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲外)
  *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
- *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+ *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
+ *  - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
  *
  * @param array $topicIds トピックID
  * @param int $userId ユーザID
@@ -274,8 +281,8 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
 					'TopicUserStatus' => array('id' => null),
 					'Category' => array('id' => $categoryId),
 				);
-			} elseif ($topicId >= '32' && $topicId <= '53') {
-				//#### 回覧板（イレギュラー）
+			} elseif ($topicId >= '32' && $topicId <= '60') {
+				//#### 回覧板（イレギュラープラグイン）
 				$data = array(
 					'Topic' => array(
 						'id' => $topicId, 'content_key' => 'content_key_' . $topicId, 'category_id' => null
@@ -331,19 +338,47 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
 					$data['TopicReadable']['user_id'] = $userId;
 				} else {
 					// - content_key_36 回覧期間、期間内、回答期限なし
-					// - content_key_37 回覧期間、期間内、回答期限あり
+					// - content_key_37 回覧期間、期間内、回答期限あり(期間内)
+					// - content_key_54 回覧期間、期間内、回答期限あり(期間外)
+					if ($topicId === '54') {
+						$data['TopicReadable']['id'] = '57';
+					}
 					// - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
-					// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+					// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり(期間内)
+					// - content_key_55 回覧期間、期間内(start、end指定なし)、回答期限あり(期間外)
+					if ($topicId === '55') {
+						$data['TopicReadable']['id'] = '58';
+					}
 					// - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
-					// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+					// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり(期間内)
+					// - content_key_56 回覧期間、期間内(startのみ指定)、回答期限あり(期間外)
+					if ($topicId === '56') {
+						$data['TopicReadable']['id'] = '59';
+					}
 					// - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
-					// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+					// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり(期間内)
+					// - content_key_57 回覧期間、期間内(endのみ指定)、回答期限あり(期間外)
+					if ($topicId === '57') {
+						$data['TopicReadable']['id'] = '60';
+					}
 					// - content_key_44 回覧期間、期間前、回答期限なし
-					// - content_key_45 回覧期間、期間前、回答期限あり
+					// - content_key_45 回覧期間、期間前、回答期限あり(期間内)
+					// - content_key_58 回覧期間、期間前、回答期限あり(期間外)
+					if ($topicId === '58') {
+						$data['TopicReadable']['id'] = '61';
+					}
 					// - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
-					// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+					// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲内)
+					// - content_key_59 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲外)
+					if ($topicId === '59') {
+						$data['TopicReadable']['id'] = '62';
+					}
 					// - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
-					// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+					// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
+					// - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
+					if ($topicId === '60') {
+						$data['TopicReadable']['id'] = '63';
+					}
 				}
 			} else {
 				//#### ブログ（公開日のチェック）

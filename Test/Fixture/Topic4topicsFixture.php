@@ -47,25 +47,32 @@ App::uses('TopicFixture', 'Topics.Test/Fixture');
  *  - content_key_29 カテゴリ１
  *  - content_key_30 カテゴリ２
  *  - content_key_31 存在しないカテゴリ
- * #### 回覧板（イレギュラー）
- *  - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
- *  - content_key_33[topic_id=33,51] ルームに参加している全会員(ルーム2)
- *  - content_key_34[topic_id=34,52] 個別に選択(パブリック)
- *  - content_key_35[topic_id=35,53] 個別に選択(ルーム2, 参加していないユーザを含む)
+ * #### 回覧板（イレギュラープラグイン）
+ *  - content_key_32 ルームに参加している全会員(パブリック)
+ *  - content_key_33 ルームに参加している全会員(ルーム2)
+ *  - content_key_34 個別に選択(パブリック)
+ *  - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
  *  - content_key_36 回覧期間、期間内、回答期限なし
- *  - content_key_37 回覧期間、期間内、回答期限あり
+ *  - content_key_37 回覧期間、期間内、回答期限あり(未来)
+ *  - content_key_54 回覧期間、期間内、回答期限あり(過去)
  *  - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
- *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+ *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり(未来)
+ *  - content_key_55 回覧期間、期間内(start、end指定なし)、回答期限あり(過去)
  *  - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
- *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+ *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり(未来)
+ *  - content_key_56 回覧期間、期間内(startのみ指定)、回答期限あり(過去)
  *  - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
- *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+ *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり(未来)
+ *  - content_key_57 回覧期間、期間内(endのみ指定)、回答期限あり(過去)
  *  - content_key_44 回覧期間、期間前、回答期限なし
- *  - content_key_45 回覧期間、期間前、回答期限あり
+ *  - content_key_45 回覧期間、期間前、回答期限あり(期間内)
+ *  - content_key_58 回覧期間、期間前、回答期限あり(期間外)
  *  - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
- *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+ *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲内)
+ *  - content_key_59 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲外)
  *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
- *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+ *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
+ *  - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -429,7 +436,7 @@ class Topic4topicsFixture extends TopicFixture {
 			'modified_user' => '1', 'modified' => 'now()'
 		),
 
-		//#### 回覧板（イレギュラー）
+		//#### 回覧板（イレギュラープラグイン）
 		// - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
 		array(
 			'id' => '32', 'language_id' => '2', 'room_id' => '1', 'block_id' => '14', 'frame_id' => '1014',
@@ -502,11 +509,18 @@ class Topic4topicsFixture extends TopicFixture {
 			'answer_period_start' => 'now()', 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1',
 		),
-		// - content_key_37 回覧期間、期間内、回答期限あり
+		// - content_key_37 回覧期間、期間内、回答期限あり(未来)
 		array(
 			'id' => '37', 'plugin_key' => 'test_circular_notices',
 			'publish_start' => 'past_7()', 'publish_end' => 'future_7()',
 			'answer_period_start' => null, 'answer_period_end' => 'future()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_54 回覧期間、期間内、回答期限あり(過去)
+		array(
+			'id' => '54', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_7()', 'publish_end' => 'future_7()',
+			'answer_period_start' => null, 'answer_period_end' => 'past()',
 			'is_active' => '1', 'is_latest' => '1',
 		),
 		// - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
@@ -516,11 +530,18 @@ class Topic4topicsFixture extends TopicFixture {
 			'answer_period_start' => 'now()', 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1',
 		),
-		// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+		// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり(未来)
 		array(
 			'id' => '39', 'plugin_key' => 'test_circular_notices',
 			'publish_start' => 'now()', 'publish_end' => null,
 			'answer_period_start' => null, 'answer_period_end' => 'future()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_55 回覧期間、期間内(start、end指定なし)、回答期限あり(過去)
+		array(
+			'id' => '55', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => null,
+			'answer_period_start' => null, 'answer_period_end' => 'past()',
 			'is_active' => '1', 'is_latest' => '1',
 		),
 		// - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
@@ -530,11 +551,18 @@ class Topic4topicsFixture extends TopicFixture {
 			'answer_period_start' => 'now()', 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1',
 		),
-		// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+		// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり(未来)
 		array(
 			'id' => '41', 'plugin_key' => 'test_circular_notices',
 			'publish_start' => 'past_7()', 'publish_end' => null,
 			'answer_period_start' => null, 'answer_period_end' => 'future()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_56 回覧期間、期間内(startのみ指定)、回答期限あり(過去)
+		array(
+			'id' => '56', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_7()', 'publish_end' => null,
+			'answer_period_start' => null, 'answer_period_end' => 'past()',
 			'is_active' => '1', 'is_latest' => '1',
 		),
 		// - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
@@ -544,11 +572,18 @@ class Topic4topicsFixture extends TopicFixture {
 			'answer_period_start' => 'now()', 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1',
 		),
-		// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+		// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり(未来)
 		array(
 			'id' => '43', 'plugin_key' => 'test_circular_notices',
 			'publish_start' => 'now()', 'publish_end' => 'future_7()',
 			'answer_period_start' => null, 'answer_period_end' => 'future()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_57 回覧期間、期間内(endのみ指定)、回答期限あり(過去)
+		array(
+			'id' => '57', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => 'future_7()',
+			'answer_period_start' => null, 'answer_period_end' => 'past()',
 			'is_active' => '1', 'is_latest' => '1',
 		),
 		// - content_key_44 回覧期間、期間前、回答期限なし
@@ -558,11 +593,18 @@ class Topic4topicsFixture extends TopicFixture {
 			'answer_period_start' => 'future()', 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1',
 		),
-		// - content_key_45 回覧期間、期間前、回答期限あり
+		// - content_key_45 回覧期間、期間前、回答期限あり(期間内)
 		array(
 			'id' => '45', 'plugin_key' => 'test_circular_notices',
 			'publish_start' => 'future()', 'publish_end' => 'future_14()',
 			'answer_period_start' => null, 'answer_period_end' => 'future_7()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_58 回覧期間、期間前、回答期限あり(期間外)
+		array(
+			'id' => '58', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'future()', 'publish_end' => 'future_14()',
+			'answer_period_start' => null, 'answer_period_end' => 'past()',
 			'is_active' => '1', 'is_latest' => '1',
 		),
 		// - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
@@ -572,11 +614,18 @@ class Topic4topicsFixture extends TopicFixture {
 			'answer_period_start' => 'past_14()', 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1',
 		),
-		// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+		// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲内)
 		array(
 			'id' => '47', 'plugin_key' => 'test_circular_notices',
 			'publish_start' => 'now()', 'publish_end' => 'past_3()',
 			'answer_period_start' => null, 'answer_period_end' => 'past_7()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
+		// - content_key_59 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲外)
+		array(
+			'id' => '59', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'now()', 'publish_end' => 'past_3()',
+			'answer_period_start' => null, 'answer_period_end' => 'past_1()',
 			'is_active' => '1', 'is_latest' => '1',
 		),
 		// - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
@@ -586,20 +635,27 @@ class Topic4topicsFixture extends TopicFixture {
 			'answer_period_start' => 'past_14()', 'answer_period_end' => null,
 			'is_active' => '1', 'is_latest' => '1',
 		),
-		// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+		// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
 		array(
 			'id' => '49', 'plugin_key' => 'test_circular_notices',
 			'publish_start' => 'past_14()', 'publish_end' => 'past_3()',
-			'answer_period_start' => null, 'answer_period_end' => 'past_7',
+			'answer_period_start' => null, 'answer_period_end' => 'past_7()',
 			'is_active' => '1', 'is_latest' => '1',
 		),
-
+		// - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
+		array(
+			'id' => '60', 'plugin_key' => 'test_circular_notices',
+			'publish_start' => 'past_14()', 'publish_end' => 'past_3()',
+			'answer_period_start' => null, 'answer_period_end' => 'past_1()',
+			'is_active' => '1', 'is_latest' => '1',
+		),
 	);
 
 /**
  * Initialize the fixture.
  *
  * @return void
+ * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  */
 	public function init() {
 		parent::init();
@@ -660,25 +716,32 @@ class Topic4topicsFixture extends TopicFixture {
 				}
 
 			} elseif ($record['plugin_key'] === 'test_circular_notices') {
-				//#### 回覧板（イレギュラー）
+				//#### 回覧板（イレギュラープラグイン）
 				// - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
 				// - content_key_33[topic_id=33,51] ルームに参加している全会員(ルーム2)
 				// - content_key_34[topic_id=34,52] 個別に選択(パブリック)
 				// - content_key_35[topic_id=35,53] 個別に選択(ルーム2, 参加していないユーザを含む)
 				// - content_key_36 回覧期間、期間内、回答期限なし
-				// - content_key_37 回覧期間、期間内、回答期限あり
+				// - content_key_37 回覧期間、期間内、回答期限あり(未来)
+				// - content_key_37[topic_id=54] 回覧期間、期間内、回答期限あり(過去)
 				// - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
-				// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+				// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり(範囲内)
+				// - content_key_39[topic_id=55] 回覧期間、期間内(start、end指定なし)、回答期限あり(過去)
 				// - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
-				// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+				// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり(未来)
+				// - content_key_41[topic_id=56] 回覧期間、期間内(startのみ指定)、回答期限あり(過去)
 				// - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
-				// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+				// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり(未来)
+				// - content_key_43[topic_id=57] 回覧期間、期間内(endのみ指定)、回答期限あり(過去)
 				// - content_key_44 回覧期間、期間前、回答期限なし
-				// - content_key_45 回覧期間、期間前、回答期限あり
+				// - content_key_45 回覧期間、期間前、回答期限あり(期間内)
+				// - content_key_45[topic_id=58] 回覧期間、期間前、回答期限あり(期間外)
 				// - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
-				// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+				// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲内)
+				// - content_key_47[topic_id=59] 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲外)
 				// - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
-				// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+				// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
+				// - content_key_49[topic_id=60] 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
 				if (! isset($circularNotice)) {
 					$circularNotice = $record;
 				}
@@ -750,7 +813,7 @@ class Topic4topicsFixture extends TopicFixture {
 		} elseif ($value === 'past_1()') {
 			$date->sub(new DateInterval('P1D'));
 			$value = $date->format('Y-m-d H:i:s');
-		} elseif ($value === 'past_3()') {
+		} elseif ($value === 'past_3()' || $value === 'past()') {
 			$date->sub(new DateInterval('P3D'));
 			$value = $date->format('Y-m-d H:i:s');
 		} elseif ($value === 'past_7()') {
