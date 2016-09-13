@@ -73,6 +73,12 @@ App::uses('TopicReadableFixture', 'Topics.Test/Fixture');
  *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
  *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
  *  - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
+ * #### カレンダー（イレギュラープラグイン）
+ *  - content_key_70 プライベートの予定(共有なし)
+ *  - content_key_71 プライベートの予定(共有あり)
+ *  - content_key_72 パブリックの予定
+ *  - content_key_73 会員全体の予定
+ *  - content_key_74 ルームの予定
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -153,6 +159,7 @@ class TopicReadable4topicsFixture extends TopicReadableFixture {
 		array('id' => '25', 'topic_id' => '25', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_26[block_id=12,room_id=11] ルーム2
 		array('id' => '26', 'topic_id' => '26', 'user_id' => '0'), //is_latest,is_active
+
 		//#### FAQ（カテゴリ）
 		// - content_key_27 カテゴリなし
 		array('id' => '27', 'topic_id' => '27', 'user_id' => '0'), //is_latest,is_active
@@ -164,6 +171,7 @@ class TopicReadable4topicsFixture extends TopicReadableFixture {
 		array('id' => '30', 'topic_id' => '30', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_31 存在しないカテゴリ
 		array('id' => '31', 'topic_id' => '31', 'user_id' => '0'), //is_latest,is_active
+
 		//#### 回覧板（イレギュラープラグイン）
 		// - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
 		array('id' => '32', 'topic_id' => '32', 'user_id' => '0'), //is_latest,is_active
@@ -222,6 +230,19 @@ class TopicReadable4topicsFixture extends TopicReadableFixture {
 		array('id' => '49', 'topic_id' => '49', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_49[topic_id=60] 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
 		array('id' => '63', 'topic_id' => '60', 'user_id' => '0'), //is_latest,is_active
+
+		//#### カレンダー（イレギュラープラグイン）
+		// - content_key_70 プライベートの予定(共有なし)
+		array('id' => '70', 'topic_id' => '70', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_71 プライベートの予定(共有あり)
+		array('id' => '71', 'topic_id' => '71', 'user_id' => '0'), //is_latest,is_active
+		array('id' => '75', 'topic_id' => '71', 'user_id' => '4'), //is_latest,is_active
+		// - content_key_72 パブリックの予定
+		array('id' => '72', 'topic_id' => '72', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_73 会員全体の予定
+		array('id' => '73', 'topic_id' => '73', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_74 ルームの予定
+		array('id' => '74', 'topic_id' => '74', 'user_id' => '0'), //is_latest,is_active
 	);
 
 }

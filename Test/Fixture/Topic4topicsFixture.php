@@ -73,6 +73,12 @@ App::uses('TopicFixture', 'Topics.Test/Fixture');
  *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
  *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
  *  - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
+ * #### カレンダー（イレギュラープラグイン）
+ *  - content_key_70 プライベートの予定(共有なし)
+ *  - content_key_71 プライベートの予定(共有あり)
+ *  - content_key_72 パブリックの予定
+ *  - content_key_73 会員全体の予定
+ *  - content_key_74 ルームの予定
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -649,6 +655,70 @@ class Topic4topicsFixture extends TopicFixture {
 			'answer_period_start' => null, 'answer_period_end' => 'past_1()',
 			'is_active' => '1', 'is_latest' => '1',
 		),
+
+		//#### カレンダー（イレギュラープラグイン）
+		//本来、is_activeとis_latestで2レコード出来るが、ここでは公開日のチェックのため1レコードにする。
+		//
+		// - content_key_70 プライベートの予定(共有なし)
+		array(
+			'id' => '70', 'language_id' => '2', 'room_id' => '5', 'block_id' => '19', 'frame_id' => '1019',
+			'category_id' => null, 'plugin_key' => 'test_calendars',
+			'counts' => '1',
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		// - content_key_71 プライベートの予定(共有あり)
+		array(
+			'id' => '71', 'language_id' => '2', 'room_id' => '5', 'block_id' => '19', 'frame_id' => '1019',
+			'category_id' => null, 'plugin_key' => 'test_calendars',
+			'counts' => '1',
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '0',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		// - content_key_72 パブリックの予定
+		array(
+			'id' => '72', 'language_id' => '2', 'room_id' => '1', 'block_id' => '16', 'frame_id' => '1016',
+			'category_id' => null, 'plugin_key' => 'test_calendars',
+			'counts' => '1',
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		// - content_key_73 会員全体の予定
+		array(
+			'id' => '73', 'language_id' => '2', 'room_id' => '3', 'block_id' => '18', 'frame_id' => '1018',
+			'category_id' => null, 'plugin_key' => 'test_calendars',
+			'counts' => '1',
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
+		// - content_key_74 ルームの予定
+		array(
+			'id' => '74', 'language_id' => '2', 'room_id' => '11', 'block_id' => '17', 'frame_id' => '1017',
+			'category_id' => null, 'plugin_key' => 'test_calendars',
+			'counts' => '1',
+			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
+			'is_no_member_allow' => '1', 'is_answer' => '0', 'is_in_room' => '1',
+			'answer_period_start' => null, 'answer_period_end' => null,
+			'is_active' => '1', 'is_latest' => '1', 'status' => '1',
+			'created_user' => '1', 'created' => 'now()',
+			'modified_user' => '1', 'modified' => 'now()'
+		),
 	);
 
 /**
@@ -745,6 +815,22 @@ class Topic4topicsFixture extends TopicFixture {
 				if (! isset($circularNotice)) {
 					$circularNotice = $record;
 				}
+				$record['content_id'] = Hash::get($record, 'content_id', $record['id']);
+				$record['content_key'] = Hash::get($record, 'content_key', 'content_key_' . $record['id']);
+				$record['title'] = 'Content Title ' . $record['id'];
+				$record['summary'] = 'Content Summary ' . $record['id'];
+
+				$record = array_merge($circularNotice, $record);
+				$this->records[$index] = $this->__parseRecord($record);
+				$index++;
+
+			} elseif ($record['plugin_key'] === 'test_calendars') {
+				//#### カレンダー（イレギュラープラグイン）
+				// - content_key_70 プライベートの予定(共有なし)
+				// - content_key_71 プライベートの予定(共有あり)
+				// - content_key_72 パブリックの予定
+				// - content_key_73 会員全体の予定
+				// - content_key_74 ルームの予定
 				$record['content_id'] = Hash::get($record, 'content_id', $record['id']);
 				$record['content_key'] = Hash::get($record, 'content_key', 'content_key_' . $record['id']);
 				$record['title'] = 'Content Title ' . $record['id'];

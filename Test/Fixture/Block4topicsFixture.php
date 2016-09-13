@@ -190,7 +190,7 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
-		//#### 回覧板(イレギュラー)
+		//#### 回覧板(イレギュラープラグイン)
 		array(
 			'id' => '14',
 			'language_id' => '2',
@@ -209,6 +209,67 @@ class Block4topicsFixture extends BlockFixture {
 			'plugin_key' => 'test_circular_notices',
 			'key' => 'block_15',
 			'name' => 'Block name 15',
+			'public_type' => '1',
+			'publish_start' => null,
+			'publish_end' => null,
+		),
+		//#### カレンダー（イレギュラープラグイン）
+		// - パブリック
+		array(
+			'id' => '16',
+			'language_id' => '2',
+			'room_id' => '1',
+			'plugin_key' => 'test_calendars',
+			'key' => 'block_16',
+			'name' => 'Block name 16',
+			'public_type' => '1',
+			'publish_start' => null,
+			'publish_end' => null,
+		),
+		// - ルーム2[room_id=11]
+		array(
+			'id' => '17',
+			'language_id' => '2',
+			'room_id' => '11',
+			'plugin_key' => 'test_calendars',
+			'key' => 'block_17',
+			'name' => 'Block name 17',
+			'public_type' => '1',
+			'publish_start' => null,
+			'publish_end' => null,
+		),
+		// - 会員全体[room_id=3]
+		array(
+			'id' => '18',
+			'language_id' => '2',
+			'room_id' => '3',
+			'plugin_key' => 'test_calendars',
+			'key' => 'block_18',
+			'name' => 'Block name 18',
+			'public_type' => '1',
+			'publish_start' => null,
+			'publish_end' => null,
+		),
+		// - プライベート(管理者)[room_id=5]
+		array(
+			'id' => '19',
+			'language_id' => '2',
+			'room_id' => '5',
+			'plugin_key' => 'test_calendars',
+			'key' => 'block_19',
+			'name' => 'Block name 19',
+			'public_type' => '1',
+			'publish_start' => null,
+			'publish_end' => null,
+		),
+		// - プライベート(一般)[room_id=8]
+		array(
+			'id' => '20',
+			'language_id' => '2',
+			'room_id' => '8',
+			'plugin_key' => 'test_calendars',
+			'key' => 'block_20',
+			'name' => 'Block name 20',
 			'public_type' => '1',
 			'publish_start' => null,
 			'publish_end' => null,

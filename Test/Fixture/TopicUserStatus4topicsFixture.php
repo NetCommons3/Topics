@@ -73,6 +73,12 @@ App::uses('TopicUserStatusFixture', 'Topics.Test/Fixture');
  *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
  *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
  *  - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
+ * #### カレンダー（イレギュラープラグイン）
+ *  - content_key_70 プライベートの予定(共有なし)
+ *  - content_key_71 プライベートの予定(共有あり)
+ *  - content_key_72 パブリックの予定
+ *  - content_key_73 会員全体の予定
+ *  - content_key_74 ルームの予定
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -176,6 +182,12 @@ class TopicUserStatus4topicsFixture extends TopicUserStatusFixture {
 		// - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
 		// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
 		// - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
+		//#### カレンダー（イレギュラープラグイン）
+		// - content_key_70 プライベートの予定(共有なし)
+		// - content_key_71 プライベートの予定(共有あり)
+		// - content_key_72 パブリックの予定
+		// - content_key_73 会員全体の予定
+		// - content_key_74 ルームの予定
 	);
 
 }

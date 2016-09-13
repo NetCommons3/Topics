@@ -131,6 +131,12 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
  *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
  *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
  *  - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
+ * #### カレンダー（イレギュラープラグイン）
+ *  - content_key_70 プライベートの予定(共有なし)
+ *  - content_key_71 プライベートの予定(共有あり)
+ *  - content_key_72 パブリックの予定
+ *  - content_key_73 会員全体の予定
+ *  - content_key_74 ルームの予定
  *
  * @param array $topicIds トピックID
  * @param int $userId ユーザID
@@ -380,6 +386,31 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
 						$data['TopicReadable']['id'] = '63';
 					}
 				}
+			} elseif ($topicId >= '70' && $topicId <= '74') {
+				//#### カレンダー（イレギュラープラグイン）
+				// - content_key_70 プライベートの予定(共有なし)
+				// - content_key_71 プライベートの予定(共有あり)
+				// - content_key_72 パブリックの予定
+				// - content_key_73 会員全体の予定
+				// - content_key_74 ルームの予定
+				$data = array(
+					'Topic' => array(
+						'id' => $topicId,
+						'content_key' => 'content_key_' . $topicId,
+						'category_id' => null
+					),
+					'TopicReadable' => array('id' => $topicId, 'user_id' => '0'),
+					'TopicUserStatus' => array('id' => null),
+					'Category' => array('id' => null),
+				);
+				if ($topicId === '71') {
+					if ($userId === '4') {
+						$data['TopicReadable']['id'] = '75';
+						$data['TopicReadable']['user_id'] = $userId;
+						$data['Topic']['content_key'] = 'content_key_71';
+					}
+				}
+
 			} else {
 				//#### ブログ（公開日のチェック）
 				// - content_key_9 管理者が投稿(公開中、現在)
