@@ -47,25 +47,32 @@ App::uses('TopicReadableFixture', 'Topics.Test/Fixture');
  *  - content_key_29 カテゴリ１
  *  - content_key_30 カテゴリ２
  *  - content_key_31 存在しないカテゴリ
- * #### 回覧板（イレギュラー）
- *  - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
- *  - content_key_33[topic_id=33,51] ルームに参加している全会員(ルーム2)
- *  - content_key_34[topic_id=34,52] 個別に選択(パブリック)
- *  - content_key_35[topic_id=35,53] 個別に選択(ルーム2, 参加していないユーザを含む)
+ * #### 回覧板（イレギュラープラグイン）
+ *  - content_key_32 ルームに参加している全会員(パブリック)
+ *  - content_key_33 ルームに参加している全会員(ルーム2)
+ *  - content_key_34 個別に選択(パブリック)
+ *  - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
  *  - content_key_36 回覧期間、期間内、回答期限なし
- *  - content_key_37 回覧期間、期間内、回答期限あり
+ *  - content_key_37 回覧期間、期間内、回答期限あり(未来)
+ *  - content_key_54 回覧期間、期間内、回答期限あり(過去)
  *  - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
- *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+ *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり(未来)
+ *  - content_key_55 回覧期間、期間内(start、end指定なし)、回答期限あり(過去)
  *  - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
- *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+ *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり(未来)
+ *  - content_key_56 回覧期間、期間内(startのみ指定)、回答期限あり(過去)
  *  - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
- *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+ *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり(未来)
+ *  - content_key_57 回覧期間、期間内(endのみ指定)、回答期限あり(過去)
  *  - content_key_44 回覧期間、期間前、回答期限なし
- *  - content_key_45 回覧期間、期間前、回答期限あり
+ *  - content_key_45 回覧期間、期間前、回答期限あり(期間内)
+ *  - content_key_58 回覧期間、期間前、回答期限あり(期間外)
  *  - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
- *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+ *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲内)
+ *  - content_key_59 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲外)
  *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
- *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+ *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
+ *  - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Fixture
@@ -157,7 +164,7 @@ class TopicReadable4topicsFixture extends TopicReadableFixture {
 		array('id' => '30', 'topic_id' => '30', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_31 存在しないカテゴリ
 		array('id' => '31', 'topic_id' => '31', 'user_id' => '0'), //is_latest,is_active
-		//#### 回覧板（イレギュラー）
+		//#### 回覧板（イレギュラープラグイン）
 		// - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
 		array('id' => '32', 'topic_id' => '32', 'user_id' => '0'), //is_latest,is_active
 		array('id' => '55', 'topic_id' => '50', 'user_id' => '0'), //is_latest,is_active
@@ -175,32 +182,46 @@ class TopicReadable4topicsFixture extends TopicReadableFixture {
 		array('id' => '54', 'topic_id' => '35', 'user_id' => '6'), //is_latest,is_active
 		// - content_key_36 回覧期間、期間内、回答期限なし
 		array('id' => '36', 'topic_id' => '36', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_37 回覧期間、期間内、回答期限あり
+		// - content_key_37 回覧期間、期間内、回答期限あり(未来)
 		array('id' => '37', 'topic_id' => '37', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_54 回覧期間、期間内、回答期限あり(過去)
+		array('id' => '57', 'topic_id' => '54', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
 		array('id' => '38', 'topic_id' => '38', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+		// - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり(未来)
 		array('id' => '39', 'topic_id' => '39', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_55 回覧期間、期間内(start、end指定なし)、回答期限あり(過去)
+		array('id' => '58', 'topic_id' => '55', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
 		array('id' => '40', 'topic_id' => '40', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+		// - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり(未来)
 		array('id' => '41', 'topic_id' => '41', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_56 回覧期間、期間内(startのみ指定)、回答期限あり(過去)
+		array('id' => '59', 'topic_id' => '56', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
 		array('id' => '42', 'topic_id' => '42', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+		// - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり(未来)
 		array('id' => '43', 'topic_id' => '43', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_57 回覧期間、期間内(endのみ指定)、回答期限あり(過去)
+		array('id' => '60', 'topic_id' => '57', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_44 回覧期間、期間前、回答期限なし
 		array('id' => '44', 'topic_id' => '44', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_45 回覧期間、期間前、回答期限あり
+		// - content_key_45 回覧期間、期間前、回答期限あり(期間内)
 		array('id' => '45', 'topic_id' => '45', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_58 回覧期間、期間前、回答期限あり(期間外)
+		array('id' => '61', 'topic_id' => '58', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
 		array('id' => '46', 'topic_id' => '46', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+		// - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲内)
 		array('id' => '47', 'topic_id' => '47', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_59 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲外)
+		array('id' => '62', 'topic_id' => '59', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
 		array('id' => '48', 'topic_id' => '48', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+		// - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
 		array('id' => '49', 'topic_id' => '49', 'user_id' => '0'), //is_latest,is_active
+		// - content_key_49[topic_id=60] 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
+		array('id' => '63', 'topic_id' => '60', 'user_id' => '0'), //is_latest,is_active
 	);
 
 }

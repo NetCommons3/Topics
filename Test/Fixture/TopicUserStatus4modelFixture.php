@@ -17,7 +17,7 @@ App::uses('TopicUserStatusFixture', 'Topics.Test/Fixture');
  * ### テストデータ
  * #### ブログ（公開日のチェック）
  *  - content_key_9 管理者が投稿(公開中、現在)
- * #### 回覧板（イレギュラー）
+ * #### 回覧板（イレギュラープラグイン）
  *  - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -47,7 +47,7 @@ class TopicUserStatus4modelFixture extends TopicUserStatusFixture {
 	public $records = array(
 		//#### ブログ（公開日のチェック）
 		// - content_key_9 管理者が投稿(公開中、現在)
-		//#### 回覧板（イレギュラー）
+		//#### 回覧板（イレギュラープラグイン）
 		// - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
 		array('id' => '32', 'topic_id' => '32', 'user_id' => '1', 'read' => '1', 'answered' => '0'),
 		array('id' => '33', 'topic_id' => '50', 'user_id' => '1', 'read' => '1', 'answered' => '0'),

@@ -59,25 +59,32 @@ class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCas
  *  - content_key_29 カテゴリ１
  *  - content_key_30 カテゴリ２
  *  - content_key_31 存在しないカテゴリ
- * #### 回覧板（イレギュラー）
- *  - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
- *  - content_key_33[topic_id=33,51] ルームに参加している全会員(ルーム2)
- *  - content_key_34[topic_id=34,52] 個別に選択(パブリック)
- *  - content_key_35[topic_id=35,53] 個別に選択(ルーム2, 参加していないユーザを含む)
+ * #### 回覧板（イレギュラープラグイン）
+ *  - content_key_32 ルームに参加している全会員(パブリック)
+ *  - content_key_33 ルームに参加している全会員(ルーム2)
+ *  - content_key_34 個別に選択(パブリック)
+ *  - content_key_35 個別に選択(ルーム2, 参加していないユーザを含む)
  *  - content_key_36 回覧期間、期間内、回答期限なし
- *  - content_key_37 回覧期間、期間内、回答期限あり
+ *  - content_key_37 回覧期間、期間内、回答期限あり(未来)
+ *  - content_key_54 回覧期間、期間内、回答期限あり(過去)
  *  - content_key_38 回覧期間、期間内(start、end指定なし)、回答期限なし
- *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり
+ *  - content_key_39 回覧期間、期間内(start、end指定なし)、回答期限あり(未来)
+ *  - content_key_55 回覧期間、期間内(start、end指定なし)、回答期限あり(過去)
  *  - content_key_40 回覧期間、期間内(startのみ指定)、回答期限なし
- *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり
+ *  - content_key_41 回覧期間、期間内(startのみ指定)、回答期限あり(未来)
+ *  - content_key_56 回覧期間、期間内(startのみ指定)、回答期限あり(過去)
  *  - content_key_42 回覧期間、期間内(endのみ指定)、回答期限なし
- *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり
+ *  - content_key_43 回覧期間、期間内(endのみ指定)、回答期限あり(未来)
+ *  - content_key_57 回覧期間、期間内(endのみ指定)、回答期限あり(過去)
  *  - content_key_44 回覧期間、期間前、回答期限なし
- *  - content_key_45 回覧期間、期間前、回答期限あり
+ *  - content_key_45 回覧期間、期間前、回答期限あり(期間内)
+ *  - content_key_58 回覧期間、期間前、回答期限あり(期間外)
  *  - content_key_46 回覧期間、期間終了(endのみ指定)、回答期限なし
- *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり
+ *  - content_key_47 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲内)
+ *  - content_key_59 回覧期間、期間終了(endのみ指定)、回答期限あり(範囲外)
  *  - content_key_48 回覧期間、期間終了(start,end指定)、回答期限なし
- *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり
+ *  - content_key_49 回覧期間、期間終了(start,end指定)、回答期限あり(範囲内)
+ *  - content_key_60 回覧期間、期間終了(start,end指定)、回答期限あり(範囲外)
  *
  * @return array データ
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -101,17 +108,17 @@ class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCas
 		$index = 'Admin login';
 		$result[$index]['userId'] = '1';
 		$result[$index]['expected'] = $this->_data([
-			'45', '44',
+			'58', '45', '44',
 			'10',
-			'47', '46', '43', '42', '39', '38', '35', '34', '33', '32',
+			'59', '57', '55', '47', '46', '43', '42', '39', '38', '35', '34', '33', '32',
 			'31', '30', '29', '28', '27',
 			'26', '24', '23', '22', '21', '20', '19', '18', '17',
 			'9',
 			'7', '5', '4', '3', '1',
 			'11', '12',
-			'41', '40', '37', '36',
+			'56', '54', '41', '40', '37', '36',
 			'13',
-			'49', '48',
+			'60', '49', '48',
 			'14', '15', '16',
 		], $result[$index]['userId']);
 
@@ -119,17 +126,17 @@ class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCas
 		$index = 'Chief editor login';
 		$result[$index]['userId'] = '2';
 		$result[$index]['expected'] = $this->_data([
-			'45', '44',
+			'58', '45', '44',
 			'10',
-			'47', '46', '43', '42', '39', '38', '35', '34', '33', '32',
+			'59', '57', '55', '47', '46', '43', '42', '39', '38', '35', '34', '33', '32',
 			'31', '30', '29', '28', '27',
 			'26', '23', '22', '21', '20', '19', '18', '17',
 			'9',
 			'7', '5', '4', '3', '1',
 			'11', '12',
-			'41', '40', '37', '36',
+			'56', '54', '41', '40', '37', '36',
 			'13',
-			'49', '48',
+			'60', '49', '48',
 			'14', '15', '16',
 		], $result[$index]['userId']);
 
@@ -137,17 +144,17 @@ class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCas
 		$index = 'Editor login';
 		$result[$index]['userId'] = '3';
 		$result[$index]['expected'] = $this->_data([
-			'45', '44',
+			'58', '45', '44',
 			'10',
-			'51', '47', '46', '43', '42', '39', '38', '32',
+			'59', '57', '55', '51', '47', '46', '43', '42', '39', '38', '32',
 			'31', '30', '29', '28', '27',
 			'26', '21', '20', '19', '17',
 			'9',
 			'7', '5', '4', '3', '1',
 			'11', '12',
-			'41', '40', '37', '36',
+			'56', '54', '41', '40', '37', '36',
 			'13',
-			'49', '48',
+			'60', '49', '48',
 			'14', '15', '16',
 		], $result[$index]['userId']);
 
@@ -155,14 +162,14 @@ class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCas
 		$index = 'General user 1 login';
 		$result[$index]['userId'] = '4';
 		$result[$index]['expected'] = $this->_data([
-			'53', '50',
+			'57', '55', '53', '50',
 			'43', '42', '39', '38', '34', '33',
 			'31', '30', '29', '28', '27',
 			'26', '25', '21', '20', '19', '17',
 			'9',
 			'7', '5', '4', '3', '2',
 			'11', '12',
-			'41', '40', '37', '36',
+			'56', '54', '41', '40', '37', '36',
 			'13',
 			'14', '15', '16',
 		], $result[$index]['userId']);
@@ -171,13 +178,13 @@ class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCas
 		$index = 'General user 2 login';
 		$result[$index]['userId'] = '6';
 		$result[$index]['expected'] = $this->_data([
-			'50', '43', '42', '39', '38',
+			'57', '55', '50', '43', '42', '39', '38',
 			'31', '30', '29', '28', '27',
 			'21', '20', '19', '17',
 			'9',
 			'8', '6', '2',
 			'11', '12',
-			'41', '40', '37', '36',
+			'56', '54', '41', '40', '37', '36',
 			'13',
 			'14', '15', '16',
 		], $result[$index]['userId']);
@@ -186,13 +193,13 @@ class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCas
 		$index = 'Visitor login';
 		$result[$index]['userId'] = '5';
 		$result[$index]['expected'] = $this->_data([
-			'50', '43', '42', '39', '38',
+			'57', '55', '50', '43', '42', '39', '38',
 			'31', '30', '29', '28', '27',
 			'21', '20', '19', '17',
 			'9',
 			'8', '6', '2',
 			'11', '12',
-			'41', '40', '37', '36',
+			'56', '54', '41', '40', '37', '36',
 			'13',
 			'14', '15', '16',
 		], $result[$index]['userId']);
