@@ -28,6 +28,9 @@ msgstr "新着情報をお知らせします。"
 msgid "view number "
 msgstr "最新 "
 
+#
+#: トピック一覧
+#
 msgid "Before publishing"
 msgstr "公開前"
 
@@ -42,6 +45,9 @@ msgstr "未回答"
 
 msgid "Unconfirmed"
 msgstr "未確認"
+
+msgid "(no text)"
+msgstr "（テキストなし）"
 
 
 #
