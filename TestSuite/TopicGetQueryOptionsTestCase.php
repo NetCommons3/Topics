@@ -67,6 +67,7 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
 
 /**
  * フラットで表示、ステータスの絞り込みなしのテストのDataProvider
+ * ※テストデータを返却するメソッドのため、@codeCoverageIgnore で除外する
  *
  * ### 戻り値
  *  - userId ユーザID
@@ -143,6 +144,7 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
  * @return array データ
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @codeCoverageIgnore
  */
 	protected function _data($topicIds, $userId) {
 		$result = array();
