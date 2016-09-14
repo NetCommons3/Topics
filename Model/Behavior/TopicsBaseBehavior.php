@@ -173,11 +173,11 @@ class TopicsBaseBehavior extends ModelBehavior {
 		if (Hash::get($this->settings[$model->alias], 'titleHtml')) {
 			$result = mb_strimwidth(strip_tags($title), 0, self::MAX_TITLE_LENGTH);
 			if (preg_replace('/(\s|　)/', '', $result) === '') {
-				$result = mb_strimwidth($title, 0, self::MAX_TITLE_LENGTH);
+				$result = __d('topics', '(no text)');
 			}
 			$result = trim($result);
 		} else {
-			$result = $title;
+			$result = mb_strimwidth($title, 0, self::MAX_TITLE_LENGTH);
 		}
 
 		return $result;
