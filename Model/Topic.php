@@ -557,7 +557,7 @@ class Topic extends TopicsAppModel {
 
 		//非会員を受け付けるどうか（パブリックスペースのみ有効）
 		if (! Current::read('User.id')) {
-			$roomConditions['Topic.is_no_member_allow'] = true;
+			$roomConditions[$this->alias . '.is_no_member_allow'] = true;
 		}
 
 		//is_latestのデータが見れる条件生成
