@@ -149,6 +149,13 @@ class Topic extends TopicsAppModel {
 	public $validate = array();
 
 /**
+ * 現在日時
+ *
+ * @var array
+ */
+	public $now = null;
+
+/**
  * use behaviors
  *
  * @var array
@@ -448,7 +455,10 @@ class Topic extends TopicsAppModel {
 			'Room' => 'Rooms.Room',
 			'Role' => 'Roles.Role',
 		]);
-		$now = gmdate('Y-m-d H:i:s');
+
+		//現在時刻をセット（テストのチェックで必要なためメンバ変数にセットする）
+		$this->now = gmdate('Y-m-d H:i:s');
+		$now = $this->now;
 
 		//ステータスの条件生成
 		$statusConditions = $this->__getStatusConditions($now, $status);
@@ -459,16 +469,23 @@ class Topic extends TopicsAppModel {
 		//クエリ
 		$this->__bindModel();
 
+		$conditions = array(
+			$this->TopicReadable->alias . '.topic_id NOT' => null,
+			$this->alias . '.language_id' => Current::read('Language.id'),
+		);
+		if ($blockPubConditions) {
+			$conditions[] = $blockPubConditions;
+		}
+		if ($roomConditions) {
+			$conditions[] = $roomConditions;
+		}
+		if ($statusConditions) {
+			$conditions[] = $statusConditions;
+		}
+
 		$result = Hash::merge(array(
 			'recursive' => 0,
-			'conditions' => array(
-				$this->TopicReadable->alias . '.topic_id NOT' => null,
-				$this->alias . '.language_id' => Current::read('Language.id'),
-				array($blockPubConditions),
-				//array($publicTypeConditions),
-				array($roomConditions),
-				array($statusConditions),
-			),
+			'conditions' => $conditions,
 			'order' => array(
 				$this->alias . '.publish_start' => 'desc', $this->alias . '.id' => 'desc'
 			),
