@@ -65,7 +65,7 @@ class AddIsInRoom extends CakeMigration {
  */
 	public function after($direction) {
 		if ($direction === 'up') {
-			$Room = ClassRegistry::init('Rooms.Room');
+			$Room = $this->generateModel('Room');
 			$roomIds = $Room->find('list', array(
 				'recursive' => -1,
 				'fields' => array('id', 'id'),
@@ -73,7 +73,7 @@ class AddIsInRoom extends CakeMigration {
 					'space_id' => '3'
 				)
 			));
-			$Topic = ClassRegistry::init('Topics.Topic');
+			$Topic = $this->generateModel('Topic');
 			$update = array('Topic.is_in_room' => '0');
 			$conditions = array(
 				'Topic.room_id' => array_keys($roomIds),
