@@ -26,7 +26,7 @@ class TopicFramesRoomFixture extends CakeTestFixture {
 		array(
 			'id' => '3',
 			'frame_key' => 'frame_3',
-			'room_id' => '1',
+			'room_id' => '2',
 			'created_user' => '1',
 			'created' => '2016-05-02 06:25:31',
 			'modified_user' => '1',

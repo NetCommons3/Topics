@@ -26,7 +26,7 @@ class TopicFramesBlockFixture extends CakeTestFixture {
 		array(
 			'id' => '3',
 			'frame_key' => 'frame_3',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'Lorem ipsum dolor sit amet',
 			'block_key' => 'Lorem ipsum dolor sit amet',
 			'created_user' => '1',

@@ -26,7 +26,7 @@ class TopicFixture extends CakeTestFixture {
 		array(
 			'id' => '1',
 			'language_id' => '1',
-			'room_id' => '1',
+			'room_id' => '2',
 			'block_id' => '1',
 			'frame_id' => '1',
 			'content_key' => 'Lorem ipsum dolor sit amet',
