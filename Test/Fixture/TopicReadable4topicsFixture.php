@@ -38,9 +38,9 @@ App::uses('TopicReadableFixture', 'Topics.Test/Fixture');
  *  - content_key_21[block_id=7] ブロック期限付き＋期限内(endのみ指定)
  *  - content_key_22[block_id=8] ブロック期限付き＋期限前
  *  - content_key_23[block_id=9] ブロック期限付き＋期限切れ
- *  - content_key_24[block_id=10,room_id=5] 管理者プライベート
- *  - content_key_25[block_id=11,room_id=8] 一般1プライベート
- *  - content_key_26[block_id=12,room_id=11] ルーム2
+ *  - content_key_24[block_id=10,room_id=6] 管理者プライベート
+ *  - content_key_25[block_id=11,room_id=9] 一般1プライベート
+ *  - content_key_26[block_id=12,room_id=12] ルーム2
  * #### FAQ（カテゴリ）
  *  - content_key_27 カテゴリなし
  *  - content_key_28 カテゴリ１
@@ -153,11 +153,11 @@ class TopicReadable4topicsFixture extends TopicReadableFixture {
 		array('id' => '22', 'topic_id' => '22', 'user_id' => '0'), //is_latest,is_active
 		// - content_key_23[block_id=9] ブロック期限付き＋期限切れ
 		array('id' => '23', 'topic_id' => '23', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_24[block_id=10,room_id=5] 管理者プライベート
+		// - content_key_24[block_id=10,room_id=6] 管理者プライベート
 		array('id' => '24', 'topic_id' => '24', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_25[block_id=11,room_id=8] 一般1プライベート
+		// - content_key_25[block_id=11,room_id=9] 一般1プライベート
 		array('id' => '25', 'topic_id' => '25', 'user_id' => '0'), //is_latest,is_active
-		// - content_key_26[block_id=12,room_id=11] ルーム2
+		// - content_key_26[block_id=12,room_id=12] ルーム2
 		array('id' => '26', 'topic_id' => '26', 'user_id' => '0'), //is_latest,is_active
 
 		//#### FAQ（カテゴリ）

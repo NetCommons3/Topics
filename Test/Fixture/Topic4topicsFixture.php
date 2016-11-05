@@ -38,9 +38,9 @@ App::uses('TopicFixture', 'Topics.Test/Fixture');
  *  - content_key_21[block_id=7] ブロック期限付き＋期限内(endのみ指定)
  *  - content_key_22[block_id=8] ブロック期限付き＋期限前
  *  - content_key_23[block_id=9] ブロック期限付き＋期限切れ
- *  - content_key_24[block_id=10,room_id=5] 管理者プライベート
- *  - content_key_25[block_id=11,room_id=8] 一般1プライベート
- *  - content_key_26[block_id=12,room_id=11] ルーム2
+ *  - content_key_24[block_id=10,room_id=6] 管理者プライベート
+ *  - content_key_25[block_id=11,room_id=9] 一般1プライベート
+ *  - content_key_26[block_id=12,room_id=12] ルーム2
  * #### FAQ（カテゴリ）
  *  - content_key_27 カテゴリなし
  *  - content_key_28 カテゴリ１
@@ -109,7 +109,7 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_1 管理者が投稿(公開中)
 		// ** is_latest
 		array(
-			'id' => '1', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '1001',
+			'id' => '1', 'language_id' => '2', 'room_id' => '2', 'block_id' => '1', 'frame_id' => '1001',
 			'content_key' => 'content_key_1', 'content_id' => '1',
 			'category_id' => null, 'plugin_key' => 'test_bbses',
 			'title' => 'Content Title 1', 'title_icon' => '',
@@ -126,7 +126,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// ** is_active
 		array(
-			'id' => '2', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '1001',
+			'id' => '2', 'language_id' => '2', 'room_id' => '2', 'block_id' => '1', 'frame_id' => '1001',
 			'content_key' => 'content_key_1', 'content_id' => '1',
 			'category_id' => null, 'plugin_key' => 'test_bbses',
 			'title' => 'Content Title 1', 'title_icon' => '',
@@ -144,7 +144,7 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_2 一般1が投稿(未承認)
 		// ** is_latest
 		array(
-			'id' => '3', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '1001',
+			'id' => '3', 'language_id' => '2', 'room_id' => '2', 'block_id' => '1', 'frame_id' => '1001',
 			'content_key' => 'content_key_2', 'content_id' => '2',
 			'category_id' => null, 'plugin_key' => 'test_bbses',
 			'title' => 'Content Title 2', 'title_icon' => '',
@@ -162,7 +162,7 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_3 一般1が投稿(承認待ち⇒差し戻し)
 		// ** is_latest
 		array(
-			'id' => '4', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '1001',
+			'id' => '4', 'language_id' => '2', 'room_id' => '2', 'block_id' => '1', 'frame_id' => '1001',
 			'content_key' => 'content_key_3', 'content_id' => '3',
 			'category_id' => null, 'plugin_key' => 'test_bbses',
 			'title' => 'Content Title 3', 'title_icon' => '',
@@ -180,7 +180,7 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_4 一般1が投稿(承認待ち⇒公開)
 		// ** is_latest
 		array(
-			'id' => '5', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '1001',
+			'id' => '5', 'language_id' => '2', 'room_id' => '2', 'block_id' => '1', 'frame_id' => '1001',
 			'content_key' => 'content_key_4', 'content_id' => '5',
 			'category_id' => null, 'plugin_key' => 'test_bbses',
 			'title' => 'Content Title 4', 'title_icon' => '',
@@ -197,7 +197,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// ** is_active
 		array(
-			'id' => '6', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '1001',
+			'id' => '6', 'language_id' => '2', 'room_id' => '2', 'block_id' => '1', 'frame_id' => '1001',
 			'content_key' => 'content_key_4', 'content_id' => '5',
 			'category_id' => null, 'plugin_key' => 'test_bbses',
 			'title' => 'Content Title 4', 'title_icon' => '',
@@ -215,7 +215,7 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_5 一般1が投稿(承認待ち⇒公開⇒承認待ち(編集者が修正))
 		// ** is_latest
 		array(
-			'id' => '7', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '1001',
+			'id' => '7', 'language_id' => '2', 'room_id' => '2', 'block_id' => '1', 'frame_id' => '1001',
 			'content_key' => 'content_key_5', 'content_id' => '8',
 			'category_id' => null, 'plugin_key' => 'test_bbses',
 			'title' => 'Content Title 5', 'title_icon' => '',
@@ -232,7 +232,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// ** is_active
 		array(
-			'id' => '8', 'language_id' => '2', 'room_id' => '1', 'block_id' => '1', 'frame_id' => '1001',
+			'id' => '8', 'language_id' => '2', 'room_id' => '2', 'block_id' => '1', 'frame_id' => '1001',
 			'content_key' => 'content_key_5', 'content_id' => '7',
 			'category_id' => null, 'plugin_key' => 'test_bbses',
 			'title' => 'Content Title 5', 'title_icon' => '',
@@ -261,7 +261,7 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_15 管理者が投稿(公開中、過去30日前)
 		// - content_key_16 管理者が投稿(公開中、過去30日以上前)
 		array(
-			'id' => '9', 'language_id' => '2', 'room_id' => '1', 'block_id' => '2', 'frame_id' => '1002',
+			'id' => '9', 'language_id' => '2', 'room_id' => '2', 'block_id' => '2', 'frame_id' => '1002',
 			'content_key' => 'content_key_9', 'content_id' => '9',
 			'category_id' => null, 'plugin_key' => 'test_blogs',
 			'title' => 'Content Title 9', 'title_icon' => '',
@@ -288,7 +288,7 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_22[block_id=8] ブロック期限付き＋期限前
 		// - content_key_23[block_id=9] ブロック期限付き＋期限切れ
 		array(
-			'id' => '17', 'language_id' => '2', 'room_id' => '1', 'block_id' => '3', 'frame_id' => '1003',
+			'id' => '17', 'language_id' => '2', 'room_id' => '2', 'block_id' => '3', 'frame_id' => '1003',
 			'content_key' => 'content_key_17', 'content_id' => '17',
 			'category_id' => null, 'plugin_key' => 'test_announcements',
 			'title' => 'Content Title 17', 'title_icon' => '',
@@ -303,9 +303,9 @@ class Topic4topicsFixture extends TopicFixture {
 			'created_user' => '1', 'created' => 'now()',
 			'modified_user' => '1', 'modified' => 'now()'
 		),
-		// - content_key_24[block_id=10,room_id=5, frame_id=1010] 管理者プライベート
+		// - content_key_24[block_id=10,room_id=6, frame_id=1010] 管理者プライベート
 		array(
-			'id' => '24', 'language_id' => '2', 'room_id' => '5', 'block_id' => '10', 'frame_id' => '1010',
+			'id' => '24', 'language_id' => '2', 'room_id' => '6', 'block_id' => '10', 'frame_id' => '1010',
 			'content_key' => 'content_key_24', 'content_id' => '24',
 			'category_id' => null, 'plugin_key' => 'test_announcements',
 			'title' => 'Content Title 24', 'title_icon' => '',
@@ -320,9 +320,9 @@ class Topic4topicsFixture extends TopicFixture {
 			'created_user' => '1', 'created' => 'now()',
 			'modified_user' => '1', 'modified' => 'now()'
 		),
-		// - content_key_25[block_id=11,room_id=8, frame_id=1011] 一般1プライベート
+		// - content_key_25[block_id=11,room_id=9, frame_id=1011] 一般1プライベート
 		array(
-			'id' => '25', 'language_id' => '2', 'room_id' => '8', 'block_id' => '11', 'frame_id' => '1011',
+			'id' => '25', 'language_id' => '2', 'room_id' => '9', 'block_id' => '11', 'frame_id' => '1011',
 			'content_key' => 'content_key_25', 'content_id' => '25',
 			'category_id' => null, 'plugin_key' => 'test_announcements',
 			'title' => 'Content Title 25', 'title_icon' => '',
@@ -337,9 +337,9 @@ class Topic4topicsFixture extends TopicFixture {
 			'created_user' => '4', 'created' => 'now()',
 			'modified_user' => '4', 'modified' => 'now()'
 		),
-		// - content_key_26[block_id=12,room_id=11,frame_id=1012] ルーム2
+		// - content_key_26[block_id=12,room_id=12,frame_id=1012] ルーム2
 		array(
-			'id' => '26', 'language_id' => '2', 'room_id' => '11', 'block_id' => '3', 'frame_id' => '1012',
+			'id' => '26', 'language_id' => '2', 'room_id' => '12', 'block_id' => '3', 'frame_id' => '1012',
 			'content_key' => 'content_key_26', 'content_id' => '26',
 			'category_id' => null, 'plugin_key' => 'test_announcements',
 			'title' => 'Content Title 26', 'title_icon' => '',
@@ -358,7 +358,7 @@ class Topic4topicsFixture extends TopicFixture {
 		//#### FAQ（カテゴリ）
 		// - content_key_27 カテゴリなし
 		array(
-			'id' => '27', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'id' => '27', 'language_id' => '2', 'room_id' => '2', 'block_id' => '13', 'frame_id' => '1013',
 			'content_key' => 'content_key_27', 'content_id' => '27',
 			'category_id' => null, 'plugin_key' => 'test_faqs',
 			'title' => 'Content Title 27', 'title_icon' => '',
@@ -375,7 +375,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// - content_key_28 カテゴリ１
 		array(
-			'id' => '28', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'id' => '28', 'language_id' => '2', 'room_id' => '2', 'block_id' => '13', 'frame_id' => '1013',
 			'content_key' => 'content_key_28', 'content_id' => '28',
 			'category_id' => '1', 'plugin_key' => 'test_faqs',
 			'title' => 'Content Title 28', 'title_icon' => '',
@@ -392,7 +392,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// - content_key_29 カテゴリ１
 		array(
-			'id' => '29', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'id' => '29', 'language_id' => '2', 'room_id' => '2', 'block_id' => '13', 'frame_id' => '1013',
 			'content_key' => 'content_key_29', 'content_id' => '29',
 			'category_id' => '1', 'plugin_key' => 'test_faqs',
 			'title' => 'Content Title 29', 'title_icon' => '',
@@ -409,7 +409,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// - content_key_30 カテゴリ２
 		array(
-			'id' => '30', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'id' => '30', 'language_id' => '2', 'room_id' => '2', 'block_id' => '13', 'frame_id' => '1013',
 			'content_key' => 'content_key_30', 'content_id' => '30',
 			'category_id' => '2', 'plugin_key' => 'test_faqs',
 			'title' => 'Content Title 30', 'title_icon' => '',
@@ -426,7 +426,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// - content_key_31 存在しないカテゴリ
 		array(
-			'id' => '31', 'language_id' => '2', 'room_id' => '1', 'block_id' => '13', 'frame_id' => '1013',
+			'id' => '31', 'language_id' => '2', 'room_id' => '2', 'block_id' => '13', 'frame_id' => '1013',
 			'content_key' => 'content_key_31', 'content_id' => '31',
 			'category_id' => '9999', 'plugin_key' => 'test_faqs',
 			'title' => 'Content Title 31', 'title_icon' => '',
@@ -445,7 +445,7 @@ class Topic4topicsFixture extends TopicFixture {
 		//#### 回覧板（イレギュラープラグイン）
 		// - content_key_32[topic_id=32,50] ルームに参加している全会員(パブリック)
 		array(
-			'id' => '32', 'language_id' => '2', 'room_id' => '1', 'block_id' => '14', 'frame_id' => '1014',
+			'id' => '32', 'language_id' => '2', 'room_id' => '2', 'block_id' => '14', 'frame_id' => '1014',
 			'content_key' => 'content_key_32', 'content_id' => '32',
 			'category_id' => null, 'plugin_key' => 'test_circular_notices',
 			'title' => '', 'title_icon' => '',
@@ -468,14 +468,14 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_33[topic_id=33,51] ルームに参加している全会員(ルーム2)
 		array(
 			'id' => '33', 'plugin_key' => 'test_circular_notices',
-			'room_id' => '11', 'block_id' => '15', 'frame_id' => '1015',
+			'room_id' => '12', 'block_id' => '15', 'frame_id' => '1015',
 			'is_active' => '0', 'is_latest' => '1',
 			'created_user' => '4', 'created' => 'now()',
 			'modified_user' => '4', 'modified' => 'now()'
 		),
 		array(
 			'id' => '51', 'plugin_key' => 'test_circular_notices',
-			'room_id' => '11', 'block_id' => '15', 'frame_id' => '1015',
+			'room_id' => '12', 'block_id' => '15', 'frame_id' => '1015',
 			'content_key' => 'content_key_33', 'content_id' => '33',
 			'is_active' => '1', 'is_latest' => '0',
 			'created_user' => '4', 'created' => 'now()',
@@ -499,12 +499,12 @@ class Topic4topicsFixture extends TopicFixture {
 		// - content_key_35[topic_id=35,53] 個別に選択(ルーム2, 参加していないユーザを含む)
 		array(
 			'id' => '35', 'plugin_key' => 'test_circular_notices',
-			'room_id' => '11', 'block_id' => '15', 'frame_id' => '1015',
+			'room_id' => '12', 'block_id' => '15', 'frame_id' => '1015',
 			'is_active' => '0', 'is_latest' => '1',
 		),
 		array(
 			'id' => '53', 'plugin_key' => 'test_circular_notices',
-			'room_id' => '11', 'block_id' => '15', 'frame_id' => '1015',
+			'room_id' => '12', 'block_id' => '15', 'frame_id' => '1015',
 			'content_key' => 'content_key_35', 'content_id' => '35',
 			'is_active' => '1', 'is_latest' => '0',
 		),
@@ -661,7 +661,7 @@ class Topic4topicsFixture extends TopicFixture {
 		//
 		// - content_key_70 プライベートの予定(共有なし)
 		array(
-			'id' => '70', 'language_id' => '2', 'room_id' => '5', 'block_id' => '19', 'frame_id' => '1019',
+			'id' => '70', 'language_id' => '2', 'room_id' => '6', 'block_id' => '19', 'frame_id' => '1019',
 			'category_id' => null, 'plugin_key' => 'test_calendars',
 			'counts' => '1',
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
@@ -673,7 +673,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// - content_key_71 プライベートの予定(共有あり)
 		array(
-			'id' => '71', 'language_id' => '2', 'room_id' => '5', 'block_id' => '19', 'frame_id' => '1019',
+			'id' => '71', 'language_id' => '2', 'room_id' => '6', 'block_id' => '19', 'frame_id' => '1019',
 			'category_id' => null, 'plugin_key' => 'test_calendars',
 			'counts' => '1',
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
@@ -685,7 +685,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// - content_key_72 パブリックの予定
 		array(
-			'id' => '72', 'language_id' => '2', 'room_id' => '1', 'block_id' => '16', 'frame_id' => '1016',
+			'id' => '72', 'language_id' => '2', 'room_id' => '2', 'block_id' => '16', 'frame_id' => '1016',
 			'category_id' => null, 'plugin_key' => 'test_calendars',
 			'counts' => '1',
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
@@ -697,7 +697,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// - content_key_73 会員全体の予定
 		array(
-			'id' => '73', 'language_id' => '2', 'room_id' => '3', 'block_id' => '18', 'frame_id' => '1018',
+			'id' => '73', 'language_id' => '2', 'room_id' => '4', 'block_id' => '18', 'frame_id' => '1018',
 			'category_id' => null, 'plugin_key' => 'test_calendars',
 			'counts' => '1',
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
@@ -709,7 +709,7 @@ class Topic4topicsFixture extends TopicFixture {
 		),
 		// - content_key_74 ルームの予定
 		array(
-			'id' => '74', 'language_id' => '2', 'room_id' => '11', 'block_id' => '17', 'frame_id' => '1017',
+			'id' => '74', 'language_id' => '2', 'room_id' => '12', 'block_id' => '17', 'frame_id' => '1017',
 			'category_id' => null, 'plugin_key' => 'test_calendars',
 			'counts' => '1',
 			'public_type' => '1', 'publish_start' => 'now()', 'publish_end' => null,
@@ -770,9 +770,9 @@ class Topic4topicsFixture extends TopicFixture {
 				// - content_key_21[block_id=7] ブロック期限付き＋期限内(endのみ指定)
 				// - content_key_22[block_id=8] ブロック期限付き＋期限前
 				// - content_key_23[block_id=9] ブロック期限付き＋期限切れ
-				// - content_key_24[block_id=10,room_id=5] 管理者プライベート
-				// - content_key_25[block_id=11,room_id=8] 一般1プライベート
-				// - content_key_26[block_id=12,room_id=11] ルーム2
+				// - content_key_24[block_id=10,room_id=6] 管理者プライベート
+				// - content_key_25[block_id=11,room_id=9] 一般1プライベート
+				// - content_key_26[block_id=12,room_id=12] ルーム2
 				$blockIds = ['3', '4', '5', '6', '7', '8', '9'];
 				foreach ($blockIds as $blockId) {
 					$record['title'] = 'Content Title ' . $record['id'];

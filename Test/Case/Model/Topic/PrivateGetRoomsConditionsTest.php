@@ -102,8 +102,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 				'OR' => array(
 					0 => array(
 						'Topic.room_id' => array(
-							0 => '1',
-							1 => '4',
+							0 => '2',
+							1 => '5',
 						),
 						'Topic.is_active' => true,
 						0 => array(
@@ -153,11 +153,11 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 				'OR' => array(
 					0 => array(
 						'Topic.room_id' => array(
-							0 => '1',
-							1 => '4',
-							2 => '3',
-							3 => '10',
-							4 => '11',
+							0 => '2',
+							1 => '5',
+							2 => '4',
+							3 => '11',
+							4 => '12',
 						),
 						'Topic.is_latest' => true,
 					),
@@ -195,11 +195,11 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					),
 					2 => array(
 						'Block.room_id' => array(
-							0 => '1',
-							1 => '4',
-							2 => '3',
-							3 => '10',
-							4 => '11',
+							0 => '2',
+							1 => '5',
+							2 => '4',
+							3 => '11',
+							4 => '12',
 						),
 					),
 				),
@@ -215,11 +215,11 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 				'OR' => array(
 					0 => array(
 						'Topic.room_id' => array(
-							0 => '1',
-							1 => '4',
-							2 => '3',
-							3 => '10',
-							4 => '11',
+							0 => '2',
+							1 => '5',
+							2 => '4',
+							3 => '11',
+							4 => '12',
 						),
 						'Topic.is_latest' => true,
 					),
@@ -257,10 +257,10 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					),
 					2 => array(
 						'Block.room_id' => array(
-							0 => '1',
-							1 => '4',
-							2 => '3',
-							3 => '10',
+							0 => '2',
+							1 => '5',
+							2 => '4',
+							3 => '11',
 						),
 					),
 				),
@@ -268,7 +268,7 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		);
 
 		//編集者
-		// room_id=11が一般権限
+		// room_id=12が一般権限
 		$userId = '3';
 		$result[3]['now'] = $now;
 		$result[3]['userId'] = $userId;
@@ -277,10 +277,10 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 				'OR' => array(
 					0 => array(
 						'Topic.room_id' => array(
-							0 => '1',
-							1 => '4',
-							2 => '3',
-							3 => '10',
+							0 => '2',
+							1 => '5',
+							2 => '4',
+							3 => '11',
 						),
 						'Topic.is_latest' => true,
 					),
@@ -296,7 +296,7 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					3 => array(
 						'OR' => array(
 							'Topic.room_id' => array(
-								4 => '11',
+								4 => '12',
 							),
 							'TopicReadable.user_id' => $userId,
 						),
@@ -341,7 +341,7 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 		);
 
 		//一般
-		// すべてのルームが一般権限、room_id=10に参加していない
+		// すべてのルームが一般権限、room_id=11に参加していない
 		$userId = '4';
 		$result[4]['now'] = $now;
 		$result[4]['userId'] = $userId;
@@ -360,10 +360,10 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					2 => array(
 						'OR' => array(
 							'Topic.room_id' => array(
-								0 => '1',
-								1 => '4',
-								2 => '3',
-								3 => '11',
+								0 => '2',
+								1 => '5',
+								2 => '4',
+								3 => '12',
 							),
 							'TopicReadable.user_id' => $userId,
 						),
@@ -427,9 +427,9 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					2 => array(
 						'OR' => array(
 							'Topic.room_id' => array(
-								0 => '1',
-								1 => '4',
-								2 => '3',
+								0 => '2',
+								1 => '5',
+								2 => '4',
 							),
 							'TopicReadable.user_id' => $userId,
 						),

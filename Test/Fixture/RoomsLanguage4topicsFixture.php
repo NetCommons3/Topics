@@ -41,19 +41,19 @@ class RoomsLanguage4topicsFixture extends RoomsLanguageFixture {
  */
 	public $records = array(
 		//パブリックスペース
-		array('language_id' => '2', 'room_id' => '1', 'name' => 'Public'),
-		array('language_id' => '2', 'room_id' => '4', 'name' => 'Public room'),
+		array('language_id' => '2', 'room_id' => '2', 'name' => 'Public'),
+		array('language_id' => '2', 'room_id' => '5', 'name' => 'Public room'),
 		//プライベートスペース
-		array('language_id' => '2', 'room_id' => '2', 'name' => 'Private'),
-		array('language_id' => '2', 'room_id' => '5', 'name' => 'Private room 1'),
-		array('language_id' => '2', 'room_id' => '6', 'name' => 'Private room 2'),
-		array('language_id' => '2', 'room_id' => '7', 'name' => 'Private room 3'),
-		array('language_id' => '2', 'room_id' => '8', 'name' => 'Private room 4'),
-		array('language_id' => '2', 'room_id' => '9', 'name' => 'Private room 5'),
+		array('language_id' => '2', 'room_id' => '3', 'name' => 'Private'),
+		array('language_id' => '2', 'room_id' => '6', 'name' => 'Private room 1'),
+		array('language_id' => '2', 'room_id' => '7', 'name' => 'Private room 2'),
+		array('language_id' => '2', 'room_id' => '8', 'name' => 'Private room 3'),
+		array('language_id' => '2', 'room_id' => '9', 'name' => 'Private room 4'),
+		array('language_id' => '2', 'room_id' => '10', 'name' => 'Private room 5'),
 		//コミュニティスペース
-		array('language_id' => '2', 'room_id' => '3', 'name' => 'Community'),
-		array('language_id' => '2', 'room_id' => '10', 'name' => 'Community room 1'),
-		array('language_id' => '2', 'room_id' => '11', 'name' => 'Community room 2'),
+		array('language_id' => '2', 'room_id' => '4', 'name' => 'Community'),
+		array('language_id' => '2', 'room_id' => '11', 'name' => 'Community room 1'),
+		array('language_id' => '2', 'room_id' => '12', 'name' => 'Community room 2'),
 	);
 
 }

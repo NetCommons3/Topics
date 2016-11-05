@@ -37,7 +37,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '1',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_bbses',
 			'key' => 'block_1',
 			'name' => 'Block name 1',
@@ -49,7 +49,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '2',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_blogs',
 			'key' => 'block_2',
 			'name' => 'Block name 2',
@@ -62,7 +62,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '3',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_3',
 			'name' => 'Block name 3',
@@ -74,7 +74,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '4',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_4',
 			'name' => 'Block name 4',
@@ -86,7 +86,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '5',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_5',
 			'name' => 'Block name 5',
@@ -98,7 +98,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '6',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_6',
 			'name' => 'Block name 6',
@@ -110,7 +110,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '7',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_7',
 			'name' => 'Block name 7',
@@ -122,7 +122,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '8',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_8',
 			'name' => 'Block name 8',
@@ -134,7 +134,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '9',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_9',
 			'name' => 'Block name 9',
@@ -142,11 +142,11 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => 'past_3()',
 		),
-		// - [block_id=10,room_id=5] 管理者プライベート
+		// - [block_id=10,room_id=6] 管理者プライベート
 		array(
 			'id' => '10',
 			'language_id' => '2',
-			'room_id' => '5',
+			'room_id' => '6',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_10',
 			'name' => 'Block name 10',
@@ -154,11 +154,11 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
-		// - [block_id=11,room_id=8] 一般1プライベート
+		// - [block_id=11,room_id=9] 一般1プライベート
 		array(
 			'id' => '11',
 			'language_id' => '2',
-			'room_id' => '8',
+			'room_id' => '9',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_11',
 			'name' => 'Block name 11',
@@ -166,11 +166,11 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
-		// - [block_id=12,room_id=11] ルーム2
+		// - [block_id=12,room_id=12] ルーム2
 		array(
 			'id' => '12',
 			'language_id' => '2',
-			'room_id' => '11',
+			'room_id' => '12',
 			'plugin_key' => 'test_announcements',
 			'key' => 'block_12',
 			'name' => 'Block name 12',
@@ -182,7 +182,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '13',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_faqs',
 			'key' => 'block_13',
 			'name' => 'Block name 13',
@@ -194,7 +194,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '14',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_circular_notices',
 			'key' => 'block_14',
 			'name' => 'Block name 14',
@@ -205,7 +205,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '15',
 			'language_id' => '2',
-			'room_id' => '11',
+			'room_id' => '12',
 			'plugin_key' => 'test_circular_notices',
 			'key' => 'block_15',
 			'name' => 'Block name 15',
@@ -218,7 +218,7 @@ class Block4topicsFixture extends BlockFixture {
 		array(
 			'id' => '16',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'plugin_key' => 'test_calendars',
 			'key' => 'block_16',
 			'name' => 'Block name 16',
@@ -226,11 +226,11 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
-		// - ルーム2[room_id=11]
+		// - ルーム2[room_id=12]
 		array(
 			'id' => '17',
 			'language_id' => '2',
-			'room_id' => '11',
+			'room_id' => '12',
 			'plugin_key' => 'test_calendars',
 			'key' => 'block_17',
 			'name' => 'Block name 17',
@@ -238,11 +238,11 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
-		// - 会員全体[room_id=3]
+		// - 会員全体[room_id=4]
 		array(
 			'id' => '18',
 			'language_id' => '2',
-			'room_id' => '3',
+			'room_id' => '4',
 			'plugin_key' => 'test_calendars',
 			'key' => 'block_18',
 			'name' => 'Block name 18',
@@ -250,11 +250,11 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
-		// - プライベート(管理者)[room_id=5]
+		// - プライベート(管理者)[room_id=6]
 		array(
 			'id' => '19',
 			'language_id' => '2',
-			'room_id' => '5',
+			'room_id' => '6',
 			'plugin_key' => 'test_calendars',
 			'key' => 'block_19',
 			'name' => 'Block name 19',
@@ -262,11 +262,11 @@ class Block4topicsFixture extends BlockFixture {
 			'publish_start' => null,
 			'publish_end' => null,
 		),
-		// - プライベート(一般)[room_id=8]
+		// - プライベート(一般)[room_id=9]
 		array(
 			'id' => '20',
 			'language_id' => '2',
-			'room_id' => '8',
+			'room_id' => '9',
 			'plugin_key' => 'test_calendars',
 			'key' => 'block_20',
 			'name' => 'Block name 20',
