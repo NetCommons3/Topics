@@ -177,7 +177,7 @@ class Topic extends TopicsAppModel {
 			'className' => 'Blocks.Block',
 			'foreignKey' => 'block_id',
 			'conditions' => '',
-			'fields' => array('id', 'key', 'name'),
+			'fields' => array('id', 'key'),
 			'order' => ''
 		),
 		'Category' => array(
@@ -191,7 +191,7 @@ class Topic extends TopicsAppModel {
 			'className' => 'Frames.Frame',
 			'foreignKey' => 'frame_id',
 			'conditions' => '',
-			'fields' => array('id', 'key', 'name'),
+			'fields' => array('id', 'key'),
 			'order' => ''
 		),
 		'Language' => array(
