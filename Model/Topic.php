@@ -713,6 +713,16 @@ class Topic extends TopicsAppModel {
 						'RoomsLanguage.language_id' => Current::read('Language.id', '0'),
 					),
 				),
+				'BlocksLanguage' => array(
+					'className' => 'Blocks.BlocksLanguage',
+					'fields' => array('name'),
+					'foreignKey' => false,
+					'type' => 'INNER',
+					'conditions' => array(
+						'BlocksLanguage.block_id' . ' = ' . $this->alias . '.block_id',
+						'BlocksLanguage.language_id' => Current::read('Language.id', '0'),
+					),
+				),
 				'Plugin' => array(
 					'className' => 'PluginManager.Plugin',
 					'fields' => array('id', 'key', 'name'),

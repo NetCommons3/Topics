@@ -34,6 +34,7 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
 		'plugin.topics.topic_frames_room',
 		'plugin.workflow.workflow_comment',
 		'plugin.topics.block4topics',
+		'plugin.topics.blocks_language4topics',
 		'plugin.topics.plugin4topics',
 		'plugin.topics.room4topics',
 		'plugin.topics.rooms_language4topics',
