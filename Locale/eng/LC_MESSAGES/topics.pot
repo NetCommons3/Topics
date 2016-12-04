@@ -1,0 +1,169 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Topics/Model/Topic.php:283
+#: Topics/Test/Case/View/Helper/TopicsHelper/PrivateGetStatusLabelTest.php:157;560;577;594
+msgid "Before publishing"
+msgstr ""
+
+#: Topics/Model/Topic.php:289
+#: Topics/Test/Case/View/Helper/TopicsHelper/PrivateGetStatusLabelTest.php:386;438;490;542
+msgid "Answer end"
+msgstr ""
+
+#: Topics/Model/Topic.php:295
+#: Topics/Test/Case/View/Helper/TopicsHelper/PrivateGetStatusLabelTest.php:335
+msgid "Answered"
+msgstr ""
+
+#: Topics/Model/Topic.php:301
+#: Topics/Test/Case/View/Helper/TopicsHelper/PrivateGetStatusLabelTest.php:315
+msgid "Unanswered"
+msgstr ""
+
+#: Topics/Model/Topic.php:307
+#: Topics/Test/Case/View/Helper/TopicsHelper/PrivateGetStatusLabelTest.php:295;352;369;404;421;456;473;508;525
+msgid "Unconfirmed"
+msgstr ""
+
+#: Topics/Model/TopicFrameSetting.php:291
+msgid "[{X-SITE_NAME}]What's new"
+msgstr ""
+
+#: Topics/Model/TopicFrameSetting.php:292
+msgid "What's new today?"
+msgstr ""
+
+#: Topics/Model/Behavior/TopicsBaseBehavior.php:176
+#: Topics/Test/Case/Model/Behavior/TopicsBaseBehavior/ProtectedParseTitleTest.php:66
+msgid "(no text)"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:36
+msgid "Show the information for past xx days."
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:53
+msgid "View number."
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:71
+msgid "Show flat"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:72
+msgid "Sorted by plugins"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:73
+msgid "Sorted by rooms"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:75
+msgid "Display type"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:83
+msgid "Display items"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:92
+msgid "Title"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:103
+msgid "Detail"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:113
+msgid "Room name"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:124
+msgid "Category name"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:134
+msgid "Plugin name"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:145
+msgid "Creator"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:155
+msgid "Creation datetime"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:163
+msgid "Category name appears %s plugins."
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:163
+msgid "Blogs and Links and FAQ"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:174
+msgid "Select room to show"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:197
+msgid "Display private room as new arrival."
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:209
+msgid "Select plugin to show"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:236
+msgid "Select block to show"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:257
+msgid "RSS feed"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:266
+msgid "Feed title"
+msgstr ""
+
+#: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:271
+msgid "Feed summary"
+msgstr ""
+
+#: Topics/View/Elements/Topics/header.ctp:26
+msgid "RSS2.0"
+msgstr ""
+
+#: Topics/View/Helper/TopicsHelper.php:222
+msgid "Each of the embedded keywords, will be sent is converted to the corresponding content. <br />"
+msgstr ""
+
+#: Topics/View/Helper/TopicsHelper.php:225
+msgid "Can use an embedded keyword in the channel title line and summary"
+msgstr ""
+
+#: Topics/View/Helper/TopicsHelper.php:227
+msgid "Embedded keyword?"
+msgstr ""
+
+#: Topics/View/Helper/TopicsHelper.php:333
+msgid "No block found."
+msgstr ""
+
+#: Topics/View/Topics/not_found.ctp:16
+msgid "No topic found."
+msgstr ""
+
