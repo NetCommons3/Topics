@@ -124,7 +124,8 @@ class TopicsBaseBehavior extends ModelBehavior {
 		$fields = array(
 			'category_id', 'title_icon', 'public_type', 'publish_start', 'publish_end', 'status',
 			'is_no_member_allow', 'answer_period_start', 'answer_period_end', 'is_in_room',
-			'created_user', 'created', 'modified_user', 'modified'
+			'created_user', 'created', 'modified_user', 'modified',
+			'is_origin', 'is_translation',
 		);
 		foreach ($fields as $field) {
 			if ($this->_hasSaveData($model, $field) === false) {
