@@ -184,7 +184,7 @@ class Topic extends TopicsAppModel {
 			'className' => 'Categories.Category',
 			'foreignKey' => 'category_id',
 			'conditions' => '',
-			'fields' => array('id', 'key', 'name'),
+			'fields' => array('id', 'key'),
 			'order' => ''
 		),
 		'Frame' => array(
@@ -721,6 +721,16 @@ class Topic extends TopicsAppModel {
 					'conditions' => array(
 						'BlocksLanguage.block_id' . ' = ' . $this->alias . '.block_id',
 						'BlocksLanguage.language_id' => Current::read('Language.id', '0'),
+					),
+				),
+				'CategoriesLanguage' => array(
+					'className' => 'Categories.CategoriesLanguage',
+					'fields' => array('name'),
+					'foreignKey' => false,
+					'type' => 'INNER',
+					'conditions' => array(
+						'CategoriesLanguage.category_id' . ' = ' . $this->alias . '.category_id',
+						'CategoriesLanguage.language_id' => Current::read('Language.id', '0'),
 					),
 				),
 				'Plugin' => array(
