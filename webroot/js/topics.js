@@ -120,13 +120,14 @@ NetCommonsApp.controller('TopicsController',
         url = url + '/page:' + ($scope.paging['page'] + 1);
 
         $http.get(NC3_URL + url + '.json', {params: $scope.params})
-            .success(function(data) {
+            .then(function(response) {
+              var data = response.data;
               $scope.paging = data['paging'];
               angular.forEach(data['topics'], function(value) {
                 $scope.topics.push(value);
               });
-            })
-            .error(function(data) {
+            },
+            function(response) {
             });
       };
 
