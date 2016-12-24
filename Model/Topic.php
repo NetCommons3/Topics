@@ -727,7 +727,7 @@ class Topic extends TopicsAppModel {
 					'className' => 'Categories.CategoriesLanguage',
 					'fields' => array('name'),
 					'foreignKey' => false,
-					'type' => 'INNER',
+					'type' => 'LEFT',
 					'conditions' => array(
 						'CategoriesLanguage.category_id' . ' = ' . $this->alias . '.category_id',
 						'CategoriesLanguage.language_id' => Current::read('Language.id', '0'),

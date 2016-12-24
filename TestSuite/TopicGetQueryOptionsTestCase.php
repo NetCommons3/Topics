@@ -27,6 +27,7 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
  */
 	public $fixtures = array(
 		'plugin.categories.category',
+		'plugin.categories.categories_language',
 		'plugin.categories.category_order',
 		'plugin.topics.topic_frame_setting',
 		'plugin.topics.topic_frames_block',
