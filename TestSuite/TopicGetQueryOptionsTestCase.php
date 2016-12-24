@@ -27,6 +27,7 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
  */
 	public $fixtures = array(
 		'plugin.categories.category',
+		'plugin.categories.categories_language',
 		'plugin.categories.category_order',
 		'plugin.topics.topic_frame_setting',
 		'plugin.topics.topic_frames_block',
@@ -34,6 +35,7 @@ class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
 		'plugin.topics.topic_frames_room',
 		'plugin.workflow.workflow_comment',
 		'plugin.topics.block4topics',
+		'plugin.topics.blocks_language4topics',
 		'plugin.topics.plugin4topics',
 		'plugin.topics.room4topics',
 		'plugin.topics.rooms_language4topics',

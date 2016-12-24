@@ -392,9 +392,9 @@ class TopicFrameSetting extends TopicsAppModel {
 		$pluginKeys = array_diff($pluginKeys, self::$outPlugins);
 
 		$conditions = array(
-			'room_id' => $roomIds,
-			'language_id' => Current::read('Language.id'),
-			'plugin_key' => $pluginKeys,
+			'Block.room_id' => $roomIds,
+			'BlocksLanguage.language_id' => Current::read('Language.id'),
+			'Block.plugin_key' => $pluginKeys,
 		);
 
 		if (! Current::permission('block_editable')) {
@@ -411,8 +411,10 @@ class TopicFrameSetting extends TopicsAppModel {
 		}
 
 		$result = $this->Block->find('all', array(
-			'recursive' => -1,
-			'fields' => array('id', 'plugin_key', 'room_id', 'key', 'name'),
+			'recursive' => 0,
+			'fields' => array(
+				'Block.id', 'Block.plugin_key', 'Block.room_id', 'Block.key', 'BlocksLanguage.name'
+			),
 			'conditions' => $conditions,
 		));
 
@@ -420,6 +422,7 @@ class TopicFrameSetting extends TopicsAppModel {
 		foreach ($result as $block) {
 			$key = $block['Block']['plugin_key'] . $block['Block']['room_id'];
 			$blocks[$key][$block['Block']['key']] = $block['Block'];
+			$blocks[$key][$block['Block']['key']]['name'] = $block['BlocksLanguage']['name'];
 		}
 
 		return $blocks;

@@ -43,8 +43,8 @@
 		<?php endif; ?>
 
 		<?php if ($topicFrameSetting['display_category_name']) : ?>
-			<div class="pull-left topic-category-name" ng-show="item.category.name">
-				{{item.category.displayName}}
+			<div class="pull-left topic-category-name" ng-show="item.categoriesLanguage.name">
+				{{item.categoriesLanguage.displayName}}
 			</div>
 		<?php endif; ?>
 

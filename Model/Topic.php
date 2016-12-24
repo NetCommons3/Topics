@@ -177,21 +177,21 @@ class Topic extends TopicsAppModel {
 			'className' => 'Blocks.Block',
 			'foreignKey' => 'block_id',
 			'conditions' => '',
-			'fields' => array('id', 'key', 'name'),
+			'fields' => array('id', 'key'),
 			'order' => ''
 		),
 		'Category' => array(
 			'className' => 'Categories.Category',
 			'foreignKey' => 'category_id',
 			'conditions' => '',
-			'fields' => array('id', 'key', 'name'),
+			'fields' => array('id', 'key'),
 			'order' => ''
 		),
 		'Frame' => array(
 			'className' => 'Frames.Frame',
 			'foreignKey' => 'frame_id',
 			'conditions' => '',
-			'fields' => array('id', 'key', 'name'),
+			'fields' => array('id', 'key'),
 			'order' => ''
 		),
 		'Language' => array(
@@ -711,6 +711,26 @@ class Topic extends TopicsAppModel {
 					'conditions' => array(
 						'RoomsLanguage.room_id' . ' = ' . $this->alias . '.room_id',
 						'RoomsLanguage.language_id' => Current::read('Language.id', '0'),
+					),
+				),
+				'BlocksLanguage' => array(
+					'className' => 'Blocks.BlocksLanguage',
+					'fields' => array('name'),
+					'foreignKey' => false,
+					'type' => 'INNER',
+					'conditions' => array(
+						'BlocksLanguage.block_id' . ' = ' . $this->alias . '.block_id',
+						'BlocksLanguage.language_id' => Current::read('Language.id', '0'),
+					),
+				),
+				'CategoriesLanguage' => array(
+					'className' => 'Categories.CategoriesLanguage',
+					'fields' => array('name'),
+					'foreignKey' => false,
+					'type' => 'LEFT',
+					'conditions' => array(
+						'CategoriesLanguage.category_id' . ' = ' . $this->alias . '.category_id',
+						'CategoriesLanguage.language_id' => Current::read('Language.id', '0'),
 					),
 				),
 				'Plugin' => array(

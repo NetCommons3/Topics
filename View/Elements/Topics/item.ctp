@@ -43,9 +43,9 @@
 		<?php endif; ?>
 
 		<?php if ($topicFrameSetting['display_category_name']) : ?>
-			<?php if ($item['category']['name']) : ?>
+			<?php if ($item['categoriesLanguage']['name']) : ?>
 				<div class="pull-left topic-category-name">
-					<?php echo h($item['category']['displayName']); ?>
+					<?php echo h($item['categoriesLanguage']['displayName']); ?>
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
