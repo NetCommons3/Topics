@@ -61,7 +61,7 @@ class RolesRoom4topicsFixture extends RolesRoomFixture {
 		array('id' => '19', 'room_id' => '8', 'role_key' => 'room_administrator'),
 		//プライベートルーム、一般1(room_id=9)
 		array('id' => '20', 'room_id' => '9', 'role_key' => 'room_administrator'),
-		//プライベートルーム、参観者(room_id=10)
+		//プライベートルーム、ゲスト(room_id=10)
 		array('id' => '21', 'room_id' => '10', 'role_key' => 'room_administrator'),
 		//プライベートルーム、一般2(room_id=13)
 		array('id' => '32', 'room_id' => '13', 'role_key' => 'room_administrator'),

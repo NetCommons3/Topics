@@ -65,7 +65,7 @@ class RolesRoomsUser4topicsFixture extends RolesRoomsUserFixture {
 		array('id' => '18', 'roles_room_id' => '19', 'user_id' => '3', 'room_id' => '8'),
 		//プライベートルーム、一般1(room_id=9)
 		array('id' => '19', 'roles_room_id' => '20', 'user_id' => '4', 'room_id' => '9'),
-		//プライベートルーム、参観者(room_id=10)
+		//プライベートルーム、ゲスト(room_id=10)
 		array('id' => '20', 'roles_room_id' => '21', 'user_id' => '5', 'room_id' => '10'),
 		//コミュニティスペース
 		array('id' => '21', 'roles_room_id' => '7', 'user_id' => '1', 'room_id' => '4'),

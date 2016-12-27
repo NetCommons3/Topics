@@ -407,7 +407,7 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 			),
 		);
 
-		//参観者
+		//ゲスト
 		// ルームに参加していない
 		$userId = '5';
 		$result[5]['now'] = $now;

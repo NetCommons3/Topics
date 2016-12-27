@@ -268,7 +268,7 @@ class TopicGetQueryOptionsByFlatWOStatusTest extends TopicGetQueryOptionsTestCas
 			'16',
 		], $result[$index]['userId']);
 
-		// * 参観者
+		// * ゲスト
 		$index = 'Visitor login';
 		$result[$index]['userId'] = '5';
 		$result[$index]['expected'] = $this->_data([

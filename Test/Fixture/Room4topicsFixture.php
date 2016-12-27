@@ -150,7 +150,7 @@ class Room4topicsFixture extends RoomFixture {
 			'page_layout_permitted' => '0',
 			'theme' => null,
 		),
-		//プライベートルーム、参観者(room_id=10)
+		//プライベートルーム、ゲスト(room_id=10)
 		array(
 			'id' => '10',
 			'space_id' => '3',
