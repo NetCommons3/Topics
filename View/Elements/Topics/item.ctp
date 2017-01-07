@@ -13,7 +13,7 @@
 <article class="topic-row-outer">
 	<div class="clearfix">
 		<div class="pull-left topic-title">
-			<a href="<?php echo $item['topic']['url']; ?>" target="_blank">
+			<a href="<?php echo $item['topic']['url']; ?>">
 				<?php echo h($item['topic']['displayTitle']); ?>
 			</a>
 		</div>

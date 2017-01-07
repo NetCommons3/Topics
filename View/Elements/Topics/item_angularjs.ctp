@@ -13,7 +13,7 @@
 <article class="topic-row-outer" ng-repeat="item in topics track by $index">
 	<div class="clearfix">
 		<div class="pull-left topic-title">
-			<a ng-href="{{item.topic.url}}" target="_blank">
+			<a ng-href="{{item.topic.url}}">
 				{{item.topic.displayTitle}}
 			</a>
 		</div>
