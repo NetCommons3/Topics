@@ -170,7 +170,16 @@ class TopicsController extends TopicsAppController {
 			),
 		);
 
-		$topics = $this->Paginator->paginate('Topic');
+		$maxPage = Hash::get($this->params['named'], 'page', '1');
+		$startPage = Hash::get($this->params['named'], 'startPage', $maxPage);
+		$topics = array();
+		for ($page = $startPage; $page <= $maxPage; $page++) {
+			$this->params['named'] = Hash::insert($this->params['named'], 'page', $page);
+			$result = $this->Paginator->paginate('Topic');
+			foreach ($result as $topic) {
+				$topics[] = $topic;
+			}
+		}
 		$topics = Hash::remove($topics, '{n}.Topic.search_contents');
 
 		$paging = $this->request['paging'];
