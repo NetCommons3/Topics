@@ -115,11 +115,11 @@ NetCommonsApp.controller('TopicsController',
          */
         $scope.link = function($event) {
           $location.hash(
-            'page:' + ($scope.paging['page']) + '&' + 'frame_id:' + $scope.params['frame_id']
+              'page:' + ($scope.paging['page']) + '&' + 'frame_id:' + $scope.params['frame_id']
           );
           $window.location.href = $event.target.href;
           $event.preventDefault();
-        }
+        };
 
         /**
          * URLからデータ取得
