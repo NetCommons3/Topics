@@ -10,7 +10,8 @@
  */
 ?>
 
-<article ng-controller="TopicsController" ng-init="initialize(<?php echo h(json_encode($params, true)); ?>)" ng-cloak>
+<article id="topic-frame-<?php echo Current::read('Frame.id'); ?>"
+			ng-controller="TopicsController" ng-init="initialize(<?php echo h(json_encode($params, true)); ?>); hashChange();" ng-cloak>
 	<?php foreach ($camelizeData as $item) : ?>
 		<?php echo $this->element('Topics.Topics/item', array('item' => $item)); ?>
 	<?php endforeach; ?>
