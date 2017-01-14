@@ -124,7 +124,7 @@ class TopicPrivateGetStatusConditionsTest extends NetCommonsModelTestCase {
 		);
 
 		//承認待ち
-		$status = WorkflowComponent::STATUS_APPROVED;
+		$status = WorkflowComponent::STATUS_APPROVAL_WAITING;
 		$result[5]['now'] = $now;
 		$result[5]['status'] = $status;
 		$result[5]['expected'] = array(
