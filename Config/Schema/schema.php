@@ -222,6 +222,7 @@ class TopicsSchema extends CakeSchema {
 		'status' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 4, 'unsigned' => false),
 		'is_origin' => array('type' => 'boolean', 'null' => false, 'default' => '1'),
 		'is_translation' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+		'is_original_copy' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'comment' => 'オリジナルのコピー。言語を新たに追加したときに使用する'),
 		'created_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
