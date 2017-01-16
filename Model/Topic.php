@@ -265,8 +265,8 @@ class Topic extends TopicsAppModel {
 				'message' => __d('net_commons', 'Temporary'),
 			),
 			//承認待ち
-			WorkflowComponent::STATUS_APPROVED => array(
-				'key' => WorkflowComponent::STATUS_APPROVED,
+			WorkflowComponent::STATUS_APPROVAL_WAITING => array(
+				'key' => WorkflowComponent::STATUS_APPROVAL_WAITING,
 				'class' => 'label-warning',
 				'message' => __d('net_commons', 'Approving'),
 			),
