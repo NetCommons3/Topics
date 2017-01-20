@@ -469,23 +469,26 @@ class Topic extends TopicsAppModel {
 		//クエリ
 		$this->__bindModel();
 
-		$conditions = array(
+		if (! isset($options['conditions'])) {
+			$options['conditions'] = array();
+		}
+
+		$options['conditions'][] = array(
 			$this->TopicReadable->alias . '.topic_id NOT' => null,
 			$this->alias . '.language_id' => Current::read('Language.id'),
 		);
 		if ($blockPubConditions) {
-			$conditions[] = $blockPubConditions;
+			$options['conditions'][] = $blockPubConditions;
 		}
 		if ($roomConditions) {
-			$conditions[] = $roomConditions;
+			$options['conditions'][] = $roomConditions;
 		}
 		if ($statusConditions) {
-			$conditions[] = $statusConditions;
+			$options['conditions'][] = $statusConditions;
 		}
 
 		$result = Hash::merge(array(
 			'recursive' => 0,
-			'conditions' => $conditions,
 			'order' => array(
 				$this->alias . '.publish_start' => 'desc', $this->alias . '.id' => 'desc'
 			),
