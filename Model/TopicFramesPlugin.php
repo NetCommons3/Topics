@@ -122,7 +122,9 @@ class TopicFramesPlugin extends TopicsAppModel {
 			$plugin = $this->find('list', array(
 				'recursive' => 0,
 				'fields' => array('Plugin.key', 'Plugin.name'),
-				'conditions' => $this->getConditions($topicFrameSetting, $conditions),
+				'conditions' => array(
+					$this->alias . '.frame_key' => Current::read('Frame.key'),
+				),
 				'order' => 'weight'
 			));
 		} else {
