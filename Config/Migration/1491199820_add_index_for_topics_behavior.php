@@ -32,7 +32,7 @@ class AddIndexForTopicsBehavior extends CakeMigration {
 			'create_field' => array(
 				'topics' => array(
 					'indexes' => array(
-						'plugin_key_2' => array('column' => array('plugin_key', 'language_id', 'content_key'), 'unique' => 0),
+						'plugin_key' => array('column' => array('plugin_key', 'language_id', 'content_key'), 'unique' => 0),
 					),
 				),
 			),
@@ -44,7 +44,7 @@ class AddIndexForTopicsBehavior extends CakeMigration {
 				),
 			),
 			'drop_field' => array(
-				'topics' => array('indexes' => array('plugin_key_2')),
+				'topics' => array('indexes' => array('plugin_key')),
 			),
 		),
 	);
