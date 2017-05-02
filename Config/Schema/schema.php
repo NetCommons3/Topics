@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Schema file
  *
@@ -231,7 +231,7 @@ class TopicsSchema extends CakeSchema {
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'whatsnew' => array('column' => array('publish_start', 'id', 'language_id', 'public_type', 'modified', 'publish_end', 'room_id', 'is_active', 'is_latest'), 'unique' => 0),
 			'search' => array('column' => array('search_contents'), 'type' => 'fulltext'),
-			'plugin_key' => array('column' => array('plugin_key', 'language_id', 'content_key'), 'unique' => 0)
+			'plugin_key_2' => array('column' => array('plugin_key', 'language_id', 'content_key'), 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Mroonga', 'comment' => 'engine "InnoDB"')
 	);
