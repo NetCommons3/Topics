@@ -12,4 +12,4 @@
 echo $this->NetCommonsHtml->json(array(
 	'paging' => $paging,
 	'topics' => $this->Topics->camelizeKeyRecursive($topics)
-));
+), 'OK', 200, false);

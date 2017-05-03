@@ -12,6 +12,7 @@
 App::uses('AppHelper', 'View/Helper');
 App::uses('Topic', 'Topics.Model');
 App::uses('Block', 'Blocks.Model');
+App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
  * Workflow Helper
@@ -34,6 +35,100 @@ class TopicsHelper extends AppHelper {
 		'Users.DisplayUser',
 		'Workflow.Workflow',
 	);
+
+/**
+ * ステータス配列
+ *
+ * __constractorでセットする
+ *
+ * @var array
+ */
+	public $statuses = array();
+
+/**
+ * Default Constructor
+ *
+ * @param View $View The View this helper is being attached to.
+ * @param array $settings Configuration settings for the helper.
+ */
+	public function __construct(View $View, $settings = array()) {
+		parent::__construct($View, $settings);
+
+		$this->statuses = array(
+			//一時保存
+			WorkflowComponent::STATUS_IN_DRAFT => array(
+				'key' => WorkflowComponent::STATUS_IN_DRAFT,
+				'class' => 'label-info',
+				'message' => __d('net_commons', 'Temporary'),
+			),
+			//承認待ち
+			WorkflowComponent::STATUS_APPROVAL_WAITING => array(
+				'key' => WorkflowComponent::STATUS_APPROVAL_WAITING,
+				'class' => 'label-warning',
+				'message' => __d('net_commons', 'Approving'),
+			),
+			//差し戻し
+			WorkflowComponent::STATUS_DISAPPROVED => array(
+				'key' => WorkflowComponent::STATUS_DISAPPROVED,
+				'class' => 'label-warning',
+				'message' => __d('net_commons', 'Disapproving'),
+			),
+			//公開前
+			Topic::STATUS_BEFORE_PUBLISH => array(
+				'key' => Topic::STATUS_BEFORE_PUBLISH,
+				'class' => 'label-default',
+				'message' => __d('topics', 'Before publishing'),
+			),
+			//受付終了
+			Topic::STATUS_ANSWER_END => array(
+				'key' => Topic::STATUS_ANSWER_END,
+				'class' => 'label-default',
+				'message' => __d('topics', 'Answer end'),
+			),
+			//回答済み
+			Topic::STATUS_ANSWERED => array(
+				'key' => Topic::STATUS_ANSWERED,
+				'class' => 'label-default',
+				'message' => __d('topics', 'Answered'),
+			),
+			//未回答
+			Topic::STATUS_UNANSWERED => array(
+				'key' => Topic::STATUS_UNANSWERED,
+				'class' => 'label-success',
+				'message' => __d('topics', 'Unanswered'),
+			),
+			//未確認
+			Topic::STATUS_UNCONFIRMED => array(
+				'key' => Topic::STATUS_UNCONFIRMED,
+				'class' => 'label-primary',
+				'message' => __d('topics', 'Unconfirmed'),
+			),
+			//ブロック非公開
+			Topic::STATUS_BLOCK_PRIVATE => array(
+				'key' => Topic::STATUS_BLOCK_PRIVATE,
+				'class' => 'label-default',
+				'message' => __d('blocks', 'Private'),
+			),
+			//ブロック期限付き公開(公開前)
+			Topic::STATUS_BLOCK_BEFORE_PUBLISH => array(
+				'key' => Topic::STATUS_BLOCK_BEFORE_PUBLISH,
+				'class' => 'label-default',
+				'message' => __d('blocks', 'Public before'),
+			),
+			//ブロック期限付き公開(公開中)
+			Topic::STATUS_BLOCK_PUBLISH => array(
+				'key' => Topic::STATUS_BLOCK_PUBLISH,
+				'class' => 'label-default',
+				'message' => __d('blocks', 'Limited'),
+			),
+			//ブロック期限付き公開(公開終了)
+			Topic::STATUS_BLOCK_END_PUBLISH => array(
+				'key' => Topic::STATUS_BLOCK_END_PUBLISH,
+				'class' => 'label-default',
+				'message' => __d('blocks', 'Public end'),
+			),
+		);
+	}
 
 /**
  * Before render callback. beforeRender is called before the view file is rendered.
@@ -74,7 +169,7 @@ class TopicsHelper extends AppHelper {
 			$newResult[$key] = $this->__camelizeKeyRecursive($value);
 
 			$displayStatus = $this->__getStatusLabel($newResult[$key]);
-			$newResult[$key]['topic']['displayStatus'] = $displayStatus;
+			$newResult[$key]['Topic']['display_status'] = $displayStatus;
 		}
 
 		return $newResult;
@@ -88,19 +183,33 @@ class TopicsHelper extends AppHelper {
  */
 	private function __camelizeKeyRecursive($orig) {
 		$newResult = [];
-		$callback = ['Inflector', 'variable'];
 
 		foreach ($orig as $key => $value) {
-			$camelKey = call_user_func($callback, $key);
-
 			if (is_array($value)) {
-				$newResult[$camelKey] = $this->__camelizeKeyRecursive($value);
+				$newResult[$key] = $this->__camelizeKeyRecursive($value);
 			} else {
-				$newResult = $this->__parseValueForCamelize($newResult, $camelKey, $value);
+				$newResult = $this->__parseValueForCamelize($newResult, $key, $value);
 			}
 		}
 
 		return $newResult;
+	}
+
+/**
+ * Hash::getを独自でやる(パフォーマンス向上のため)
+ *
+ * @param array $data データ
+ * @param string $key キー文字列(model.fieldの形)
+ * @param mixed $defualt デフォルト値
+ * @return mixed
+ */
+	private function __hashGet($data, $key, $defualt = null) {
+		list($model, $field) = explode('.', $key);
+		if (isset($data[$model][$field])) {
+			return $data[$model][$field];
+		} else {
+			return $defualt;
+		}
 	}
 
 /**
@@ -109,38 +218,36 @@ class TopicsHelper extends AppHelper {
  * self::camelizeKeyRecursiveから実行される
  *
  * @param array $newResult keyをcamel形式に変換して戻す配列
- * @param string $camelKey key値
+ * @param string $key key値
  * @param string $value 値
  * @return string 変換後の値
  */
-	private function __parseValueForCamelize($newResult, $camelKey, $value) {
-		$callback = ['Inflector', 'variable'];
+	private function __parseValueForCamelize($newResult, $key, $value) {
+		if ($key === 'title') {
+			$newResult[$key] = $value;
+			$key = 'display_' . $key;
+			$newResult[$key] = mb_strimwidth($value, 0, Topic::DISPLAY_TITLE_LENGTH, '...');
 
-		if ($camelKey === 'title') {
-			$newResult[$camelKey] = $value;
-			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_TITLE_LENGTH, '...');
+		} elseif ($key === 'name') {
+			$newResult[$key] = $value;
+			$key = 'display_' . $key;
+			$newResult[$key] = mb_strimwidth($value, 0, Topic::DISPLAY_ROOM_NAME_LENGTH, '...');
 
-		} elseif ($camelKey === 'name') {
-			$newResult[$camelKey] = $value;
-			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_ROOM_NAME_LENGTH, '...');
+		} elseif ($key === 'summary') {
+			$newResult[$key] = $value;
+			$key = 'display_' . $key;
+			$newResult[$key] = mb_strimwidth($value, 0, Topic::DISPLAY_SUMMARY_LENGTH, '...');
 
-		} elseif ($camelKey === 'summary') {
-			$newResult[$camelKey] = $value;
-			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$newResult[$camelKey] = mb_strimwidth($value, 0, Topic::DISPLAY_SUMMARY_LENGTH, '...');
+		} elseif (in_array($key, ['publish_start', 'created', 'modified'], true)) {
+			$newResult[$key] = $value;
+			$key = 'display_' . $key;
+			$newResult[$key] = $this->NetCommonsHtml->dateFormat($value);
 
-		} elseif (in_array($camelKey, ['publishStart', 'created', 'modified'], true)) {
-			$newResult[$camelKey] = $value;
-			$camelKey = call_user_func($callback, 'display_' . $camelKey);
-			$newResult[$camelKey] = $this->NetCommonsHtml->dateFormat($value);
-
-		} elseif ($camelKey === 'titleIcon') {
-			$newResult[$camelKey] = $this->NetCommonsHtml->titleIcon($value);
+		} elseif ($key === 'title_icon') {
+			$newResult[$key] = $this->NetCommonsHtml->titleIcon($value);
 
 		} else {
-			$newResult[$camelKey] = $value;
+			$newResult[$key] = $value;
 		}
 
 		return $newResult;
@@ -157,12 +264,12 @@ class TopicsHelper extends AppHelper {
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	private function __getStatusLabel($newResult) {
-		$topicStatus = Hash::get($newResult, 'topic.status');
-		$blockPublicType = Hash::get($newResult, 'block.publicType');
-		$topicPublishStart = Hash::get($newResult, 'topic.publishStart');
-		$topicPublishEnd = Hash::get($newResult, 'topic.publishEnd');
-		$answerPeriodEnd = Hash::get($newResult, 'topic.answerPeriodEnd');
-		$labels = (new Topic())->statuses;
+		$topicStatus = $this->__hashGet($newResult, 'Topic.status');
+		$blockPublicType = $this->__hashGet($newResult, 'Block.public_type');
+		$topicPublishStart = $this->__hashGet($newResult, 'Topic.publish_start');
+		$topicPublishEnd = $this->__hashGet($newResult, 'Topic.publish_end');
+		$answerPeriodEnd = $this->__hashGet($newResult, 'Topic.answer_period_end');
+		$labels = $this->statuses;
 
 		$now = gmdate('Y-m-d H:i:s');
 
@@ -171,17 +278,17 @@ class TopicsHelper extends AppHelper {
 		} elseif ($now < $topicPublishStart) {
 			//公開前
 			$topicStatus = Topic::STATUS_BEFORE_PUBLISH;
-		} elseif (Hash::get($newResult, 'topic.isAnswer')) {
+		} elseif ($this->__hashGet($newResult, 'Topic.is_answer')) {
 			if ($topicPublishEnd && $topicPublishEnd < $now) {
 				//公開終了
 				$topicStatus = Topic::STATUS_BLOCK_END_PUBLISH;
-			} elseif (Hash::get($newResult, 'topicUserStatus.answered')) {
+			} elseif ($this->__hashGet($newResult, 'TopicUserStatus.answered')) {
 				//回答済み
 				$topicStatus = Topic::STATUS_ANSWERED;
 			} elseif ($answerPeriodEnd && $answerPeriodEnd < $now) {
 				//受付終了
 				$topicStatus = Topic::STATUS_ANSWER_END;
-			} elseif (Hash::get($newResult, 'topicUserStatus.read')) {
+			} elseif ($this->__hashGet($newResult, 'TopicUserStatus.read')) {
 				//未回答
 				$topicStatus = Topic::STATUS_UNANSWERED;
 			} elseif (Current::read('User.id')) {
@@ -192,10 +299,10 @@ class TopicsHelper extends AppHelper {
 			//ブロック非公開
 			$topicStatus = Topic::STATUS_BLOCK_PRIVATE;
 		} elseif ($blockPublicType === Block::TYPE_LIMITED) {
-			if ($now <= Hash::get($newResult, 'block.publishStart', '0000-00-00 00:00:00')) {
+			if ($now <= $this->__hashGet($newResult, 'Block.publish_start', '0000-00-00 00:00:00')) {
 				//ブロック期限付き公開(公開前)
 				$topicStatus = Topic::STATUS_BLOCK_BEFORE_PUBLISH;
-			} elseif ($now > Hash::get($newResult, 'block.publishEnd', '9999-99-99 99:99:99')) {
+			} elseif ($now > $this->__hashGet($newResult, 'Block.publish_end', '9999-99-99 99:99:99')) {
 				//ブロック期限付き公開(公開終了)
 				$topicStatus = Topic::STATUS_BLOCK_END_PUBLISH;
 			} else {
@@ -245,7 +352,7 @@ class TopicsHelper extends AppHelper {
 
 		$options = Hash::merge(
 			array('0' => __d('net_commons', 'All Statuses')),
-			Hash::combine((new Topic())->statuses, '{n}.key', '{n}.message')
+			Hash::combine($this->statuses, '{n}.key', '{n}.message')
 		);
 
 		return $this->_View->element('Topics.Topics/select_status', array(

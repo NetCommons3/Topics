@@ -369,7 +369,7 @@ class TopicFrameSetting extends TopicsAppModel {
 		if ($topicFrameSetting[$this->alias]['unit_type'] === self::UNIT_TYPE_NUMBERS) {
 			$options['limit'] = (int)$topicFrameSetting[$this->alias]['display_number'];
 		} else {
-			$options['limit'] = 1000;
+			$options['limit'] = 100;
 			$options['maxLimit'] = 1000;
 		}
 
