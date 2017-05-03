@@ -721,7 +721,7 @@ class TopicsHelperPrivateGetStatusLabelTest extends NetCommonsHelperTestCase {
 		$newResult['Topic']['answer_period_end'] = $fixture->getDateTime($newResult['Topic']['answer_period_end'], $now);
 		$newResult['Block']['publish_start'] = $fixture->getDateTime($newResult['Block']['publish_start'], $now);
 		$newResult['Block']['publish_end'] = $fixture->getDateTime($newResult['Block']['publish_end'], $now);
-		$newResult = NetCommonsAppController::camelizeKeyRecursive($newResult);
+		//$newResult = NetCommonsAppController::camelizeKeyRecursive($newResult);
 
 		//テスト実施
 		$result = $this->_testReflectionMethod(

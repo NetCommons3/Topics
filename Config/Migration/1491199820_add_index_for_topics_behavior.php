@@ -1,13 +1,11 @@
 <?php
 /**
  * AddIndexForTopicsBehavior
- *
-*/
+ */
 
 /**
  * AddIndexForTopicsBehavior
- *
-*/
+ */
 class AddIndexForTopicsBehavior extends CakeMigration {
 
 /**
