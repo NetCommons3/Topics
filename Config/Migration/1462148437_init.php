@@ -187,7 +187,10 @@ class Init extends NetCommonsMigration {
  */
 	public function before($direction) {
 		if ($direction === 'up') {
-			$Model = ClassRegistry::init('SiteManager.SiteSetting');
+			$this->loadModels([
+				'SiteSetting' => 'SiteManager.SiteSetting'
+			]);
+			$Model = $this->SiteSetting;
 			$dataSource = $Model->getDataSource();
 
 			$searchType = SiteSetting::DATABASE_SEARCH_LIKE;
