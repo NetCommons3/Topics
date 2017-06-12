@@ -97,17 +97,21 @@ class TopicUserStatus extends TopicsAppModel {
 			return true;
 		}
 
+		$saveData = [];
+		foreach ($topics as $topic) {
+			//既読になっているかどうかチェック
+			$data = $this->__getSaveTopicUserStatus($topic, $update);
+			if ($data === true) {
+				continue;
+			}
+			$saveData[] = $data;
+		}
+
 		//トランザクションBegin
 		$this->begin();
 
 		try {
-			foreach ($topics as $topic) {
-				//既読になっているかどうかチェック
-				$data = $this->__getSaveTopicUserStatus($topic, $update);
-				if ($data === true) {
-					continue;
-				}
-
+			foreach ($saveData as $data) {
 				$this->create(false);
 				$result = $this->save($data);
 				if (! $result) {
