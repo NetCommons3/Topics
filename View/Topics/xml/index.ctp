@@ -25,22 +25,22 @@ $channelData = array(
 $content = '';
 foreach ($camelizeData as $item) {
 	// フィードの本文が正しくなるよう HTML の削除とエスケープ
-	$bodyText = $this->Text->truncate($item['topic']['displaySummary'], 400, array(
+	$bodyText = $this->Text->truncate($item['Topic']['display_summary'], 400, array(
 		'ending' => '...',
 		'exact' => true,
 		'html' => true,
 	));
 
 	$contentData = array(
-		'title' => h($item['topic']['displayTitle']),
-		'link' => $item['topic']['path'],
-		'guid' => array('url' => $item['topic']['path'], 'isPermaLink' => 'true'),
+		'title' => h($item['Topic']['display_title']),
+		'link' => $item['Topic']['path'],
+		'guid' => array('url' => $item['Topic']['path'], 'isPermaLink' => 'true'),
 		'description' => $bodyText,
-		'pubDate' => $item['topic']['publishStart'],
-		'content::encoded' => array('value' => $item['topic']['summary']),
+		'pubDate' => $item['Topic']['publish_start'],
+		'content::encoded' => array('value' => $item['Topic']['summary']),
 	);
-	if ($item['category']['name']) {
-		$contentData['category'] = h($item['category']['displayName']);
+	if (!empty($item['Category']['name'])) {
+		$contentData['category'] = h($item['Category']['display_name']);
 	}
 
 	$content .= $this->Rss->item(array(), $contentData);
