@@ -18,7 +18,7 @@ App::uses('NetCommonsGetTest', 'NetCommons.TestSuite');
  * @package NetCommons\Topics\Test\Case\Model\Topic
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
+abstract class TopicGetQueryOptionsTestCase extends NetCommonsGetTest {
 
 /**
  * Fixtures
