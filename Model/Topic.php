@@ -434,9 +434,15 @@ class Topic extends TopicsAppModel {
 	public function afterFind($results, $primary = false) {
 		foreach ($results as $key => $value) {
 			if (isset($results[$key][$this->alias]['path'])) {
-				$url = Router::url(
-					$value[$this->alias]['path'] . '?frame_id=' . $value[$this->alias]['frame_id'], true
-				);
+				if ($value[$this->alias]['frame_id']) {
+					$url = Router::url(
+						$value[$this->alias]['path'] . '?frame_id=' . $value[$this->alias]['frame_id'], true
+					);
+				} else {
+					$url = Router::url(
+						$value[$this->alias]['path'], true
+					);
+				}
 				$results[$key][$this->alias]['url'] = $url;
 			}
 		}
