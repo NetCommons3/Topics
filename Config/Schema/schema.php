@@ -196,7 +196,7 @@ class TopicsSchema extends CakeSchema {
 	public $topics = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
 		'language_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 6, 'unsigned' => false),
-		'room_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
+		'room_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'index'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
 		'frame_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'content_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
@@ -229,10 +229,12 @@ class TopicsSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'whatsnew' => array('column' => array('publish_start', 'id', 'language_id', 'public_type', 'modified', 'publish_end', 'room_id', 'is_active', 'is_latest', 'status', 'created_user', 'modified_user'), 'unique' => 0),
-			'search' => array('column' => array('search_contents'), 'type' => 'fulltext'),
 			'plugin_key' => array('column' => array('plugin_key', 'language_id', 'content_key'), 'unique' => 0),
-			'whatsnew_plugin' => array('column' => array('plugin_key', 'room_id', 'publish_start', 'id', 'language_id', 'public_type', 'modified', 'publish_end', 'is_active', 'is_latest', 'status', 'created_user', 'modified_user'), 'unique' => 0)
+			'whatsnew_plugin' => array('column' => array('plugin_key', 'room_id', 'publish_start', 'id', 'language_id', 'public_type', 'modified', 'publish_end', 'is_active', 'is_latest', 'status', 'created_user', 'modified_user'), 'unique' => 0),
+			'whatsnew' => array('column' => array('publish_start', 'id', 'language_id', 'public_type', 'modified', 'publish_end', 'room_id', 'is_active', 'is_latest', 'status', 'created_user', 'modified_user'), 'unique' => 0),
+			'plugin_key2' => array('column' => array('plugin_key', 'language_id', 'block_id', 'content_id'), 'unique' => 0),
+			'room_id' => array('column' => 'room_id', 'unique' => 0),
+			'search' => array('column' => array('search_contents'), 'type' => 'fulltext'),
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Mroonga', 'comment' => 'engine "InnoDB"')
 	);
