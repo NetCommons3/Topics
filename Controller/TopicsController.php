@@ -74,6 +74,9 @@ class TopicsController extends TopicsAppController {
  * index
  *
  * @return void
+ *
+ * 速度改善の修正に伴って発生したため抑制
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function index() {
 		$topicFrameSetting = $this->viewVars['topicFrameSetting'];
@@ -81,7 +84,9 @@ class TopicsController extends TopicsAppController {
 
 		$conditions = array();
 
-		$days = Hash::get($this->params['named'], 'days');
+		$days = isset($this->params['named']['days'])
+			? $this->params['named']['days']
+			: null;
 		if ($days) {
 			$date = new DateTime();
 			$date->sub(new DateInterval('P' . $days . 'D'));
@@ -91,11 +96,10 @@ class TopicsController extends TopicsAppController {
 
 		if ($displayType === TopicFrameSetting::DISPLAY_TYPE_ROOMS) {
 			//ルームごとに表示する
-			$roomId = Hash::get($this->request->query, 'room_id');
-			if ($roomId) {
-				$conditionsByRoom['Room.id'] = $roomId;
-			} else {
-				$conditionsByRoom = array();
+			$conditionsByRoom = [];
+			if (isset($this->request->query['room_id']) &&
+				! empty($this->request->query['room_id'])) {
+				$conditionsByRoom['Room.id'] = $this->request->query['room_id'];
 			}
 
 			$rooms = $this->TopicFramesRoom->getRooms(
@@ -117,11 +121,10 @@ class TopicsController extends TopicsAppController {
 
 		} elseif ($displayType === TopicFrameSetting::DISPLAY_TYPE_PLUGIN) {
 			//プラグインごとに表示する
-			$pluginKey = Hash::get($this->request->query, 'plugin_key');
-			if ($pluginKey) {
-				$conditionsByPlugin['Plugin.key'] = $pluginKey;
-			} else {
-				$conditionsByPlugin = array();
+			$conditionsByPlugin = [];
+			if (isset($this->request->query['plugin_key']) &&
+				! empty($this->request->query['plugin_key'])) {
+				$conditionsByPlugin['Plugin.key'] = $this->request->query['plugin_key'];
 			}
 
 			$plugins = $this->TopicFramesPlugin->getPlugins(
@@ -164,28 +167,34 @@ class TopicsController extends TopicsAppController {
  */
 	private function __getTopics($topicFrameSetting, $conditions) {
 		$options = $this->TopicFrameSetting->getQueryOptions($topicFrameSetting, $conditions);
+		$status = isset($this->params['named']['status'])
+			? $this->params['named']['status']
+			: 0;
+
 		$this->Paginator->settings = array(
-			'Topic' => $this->Topic->getQueryOptions(
-				Hash::get($this->params['named'], 'status', '0'), $options
-			),
+			'Topic' => $this->Topic->getQueryOptions($status, $options),
 		);
 
-		$maxPage = Hash::get($this->params['named'], 'page', '1');
-		$startPage = Hash::get($this->params['named'], 'startPage', $maxPage);
+		$maxPage = isset($this->params['named']['page'])
+			? $this->params['named']['page']
+			: '1';
+		$startPage = isset($this->params['named']['startPage'])
+			? $this->params['named']['startPage']
+			: $maxPage;
 		$topics = array();
 		for ($page = $startPage; $page <= $maxPage; $page++) {
 			$this->params['named'] = Hash::insert($this->params['named'], 'page', $page);
 			$result = $this->Paginator->paginate('Topic');
 			foreach ($result as $topic) {
+				unset($topic['Topic']['search_contents']);
 				$topics[] = $topic;
 			}
 		}
-		$topics = Hash::remove($topics, '{n}.Topic.search_contents');
 
 		$paging = $this->request['paging'];
-		$paging = Hash::remove($paging, 'Topic.order');
-		$paging = Hash::remove($paging, 'Topic.options');
-		$paging = Hash::remove($paging, 'Topic.paramType');
+		unset($paging['Topic']['order']);
+		unset($paging['Topic']['options']);
+		unset($paging['Topic']['paramType']);
 
 		return array('topics' => $topics, 'paging' => $paging['Topic']);
 	}

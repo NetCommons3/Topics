@@ -77,33 +77,39 @@ class TopicFrameSettingsController extends TopicsAppController {
  * edit
  *
  * @return void
+ *
+ * 速度改善の修正に伴って発生したため抑制
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function edit() {
 		$this->RoomsForm->setRoomsForCheckbox();
 		$this->PluginsForm->setPluginsRoomForCheckbox($this, $this->PluginsForm->findOptions);
 
-		$options = Hash::extract(
-			$this->viewVars['pluginsRoom'], '{n}.Plugin.key'
-		);
+		$pluginKeys = [];
+		foreach ($this->viewVars['pluginsRoom'] as $item) {
+			$pluginKeys[] = $item['Plugin']['key'];
+		}
 
-		$blocks = $this->TopicFrameSetting->getBlocks($options, array_keys($this->viewVars['rooms']));
+		$blocks = $this->TopicFrameSetting->getBlocks($pluginKeys, array_keys($this->viewVars['rooms']));
 		$this->set('selectBlocks', $blocks);
 
 		if ($this->request->is('put') || $this->request->is('post')) {
 			//登録処理
 			$data = $this->data;
 
-			$data['TopicFramesRoom']['room_id'] = Hash::get($data, 'TopicFramesRoom.room_id');
-			if (! $data['TopicFramesRoom']['room_id']) {
-				$data['TopicFramesRoom']['room_id'] = array();
+			$data['TopicFramesRoom']['room_id'] = [];
+			if (! empty($this->data['TopicFramesRoom']['room_id'])) {
+				$data['TopicFramesRoom']['room_id'] = $this->data['TopicFramesRoom']['room_id'];
 			}
 
-			$data['TopicFramesPlugin']['plugin_key'] = Hash::get($data, 'TopicFramesPlugin.plugin_key');
-			if (! $data['TopicFramesPlugin']['plugin_key']) {
-				$data['TopicFramesPlugin']['plugin_key'] = array();
+			$data['TopicFramesPlugin']['plugin_key'] = [];
+			if (! empty($this->data['TopicFramesPlugin']['plugin_key'])) {
+				$data['TopicFramesPlugin']['plugin_key'] = $this->data['TopicFramesPlugin']['plugin_key'];
 			}
 
-			$data['TopicFramesBlock'] = Hash::get($data, 'TopicFramesBlock');
+			$data['TopicFramesBlock'] = isset($data['TopicFramesBlock'])
+				? $data['TopicFramesBlock']
+				: null;
 
 			if ($this->TopicFrameSetting->saveTopicFrameSetting($data)) {
 				$this->redirect(NetCommonsUrl::backToPageUrl(true));
@@ -139,15 +145,22 @@ class TopicFrameSettingsController extends TopicsAppController {
 				'conditions' => ['frame_key' => Current::read('Frame.key')],
 			));
 
-			$this->request->data['TopicFramesBlock'] = Hash::get($result, 'TopicFramesBlock', array());
-			if (! $this->request->data['TopicFramesBlock']) {
-				$block = Hash::extract($blocks, '{s}.{s}');
-				$this->request->data['TopicFramesBlock'] = array(
-					'block_key' => Hash::get($block, '0.key'),
-					'plugin_key' => Hash::get($block, '0.plugin_key'),
-					'room_id' => Hash::get($block, '0.room_id'),
-				);
+			if (isset($result['TopicFramesBlock'])) {
+				$topicFramesBlock = $result['TopicFramesBlock'];
+			} else {
+				$topicFramesBlock = [];
+				foreach ($blocks as $block) {
+					foreach ($block as $item) {
+						$topicFramesBlock = [
+							'block_key' => $item['key'],
+							'plugin_key' => $item['plugin_key'],
+							'room_id' => $item['room_id'],
+						];
+						break 2; // 1件目を取得してループを抜ける
+					}
+				}
 			}
+			$this->request->data['TopicFramesBlock'] = $topicFramesBlock;
 		}
 	}
 }

@@ -116,9 +116,8 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		$this->_deleteTopicUserStatus($model);
 
 		//新着に表示させる会員のリスト登録
-		$topicIds = Hash::extract($model->data, $model->Topic->alias . '.{n}.id');
-		foreach ($topicIds as $topicId) {
-			$this->_saveTopicReadable($model, $topicId);
+		foreach ($model->data[$model->Topic->alias] as $topic) {
+			$this->_saveTopicReadable($model, $topic['id']);
 		}
 
 		return true;
@@ -129,6 +128,9 @@ class TopicsBehavior extends TopicsBaseBehavior {
  *
  * @param Model $model 呼び出し元のモデル
  * @return bool
+ *
+ * 速度改善の修正に伴って発生したため抑制
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function beforeDeleteTopics(Model $model) {
 		$model->loadModels([
@@ -143,7 +145,9 @@ class TopicsBehavior extends TopicsBaseBehavior {
 				'fields' => array('id', 'key'),
 				'conditions' => array('id' => $model->id)
 			));
-			$model->contentKey = Hash::get($content, $model->alias . '.key');
+			$model->contentKey = isset($content[$model->alias]['key'])
+				? $content[$model->alias]['key']
+				: null;
 
 		} elseif ($model->blockId && ! $model->blockKey) {
 			$block = $model->Block->find('first', array(
@@ -151,7 +155,9 @@ class TopicsBehavior extends TopicsBaseBehavior {
 				'fields' => array('id', 'key'),
 				'conditions' => array('id' => $model->blockId)
 			));
-			$model->blockKey = Hash::get($block, $model->Block->alias . '.key');
+			$model->blockKey = isset($block[$model->Block->alias]['key'])
+				? $block[$model->Block->alias]['key']
+				: null;
 		}
 
 		//削除するトピックID取得
