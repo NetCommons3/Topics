@@ -55,7 +55,7 @@ class TopicFramesBlock extends TopicsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = Hash::merge($this->validate, array(
+		$this->validate = array_merge($this->validate, array(
 			'frame_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
@@ -80,7 +80,9 @@ class TopicFramesBlock extends TopicsAppModel {
 	public function validateRequestData($data) {
 		$blockKeys = Hash::extract($data, 'Block.{n}.key');
 
-		$check = Hash::get($data, 'TopicFrameSetting' . '.block_key', array());
+		$check = isset($data['TopicFrameSetting']['block_key'])
+			? $data['TopicFrameSetting']['block_key']
+			: [];
 		foreach ($check as $blockKey) {
 			if (! in_array($blockKey, $blockKeys, true)) {
 				return false;
@@ -122,8 +124,10 @@ class TopicFramesBlock extends TopicsAppModel {
  * @throws InternalErrorException
  */
 	public function saveTopicFramesBlock($data) {
-		$blockKey = Hash::get($data, $this->alias . '.block_key');
-		if ($blockKey && Hash::get($data, 'TopicFrameSetting.select_block')) {
+		$blockKey = isset($data[$this->alias]['block_key'])
+			? $data[$this->alias]['block_key']
+			: null;
+		if ($blockKey && $data['TopicFrameSetting']['select_block']) {
 			$conditions = array(
 				'TopicFramesBlock' . '.frame_key' => Current::read('Frame.key'),
 				'TopicFramesBlock' . '.block_key !=' => $blockKey,
@@ -137,7 +141,7 @@ class TopicFramesBlock extends TopicsAppModel {
 				'TopicFramesBlock' . '.block_key' => $blockKey,
 			);
 			if (! $this->find('count', ['recursive' => -1, 'conditions' => $conditions])) {
-				$saveData = $this->create(Hash::get($data, $this->alias));
+				$saveData = $this->create($data[$this->alias]);
 				if (! $this->save($saveData)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 				}

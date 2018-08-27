@@ -343,7 +343,7 @@ class Topic extends TopicsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = Hash::merge($this->validate, array(
+		$this->validate = array_merge($this->validate, array(
 			'language_id' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
@@ -564,19 +564,24 @@ class Topic extends TopicsAppModel {
 		);
 
 		//room_idの取得
-		$editableRoomIds = array_merge(
-			Hash::extract(
-				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR . '].room_id'
-			),
-			Hash::extract(
-				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_CHIEF_EDITOR . '].room_id'
-			),
-			Hash::extract(
-				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_EDITOR . '].room_id'
-			)
-		);
+		$editableRoomIds = []; // 編集権限の条件生成
+		$readableRoomIds = []; // 閲覧権限の条件生成
+		$blockEditableRoomIds = [];	//ブロック公開設定の条件生成
+		foreach ($rooms as $room) {
+			switch ($room['RolesRoom']['role_key']) {
+				case Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR:
+				case Role::ROOM_ROLE_KEY_CHIEF_EDITOR:
+					$editableRoomIds[] = $room['RolesRoom']['room_id'];
+					$blockEditableRoomIds[] = $room['RolesRoom']['room_id'];
+					break;
+				case Role::ROOM_ROLE_KEY_EDITOR:
+					$editableRoomIds[] = $room['RolesRoom']['room_id'];
+					break;
+			}
+			$readableRoomIds[] = $room['Room']['id'];
+		}
 		$readableRoomIds = array_diff(
-			Hash::extract($rooms, '{n}.Room.id'), $editableRoomIds
+			$readableRoomIds, $editableRoomIds
 		);
 
 		$roomConditions = array();
@@ -591,16 +596,6 @@ class Topic extends TopicsAppModel {
 
 		//is_activeの条件生成
 		$roomConditions = $this->__getIsActiveConditions($now, $roomConditions, $readableRoomIds);
-
-		//ブロック公開設定の条件生成
-		$blockEditableRoomIds = array_merge(
-			Hash::extract(
-				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR . '].room_id'
-			),
-			Hash::extract(
-				$rooms, '{n}.RolesRoom[role_key=' . Role::ROOM_ROLE_KEY_CHIEF_EDITOR . '].room_id'
-			)
-		);
 
 		$blockPubConditions['OR'] = array(
 			array($this->Block->alias . '.public_type' => self::TYPE_PUBLIC),
