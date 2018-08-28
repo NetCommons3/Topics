@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-$pluginKey = Hash::get($this->request->query, 'plugin_key');
+$pluginKey = $this->request->query['plugin_key'];
 
 echo $this->NetCommonsHtml->json(array(
 	'paging' => $topics[$pluginKey]['paging'],

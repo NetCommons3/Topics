@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-$roomId = Hash::get($this->request->query, 'room_id');
+$roomId = $this->request->query['room_id'];
 
 echo $this->NetCommonsHtml->json(array(
 	'paging' => $topics[$roomId]['paging'],

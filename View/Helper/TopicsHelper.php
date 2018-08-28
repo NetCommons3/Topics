@@ -154,17 +154,13 @@ class TopicsHelper extends AppHelper {
 		$newResult = [];
 
 		foreach ($orig as $key => $value) {
-			if (Hash::get($value, 'TrackableCreator')) {
+			if (isset($value['TrackableCreator'])) {
 				$avatar = $this->DisplayUser->avatar($value, [], 'TrackableCreator.id');
-				$value = Hash::insert(
-					$value, 'TrackableCreator.avatar', $avatar
-				);
+				$value['TrackableCreator']['avatar'] = $avatar;
 			}
-			if (Hash::get($value, 'TrackableUpdater')) {
+			if (isset($value['TrackableUpdater'])) {
 				$avatar = $this->DisplayUser->avatar($value, [], 'TrackableUpdater.id');
-				$value = Hash::insert(
-					$value, 'TrackableUpdater.avatar', $avatar
-				);
+				$value['TrackableUpdater']['avatar'] = $avatar;
 			}
 			$newResult[$key] = $this->__camelizeKeyRecursive($value);
 
@@ -350,14 +346,16 @@ class TopicsHelper extends AppHelper {
 		$named['page'] = '1';
 		$named['limit'] = null;
 
-		$options = Hash::merge(
-			array('0' => __d('net_commons', 'All Statuses')),
-			Hash::combine($this->statuses, '{n}.key', '{n}.message')
-		);
+		$options = [0 => __d('net_commons', 'All Statuses')];
+		foreach ($this->statuses as $status) {
+			$options[$status['key']] = $status['message'];
+		}
 
 		return $this->_View->element('Topics.Topics/select_status', array(
 			'options' => $options,
-			'current' => Hash::get($named, 'status', '0'),
+			'current' => isset($named['status'])
+				? $named['status']
+				: 0,
 			'url' => $named,
 		));
 	}
@@ -383,7 +381,7 @@ class TopicsHelper extends AppHelper {
 	}
 
 /**
- * 特定のブロックを表示する選択ボックス群の
+ * 特定のブロックを表示する選択ボックス群の初期処理
  *
  * @return string HTML出力
  */
@@ -402,11 +400,11 @@ class TopicsHelper extends AppHelper {
 			);
 
 			//プラグイン選択
-			$options = Hash::combine(
-				$this->_View->viewVars['pluginsRoom'], '{n}.Plugin.key', '{n}.Plugin.name'
-			);
-			foreach (TopicFrameSetting::$outPlugins as $plugin) {
-				$options = Hash::remove($options, $plugin);
+			$options = [];
+			foreach ($this->_View->viewVars['pluginsRoom'] as $pluginsRoom) {
+				if (! in_array($pluginsRoom['Plugin']['key'], TopicFrameSetting::$outPlugins)) {
+					$options[$pluginsRoom['Plugin']['key']] = $pluginsRoom['Plugin']['name'];
+				}
 			}
 			$html .= $this->PluginsForm->selectPluginsRoom('TopicFramesBlock.plugin_key',
 				array(
@@ -426,8 +424,14 @@ class TopicsHelper extends AppHelper {
 		$html .= '<div class="form-group" ng-init="blockOptions = optionBlocks()">';
 
 		if ($this->_View->viewVars['selectBlocks']) {
+			$selectOptions = [];
+			foreach ($this->_View->viewVars['selectBlocks'] as $selectBlock) {
+				foreach ($selectBlock as $key => $item) {
+					$selectOptions[$key] = $item['name'];
+				}
+			}
 			$html .= $this->NetCommonsForm->select('TopicFramesBlock.block_key',
-				Hash::combine($this->_View->viewVars['selectBlocks'], '{s}.{s}.key', '{s}.{s}.name'),
+				$selectOptions,
 				array(
 					'size' => 10, 'class' => 'form-control', 'empty' => false,
 					'ng-options' => 'item as item.name for item in blockOptions track by item.key',

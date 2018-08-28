@@ -36,7 +36,7 @@ class TopicFramesPlugin extends TopicsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = Hash::merge($this->validate, array(
+		$this->validate = array_merge($this->validate, array(
 			'frame_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
@@ -59,9 +59,16 @@ class TopicFramesPlugin extends TopicsAppModel {
  * @return bool
  */
 	public function validateRequestData($data) {
-		$pluginKeys = Hash::extract($data, 'Plugin.{n}.key');
+		$pluginKeys = [];
+		if (isset($data['Plugin'])) {
+			foreach ($data['Plugin'] as $plugin) {
+				$pluginKeys[] = $plugin['key'];
+			}
+		}
 
-		$check = Hash::get($data, 'TopicFrameSetting' . '.plugin_key', array());
+		$check = isset($data['TopicFramesPlugin']['plugin_key'])
+			? $data['TopicFramesPlugin']['plugin_key']
+			: [];
 		foreach ($check as $pluginKey) {
 			if (! in_array($pluginKey, $pluginKeys, true)) {
 				return false;
@@ -79,8 +86,8 @@ class TopicFramesPlugin extends TopicsAppModel {
  * @return array 条件配列
  */
 	public function getConditions($topicFrameSetting, $conditions = []) {
-		if (Hash::get($conditions, 'Topic.plugin_key')) {
-			$conditions['Topic.plugin_key'] = Hash::get($conditions, 'Topic.plugin_key');
+		if (isset($conditions['Topic']['plugin_key'])) {
+			$conditions['Topic.plugin_key'] = $conditions['Topic']['plugin_key'];
 		} elseif ($topicFrameSetting['TopicFrameSetting']['select_plugin']) {
 			$pluginKeys = $this->find('list', array(
 				'recursive' => -1,
@@ -157,7 +164,12 @@ class TopicFramesPlugin extends TopicsAppModel {
  * @throws InternalErrorException
  */
 	public function saveTopicFramesPlugin($data) {
-		$pluginKeys = Hash::get($data, $this->alias . '.plugin_key', array());
+		$pluginKeys = [];
+		foreach ($data[$this->alias] as $frame) {
+			if (isset($frame['plugin_key'])) {
+				$pluginKeys[] = $frame['plugin_key'];
+			}
+		}
 
 		$saved = $this->find('list', array(
 			'recursive' => -1,

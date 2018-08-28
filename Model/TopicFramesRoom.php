@@ -55,7 +55,7 @@ class TopicFramesRoom extends TopicsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = Hash::merge($this->validate, array(
+		$this->validate = array_merge($this->validate, array(
 			'frame_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
@@ -78,9 +78,16 @@ class TopicFramesRoom extends TopicsAppModel {
  * @return bool
  */
 	public function validateRequestData($data) {
-		$roomIds = Hash::extract($data, 'Room.{n}.id');
+		$roomIds = [];
+		if (isset($data['Room'])) {
+			foreach ($data['Room'] as $room) {
+				$roomIds[] = $room['id'];
+			}
+		}
+		$check = isset($data['TopicFrameSetting']['room_id'])
+			? $data['TopicFrameSetting']['room_id']
+			: [];
 
-		$check = Hash::get($data, 'TopicFrameSetting' . '.room_id', array());
 		foreach ($check as $roomId) {
 			if (! in_array($roomId, $roomIds, true)) {
 				return false;
@@ -98,8 +105,8 @@ class TopicFramesRoom extends TopicsAppModel {
  * @return array 条件配列
  */
 	public function getTopicConditions($topicFrameSetting, $conditions) {
-		if (Hash::get($conditions, 'Topic.room_id')) {
-			$conditions['Topic.room_id'] = Hash::get($conditions, 'Topic.room_id');
+		if (isset($conditions['Topic']['room_id'])) {
+			$conditions['Topic.room_id'] = $conditions['Topic']['room_id'];
 
 		} elseif ($topicFrameSetting['TopicFrameSetting']['select_room']) {
 			$roomIds = $this->find('list', array(
@@ -126,8 +133,8 @@ class TopicFramesRoom extends TopicsAppModel {
  * @return array 条件配列
  */
 	public function getConditions($topicFrameSetting, $conditions) {
-		if (Hash::get($conditions, $this->alias . '.room_id')) {
-			$conditions[$this->alias . '.room_id'] = Hash::get($conditions, $this->alias . '.room_id');
+		if (isset($conditions[$this->alias]['room_id'])) {
+			$conditions[$this->alias . '.room_id'] = $conditions[$this->alias]['room_id'];
 
 		} elseif ($topicFrameSetting['TopicFrameSetting']['select_room']) {
 			$roomIds = $this->find('list', array(
@@ -156,7 +163,9 @@ class TopicFramesRoom extends TopicsAppModel {
  * @throws InternalErrorException
  */
 	public function saveTopicFramesRoom($data) {
-		$roomIds = Hash::get($data, $this->alias . '.room_id', array());
+		$roomIds = isset($data[$this->alias]['room_id'])
+			? $data[$this->alias]['room_id']
+			: [];
 
 		$saved = $this->find('list', array(
 			'recursive' => -1,
@@ -178,15 +187,15 @@ class TopicFramesRoom extends TopicsAppModel {
 
 		$new = array_diff($roomIds, $saved);
 		if (count($new) > 0) {
-			$saveDate = array();
+			$saveData = array();
 			foreach ($new as $i => $roomId) {
-				$saveDate[$i] = array(
+				$saveData[$i] = array(
 					'id' => null,
 					'room_id' => $roomId,
 					'frame_key' => Current::read('Frame.key')
 				);
 			}
-			if (! $this->saveMany($saveDate)) {
+			if (! $this->saveMany($saveData)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 		}

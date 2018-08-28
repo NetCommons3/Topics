@@ -22,11 +22,14 @@
 	$selectBlockDomId = $this->NetCommonsForm->domId('TopicFrameSetting.select_block');
 	$rssFeedDomId = $this->NetCommonsForm->domId('TopicFrameSetting.use_rss_feed');
 
-	$ngInit = $displayTypeDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.display_type', '0') . '; ' .
-			$selectRoomDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.select_room') . '; ' .
-			$selectPluginDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.select_plugin') . '; ' .
-			$selectBlockDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.select_block') . '; ' .
-			$rssFeedDomId . ' = ' . (int)Hash::get($this->request->data, 'TopicFrameSetting.use_rss_feed') . ';';
+	$useRssFeed = isset($this->request->data['TopicFrameSetting']['use_rss_feed'])
+		? $this->request->data['TopicFrameSetting']['use_rss_feed']
+		: null;
+	$ngInit = $displayTypeDomId . ' = ' . (int)$this->request->data['TopicFrameSetting']['display_type'] . '; ' .
+			$selectRoomDomId . ' = ' . (int)$this->request->data['TopicFrameSetting']['select_room'] . '; ' .
+			$selectPluginDomId . ' = ' . (int)$this->request->data['TopicFrameSetting']['select_plugin'] . '; ' .
+			$selectBlockDomId . ' = ' . (int)$this->request->data['TopicFrameSetting']['select_block'] . '; ' .
+			$rssFeedDomId . ' = ' . (int)$useRssFeed . ';';
 ?>
 
 <div ng-init="<?php echo $ngInit; ?>">
@@ -186,7 +189,9 @@
 						'TopicFramesRoom.room_id',
 						array(
 							'privateSpace' => false,
-							'default' => Hash::get($this->request->data, 'TopicFramesRoom.room_id'),
+							'default' => isset($this->request->data['TopicFramesRoom']['room_id'])
+								? $this->request->data['TopicFramesRoom']['room_id']
+								: null,
 						)
 					);
 				?>
@@ -220,7 +225,9 @@
 						'TopicFramesPlugin.plugin_key',
 						array(
 							'div' => array('class' => 'plugin-checkbox-outer'),
-							'default' => Hash::get($this->request->data, 'TopicFramesPlugin.plugin_key'),
+							'default' => isset($this->request->data['TopicFramesPlugin']['plugin_key'])
+								? $this->request->data['TopicFramesPlugin']['plugin_key']
+								: null,
 						)
 					);
 				?>
