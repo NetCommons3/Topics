@@ -138,7 +138,7 @@ class TopicUserStatus extends TopicsAppModel {
  *
  * @param array $topic 既存新着データ
  * @param array $update アップデート
- * @return array
+ * @return bool|array
  */
 	private function __getSaveTopicUserStatus($topic, $update) {
 		$this->loadModels([
@@ -153,15 +153,28 @@ class TopicUserStatus extends TopicsAppModel {
 			'recursive' => -1,
 			'conditions' => $data,
 		));
-
-		$topicUserStatus = Hash::get($topicUserStatus, $this->alias, array());
-		$answered = Hash::get($topicUserStatus, 'answered') === true ||
-					Hash::get($topicUserStatus, 'answered') === Hash::get($update, 'answered');
-		if (Hash::get($topicUserStatus, 'id') && $answered &&
-				Hash::get($topicUserStatus, 'read') === Hash::get($update, 'read', false)) {
-			return true;
+		if (isset($topicUserStatus[$this->alias])) {
+			$topicUserStatus = $topicUserStatus[$this->alias];
+			$answered = $topicUserStatus['answered'];
+			$read = $topicUserStatus['read'];
+			$updateAnswered = $update['answered'];
+			$updateRead = $update['read'];
+			if (($answered ||
+				$answered === $updateAnswered) &&
+				$read === $updateRead) {
+				return true;
+			}
 		}
-		$data = Hash::merge($data, $update, ['id' => Hash::get($topicUserStatus, 'id', null)]);
+		$topicUserStatusId = null;
+		if (isset($topicUserStatus['id'])) {
+			$topicUserStatusId = $topicUserStatus['id'];
+		}
+
+		$data = array_merge(
+			$data,
+			$update,
+			['id' => $topicUserStatusId]
+		);
 
 		return $data;
 	}

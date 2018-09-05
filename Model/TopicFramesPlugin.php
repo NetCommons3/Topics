@@ -139,7 +139,7 @@ class TopicFramesPlugin extends TopicsAppModel {
 				'Plugin' => 'PluginManager.Plugin',
 			]);
 
-			$conditions = Hash::merge(
+			$conditions = array_merge(
 				array('display_topics' => true, 'language_id' => Current::read('Language.id', '0')),
 				$conditions
 			);
@@ -165,10 +165,8 @@ class TopicFramesPlugin extends TopicsAppModel {
  */
 	public function saveTopicFramesPlugin($data) {
 		$pluginKeys = [];
-		foreach ($data[$this->alias] as $frame) {
-			if (isset($frame['plugin_key'])) {
-				$pluginKeys[] = $frame['plugin_key'];
-			}
+		if (isset($data[$this->alias]['plugin_key'])) {
+			$pluginKeys = $data[$this->alias]['plugin_key'];
 		}
 
 		$saved = $this->find('list', array(

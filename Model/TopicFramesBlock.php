@@ -78,7 +78,10 @@ class TopicFramesBlock extends TopicsAppModel {
  * @return bool
  */
 	public function validateRequestData($data) {
-		$blockKeys = Hash::extract($data, 'Block.{n}.key');
+		$blockKeys = [];
+		if (isset($data['Block'])) {
+			$blockKeys[] = $data['Block']['key'];
+		}
 
 		$check = isset($data['TopicFrameSetting']['block_key'])
 			? $data['TopicFrameSetting']['block_key']

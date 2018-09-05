@@ -78,10 +78,10 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		$this->settings[$model->alias] = Hash::merge($this->_settings, $config);
 
 		//コンテンツは配列とする
-		if (is_string(Hash::get($this->settings[$model->alias], 'fields.summary'))) {
-			$this->settings[$model->alias]['fields']['summary'] = array(
-				Hash::get($this->settings[$model->alias], 'fields.summary')
-			);
+		if (isset($this->settings[$model->alias]['fields']['summary']) &&
+			is_string($this->settings[$model->alias]['fields']['summary'])) {
+			$this->settings[$model->alias]['fields']['summary']
+				= [$this->settings[$model->alias]['fields']['summary']];
 		}
 
 		//モデル名を付与する

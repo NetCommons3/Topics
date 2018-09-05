@@ -493,7 +493,7 @@ class Topic extends TopicsAppModel {
 			$options['conditions'][] = $statusConditions;
 		}
 
-		$result = Hash::merge(array(
+		$result = array_merge(array(
 			'recursive' => 0,
 			'order' => array(
 				$this->alias . '.publish_start' => 'desc', $this->alias . '.id' => 'desc'
@@ -554,7 +554,7 @@ class Topic extends TopicsAppModel {
 	private function __getRoomsConditions($now) {
 		//閲覧できるルームリスト取得
 		$rooms = $this->Room->find('all',
-			Hash::merge(
+			array_merge(
 				$this->Room->getReadableRoomsConditions(array('Room.page_id_top NOT' => false)),
 				array(
 					'recursive' => -1,

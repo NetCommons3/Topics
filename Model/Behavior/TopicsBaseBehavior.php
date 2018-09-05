@@ -43,20 +43,20 @@ class TopicsBaseBehavior extends ModelBehavior {
 	protected function _setupFields(Model $model) {
 		//モデル名を付与する
 		$fields = $this->settings[$model->alias]['fields'];
-		$fields = Hash::remove($fields, 'path');
-		$fields = Hash::remove($fields, 'summary');
-		$fields = Hash::remove($fields, 'search_contents');
+		unset($fields['path']);
+		unset($fields['summary']);
+		unset($fields['search_contents']);
 
 		$fieldKeys = array_keys($fields);
 		foreach ($fieldKeys as $field) {
-			$value = Hash::get($this->settings[$model->alias]['fields'], $field);
-			if (Hash::get($this->settings[$model->alias]['fields'], $field) === false) {
+			$value = $this->settings[$model->alias]['fields'][$field];
+			if ($value === false) {
 				continue;
 			}
 			if (! $value && $model->hasField($field)) {
 				$this->settings[$model->alias]['fields'][$field] = $model->alias . '.' . $field;
 			}
-			$value = Hash::get($this->settings[$model->alias]['fields'], $field);
+			$value = $this->settings[$model->alias]['fields'][$field];
 			if ($value && strpos($value, '.') === false) {
 				$this->settings[$model->alias]['fields'][$field] = $model->alias . '.' . $value;
 			}
@@ -106,7 +106,12 @@ class TopicsBaseBehavior extends ModelBehavior {
 		$topic = $this->_getTopicForSave($model);
 
 		if (Current::read('Frame.block_id') !== Current::read('Block.id')) {
-			$topic = Hash::remove($topic, '{n}.{s}.frame_id');
+			$arr = [];
+			foreach ($topic as $item) {
+				unset($item['Topic']['frame_id']);
+				$arr[] = $item;
+			}
+			$topic = $arr;
 		}
 
 		$setting = $this->settings[$model->alias]['fields'];
@@ -137,13 +142,13 @@ class TopicsBaseBehavior extends ModelBehavior {
 
 		//登録処理
 		foreach ($topic as $data) {
-			$saveData = Hash::merge($data[$model->Topic->alias], $merge);
+			$saveData = array_merge($data[$model->Topic->alias], $merge);
 			//公開日時が設定されていない場合
-			if (! Hash::get($saveData, 'publish_start')) {
-				if (Hash::get($data, $model->alias . '.publish_start')) {
-					$saveData['publish_start'] = Hash::get($data, $model->alias . '.publish_start');
+			if (! $saveData['publish_start']) {
+				if (isset($data[$model->alias]['publish_start'])) {
+					$saveData['publish_start'] = $data[$model->alias]['publish_start'];
 				} else {
-					$saveData['publish_start'] = Hash::get($model->data, $model->alias . '.modified');
+					$saveData['publish_start'] = $model->data[$model->alias]['modified'];
 				}
 			}
 			$saveData['path'] = $this->_parsePath($model, $saveData);
@@ -171,7 +176,8 @@ class TopicsBaseBehavior extends ModelBehavior {
 	protected function _parseTitle(Model $model) {
 		$title = $this->_getSaveData($model, 'title');
 
-		if (Hash::get($this->settings[$model->alias], 'titleHtml')) {
+		if (isset($this->settings[$model->alias]['titleHtml']) &&
+				$this->settings[$model->alias]['titleHtml']) {
 			$result = mb_strimwidth(strip_tags($title), 0, self::MAX_TITLE_LENGTH);
 			if (preg_replace('/(\s|　)/', '', $result) === '') {
 				$result = __d('topics', '(no text)');
@@ -353,7 +359,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 		}
 
 		if ($defaultConditions) {
-			$conditions = Hash::merge($defaultConditions, $addConditions);
+			$conditions = array_merge($defaultConditions, $addConditions);
 			$result = $model->Topic->find('first', array(
 				'recursive' => -1,
 				'conditions' => $conditions,
@@ -365,7 +371,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 			$result = $model->Topic->create($conditions);
 		}
 
-		$result = Hash::insert($result, '{s}.frame_id', Current::read('Frame.id'));
+		$result['Topic']['frame_id'] = Current::read('Frame.id');
 		return $result;
 	}
 
@@ -382,7 +388,12 @@ class TopicsBaseBehavior extends ModelBehavior {
 			'TopicUserStatus' => 'Topics.TopicUserStatus',
 		]);
 
-		$topicId = Hash::extract($model->data, $model->Topic->alias . '.{n}.id');
+		$topicId = [];
+		if (isset($model->data[$model->Topic->alias])) {
+			foreach ($model->data[$model->Topic->alias] as $item) {
+				$topicId[] = $item['id'];
+			}
+		}
 
 		$conditions = array($model->TopicUserStatus->alias . '.topic_id' => $topicId);
 		if (! $model->TopicUserStatus->deleteAll($conditions, false, false)) {
