@@ -66,8 +66,8 @@ class TopicFramesPlugin extends TopicsAppModel {
 			}
 		}
 
-		$check = isset($data['TopicFramesPlugin']['plugin_key'])
-			? $data['TopicFramesPlugin']['plugin_key']
+		$check = isset($data['TopicFrameSetting']['plugin_key'])
+			? $data['TopicFrameSetting']['plugin_key']
 			: [];
 		foreach ($check as $pluginKey) {
 			if (! in_array($pluginKey, $pluginKeys, true)) {
