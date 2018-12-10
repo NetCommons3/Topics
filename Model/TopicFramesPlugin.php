@@ -165,9 +165,9 @@ class TopicFramesPlugin extends TopicsAppModel {
  */
 	public function saveTopicFramesPlugin($data) {
 		$pluginKeys = [];
-		foreach ($data[$this->alias] as $frame) {
-			if (isset($frame['plugin_key'])) {
-				$pluginKeys[] = $frame['plugin_key'];
+		if (isset($data[$this->alias]['plugin_key'])) {
+			foreach ($data[$this->alias]['plugin_key'] as $plugin_key) {
+				$pluginKeys[] = $plugin_key;
 			}
 		}
 
