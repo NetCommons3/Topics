@@ -117,7 +117,9 @@ class TopicsBehavior extends TopicsBaseBehavior {
 
 		//新着に表示させる会員のリスト登録
 		foreach ($model->data[$model->Topic->alias] as $topic) {
-			$this->_saveTopicReadable($model, $topic['id']);
+			if (isset($topic['id'])) {
+				$this->_saveTopicReadable($model, $topic['id']);
+			}
 		}
 
 		return true;
