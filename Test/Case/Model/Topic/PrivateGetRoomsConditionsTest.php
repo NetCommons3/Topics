@@ -16,6 +16,7 @@ App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Topics\Test\Case\Model\Topic
+ * @see Topic::__getRoomsConditions()
  */
 class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 
@@ -154,8 +155,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					0 => array(
 						'Topic.room_id' => array(
 							0 => '2',
-							1 => '5',
-							2 => '4',
+							1 => '4',
+							2 => '5',
 							3 => '11',
 							4 => '12',
 						),
@@ -181,10 +182,10 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 						'Block.public_type' => '2',
 						0 => array(
 							'OR' =>
-							array(
-								'Block.publish_start <=' => $now,
-								'Block.publish_start' => null,
-							),
+								array(
+									'Block.publish_start <=' => $now,
+									'Block.publish_start' => null,
+								),
 						),
 						1 => array(
 							'OR' => array(
@@ -196,8 +197,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					2 => array(
 						'Block.room_id' => array(
 							0 => '2',
-							1 => '5',
-							2 => '4',
+							1 => '4',
+							2 => '5',
 							3 => '11',
 							4 => '12',
 						),
@@ -216,8 +217,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					0 => array(
 						'Topic.room_id' => array(
 							0 => '2',
-							1 => '5',
-							2 => '4',
+							1 => '4',
+							2 => '5',
 							3 => '11',
 							4 => '12',
 						),
@@ -258,8 +259,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					2 => array(
 						'Block.room_id' => array(
 							0 => '2',
-							1 => '5',
-							2 => '4',
+							1 => '4',
+							2 => '5',
 							3 => '11',
 						),
 					),
@@ -278,8 +279,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					0 => array(
 						'Topic.room_id' => array(
 							0 => '2',
-							1 => '5',
-							2 => '4',
+							1 => '4',
+							2 => '5',
 							3 => '11',
 						),
 						'Topic.is_latest' => true,
@@ -361,8 +362,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 						'OR' => array(
 							'Topic.room_id' => array(
 								0 => '2',
-								1 => '5',
-								2 => '4',
+								1 => '4',
+								2 => '5',
 								3 => '12',
 							),
 							'TopicReadable.user_id' => $userId,
@@ -428,8 +429,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 						'OR' => array(
 							'Topic.room_id' => array(
 								0 => '2',
-								1 => '5',
-								2 => '4',
+								1 => '4',
+								2 => '5',
 							),
 							'TopicReadable.user_id' => $userId,
 						),
