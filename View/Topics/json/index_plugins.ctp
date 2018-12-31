@@ -14,4 +14,4 @@ $pluginKey = $this->request->query['plugin_key'];
 echo $this->NetCommonsHtml->json(array(
 	'paging' => $topics[$pluginKey]['paging'],
 	'topics' => $this->Topics->camelizeKeyRecursive($topics[$pluginKey]['topics'])
-));
+), 'OK', 200, false);

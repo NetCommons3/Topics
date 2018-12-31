@@ -14,4 +14,4 @@ $roomId = $this->request->query['room_id'];
 echo $this->NetCommonsHtml->json(array(
 	'paging' => $topics[$roomId]['paging'],
 	'topics' => $this->Topics->camelizeKeyRecursive($topics[$roomId]['topics'])
-));
+), 'OK', 200, false);

@@ -18,7 +18,7 @@
 	<ul class="dropdown-menu" role="menu">
 		<?php foreach ($options as $key => $label) : ?>
 			<li>
-				<?php echo $this->Paginator->link($label, $url + ['status' => $key]); ?>
+				<?php echo $this->Paginator->link($label, array_merge($url, ['status' => $key])); ?>
 			</li>
 		<?php endforeach; ?>
 	</ul>

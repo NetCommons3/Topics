@@ -126,12 +126,14 @@ class TopicFramesPlugin extends TopicsAppModel {
 				)
 			), true);
 
+			$conditions = Hash::merge(
+				array($this->alias . '.frame_key' => Current::read('Frame.key')),
+				$conditions
+			);
 			$plugin = $this->find('list', array(
 				'recursive' => 0,
 				'fields' => array('Plugin.key', 'Plugin.name'),
-				'conditions' => array(
-					$this->alias . '.frame_key' => Current::read('Frame.key'),
-				),
+				'conditions' => $conditions,
 				'order' => 'weight'
 			));
 		} else {

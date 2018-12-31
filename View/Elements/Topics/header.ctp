@@ -8,13 +8,22 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+$named = $this->Paginator->params['named'];
+$named['page'] = '1';
+$url = NetCommonsUrl::blockUrl($named);
 ?>
 
 <header>
 	<?php if ($topicFrameSetting['unit_type'] === TopicFrameSetting::UNIT_TYPE_DAYS) : ?>
-		<?php echo $this->DisplayNumber->dropDownToggleDays(array('currentDays' => $topicFrameSetting['display_days'])); ?>
+		<?php echo $this->DisplayNumber->dropDownToggleDays(array(
+			'currentDays' => $topicFrameSetting['display_days'],
+			'url' => $url
+		)); ?>
 	<?php else : ?>
-		<?php echo $this->DisplayNumber->dropDownToggle(array('currentLimit' => $topicFrameSetting['display_number'])); ?>
+		<?php echo $this->DisplayNumber->dropDownToggle(array(
+			'currentLimit' => $topicFrameSetting['display_number'],
+			'url' => $url
+		)); ?>
 	<?php endif; ?>
 
 	<?php if (Current::read('User.id')) : ?>
