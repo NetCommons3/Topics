@@ -53,9 +53,7 @@
 		<?php if ($topicFrameSetting['display_created_user']) : ?>
 			<div class="pull-left topic-handle-name">
 				<?php echo $item['TrackableCreator']['avatar']; ?>
-				<a ng-click="showUser($event, <?php echo $item['TrackableCreator']['id']; ?>)" ng-controller="Users.controller" href="#">
-					<?php echo h($item['TrackableCreator']['handlename']); ?>
-				</a>
+				<?php echo $this->NetCommonsHtml->handleLink($item, [], []); ?>
 			</div>
 		<?php endif; ?>
 	</div>
