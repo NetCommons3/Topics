@@ -82,7 +82,7 @@ class TopicFrameSettingsController extends TopicsAppController {
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function edit() {
-		$this->RoomsForm->setRoomsForCheckbox(array(), array('limit'=> 100));
+		$this->RoomsForm->setRoomsForCheckbox(array(), array('limit' => 100));
 		$this->PluginsForm->setPluginsRoomForCheckbox($this, $this->PluginsForm->findOptions);
 
 		$pluginKeys = [];
