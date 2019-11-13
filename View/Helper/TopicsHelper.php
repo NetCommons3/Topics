@@ -328,7 +328,7 @@ class TopicsHelper extends AppHelper {
 		$html .= __d('topics', 'Can use an embedded keyword in the channel title line and summary') . ' ';
 		$html .= '<a href="" data-toggle="popover" data-placement="' . $placement . '"' .
 					' title="' . __d('topics', 'Embedded keyword?') . '"' . ' data-content="' . $content . '">';
-		$html .= '<span class="glyphicon glyphicon-question-sign"></span>';
+		$html .= '<span class="glyphicon glyphicon-info-sign"></span>';
 		$html .= '</a>';
 		$html .= '<script type="text/javascript">' .
 			'$(function () { $(\'[data-toggle="popover"]\').popover({html: true}) });</script>';
