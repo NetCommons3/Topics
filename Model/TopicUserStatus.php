@@ -29,6 +29,14 @@ class TopicUserStatus extends TopicsAppModel {
  */
 	public $validate = array();
 
+/**
+ * invalidateCDN cache
+ * DB 保存/削除時に CDN のキャッシュを invalidate するか
+ *
+ * @var bool
+ */
+	public $invalidateCDN = false;
+
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
