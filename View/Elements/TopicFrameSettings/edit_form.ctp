@@ -101,6 +101,16 @@
 
 				<div class="form-group">
 					<?php
+						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_thumbnail', array(
+							'type' => 'checkbox',
+							'label' => __d('topics', 'Thumbnail'),
+							'inline' => false,
+						));
+					?>
+				</div>
+
+				<div class="form-group">
+					<?php
 						echo $this->NetCommonsForm->checkbox('TopicFrameSetting.display_summary', array(
 							'type' => 'checkbox',
 							'label' => __d('topics', 'Detail'),

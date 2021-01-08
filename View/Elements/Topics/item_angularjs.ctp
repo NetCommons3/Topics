@@ -58,9 +58,18 @@
 		<?php endif; ?>
 	</div>
 
-	<?php if ($topicFrameSetting['display_summary']) : ?>
-		<div class="text-muted topic-summary">
-			{{item.Topic.display_summary}}
+	<div class="media">
+		<div class="media-body">
+			<?php if ($topicFrameSetting['display_summary']) : ?>
+				<div class="text-muted topic-summary">
+					{{item.Topic.display_summary}}
+				</div>
+			<?php endif; ?>
 		</div>
-	<?php endif; ?>
+		<?php if ($topicFrameSetting['display_thumbnail']) : ?>
+			<div class="media-right" ng-show="item.Topic.thumbnail_path">
+				<img ng-src="{{item.Topic.thumbnail_url}}" alt="">
+			</div>
+		<?php endif; ?>
+	</div>
 </article>

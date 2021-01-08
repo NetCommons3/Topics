@@ -83,6 +83,9 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
+msgid "Thumbnail"
+msgstr ""
+
 #: Topics/View/Elements/TopicFrameSettings/edit_form.ctp:103
 msgid "Detail"
 msgstr ""

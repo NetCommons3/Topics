@@ -57,10 +57,18 @@
 			</div>
 		<?php endif; ?>
 	</div>
-
-	<?php if ($topicFrameSetting['display_summary']) : ?>
-		<div class="text-muted topic-summary">
-			<?php echo h($item['Topic']['display_summary']); ?>
+	<div class="media">
+		<div class="media-body">
+			<?php if ($topicFrameSetting['display_summary']) : ?>
+				<div class="text-muted topic-summary">
+					<?php echo h($item['Topic']['display_summary']); ?>
+				</div>
+			<?php endif; ?>
 		</div>
-	<?php endif; ?>
+		<?php if ($topicFrameSetting['display_thumbnail'] && !empty($item['Topic']['thumbnail_url'])) : ?>
+			<div class="media-right">
+				<img src="<?php echo h($item['Topic']['thumbnail_url']); ?>" alt="">
+			</div>
+		<?php endif; ?>
+	</div>
 </article>
