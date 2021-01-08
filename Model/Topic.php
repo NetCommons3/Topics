@@ -445,6 +445,11 @@ class Topic extends TopicsAppModel {
 				}
 				$results[$key][$this->alias]['url'] = $url;
 			}
+			if (!empty($results[$key][$this->alias]['thumbnail_path'])) {
+				$results[$key][$this->alias]['thumbnail_url'] = Router::url(
+					$value[$this->alias]['thumbnail_path'] . '/thumb', true
+				);
+			}
 		}
 		return $results;
 	}

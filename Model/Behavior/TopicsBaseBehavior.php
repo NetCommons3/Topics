@@ -10,6 +10,7 @@
  */
 
 App::uses('ModelBehavior', 'Model');
+App::uses('WysiwygBehavior', 'Wysiwyg.Model/Behavior');
 
 /**
  * Topics Behavior
@@ -116,6 +117,7 @@ class TopicsBaseBehavior extends ModelBehavior {
 			'content_key' => Hash::get($model->data, $setting['content_key']),
 			'content_id' => Hash::get($model->data, $setting['content_id']),
 			'title' => $this->_parseTitle($model),
+			'thumbnail_path' => $this->_parseThumbnailImage($model),
 			'summary' => $this->_parseContents($model),
 			'search_contents' => $this->_parseSearchContents($model),
 			'is_answer' => $setting['is_answer'],
@@ -179,6 +181,46 @@ class TopicsBaseBehavior extends ModelBehavior {
 			$result = trim($result);
 		} else {
 			$result = mb_strimwidth($title, 0, self::MAX_TITLE_LENGTH);
+		}
+
+		return $result;
+	}
+
+/**
+ * 新着のコンテンツからサムネイルにパースする
+ *
+ * 自サイトの画像のみ対象とする
+ *
+ * self::_saveTopic()から実行される
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @return string
+ */
+	protected function _parseThumbnailImage(Model $model) {
+		$setting = $this->settings[$model->alias]['fields'];
+		$result = '';
+
+		$pattern = '/<img.*?src\s*=\s*[\"|\'](.*?)[\"|\'].*?>/i';
+		$baseUrl = substr(Router::url('/', true), 0, -1);
+
+		foreach ($setting['summary'] as $field) {
+			$value = (string)Hash::get($model->data, $field);
+			$matches = [];
+			if (! preg_match_all($pattern, $value, $matches)) {
+				continue;
+			}
+
+			foreach ($matches[1] as $imgUrl) {
+				$imgUrl = str_replace(WysiwygBehavior::REPLACE_BASE_URL, '', $imgUrl);
+				$imgUrl = str_replace($baseUrl, '', $imgUrl);
+				if (substr($imgUrl, 0, 1) !== '/') {
+					continue;
+				}
+				$imgUrl = parse_url($imgUrl, PHP_URL_PATH);
+				$imgUrl = preg_replace('/\/(thumb|big|small|biggest|medium)$/i', '', $imgUrl);
+				$result = $imgUrl;
+				break 2;
+			}
 		}
 
 		return $result;
