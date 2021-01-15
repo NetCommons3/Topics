@@ -93,6 +93,9 @@ msgstr "プライベート"
 msgid "Title"
 msgstr "件名"
 
+msgid "Thumbnail"
+msgstr "サムネイル画像"
+
 msgid "Detail"
 msgstr "詳細"
 
