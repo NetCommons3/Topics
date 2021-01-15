@@ -68,7 +68,9 @@
 		</div>
 		<?php if ($topicFrameSetting['display_thumbnail']) : ?>
 			<div class="media-right" ng-show="item.Topic.thumbnail_path">
-				<img ng-src="{{item.Topic.thumbnail_url}}" alt="">
+				<a ng-href="{{item.Topic.url}}" ng-click="link($event)">
+					<img ng-src="{{item.Topic.thumbnail_url}}" alt="">
+				</a>
 			</div>
 		<?php endif; ?>
 	</div>
