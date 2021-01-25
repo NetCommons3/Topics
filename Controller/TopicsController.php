@@ -82,6 +82,13 @@ class TopicsController extends TopicsAppController {
 		$topicFrameSetting = $this->viewVars['topicFrameSetting'];
 		$displayType = $this->viewVars['topicFrameSetting']['display_type'];
 
+		$unitType = isset($this->params['named']['unit_type'])
+			? (string)$this->params['named']['unit_type']
+			: null;
+		if (TopicFrameSetting::UNIT_TYPE_NUMBERS === $unitType) {
+			$topicFrameSetting['unit_type'] = $unitType;
+		}
+
 		$conditions = array();
 
 		$days = isset($this->params['named']['days'])
