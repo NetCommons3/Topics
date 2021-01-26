@@ -178,6 +178,17 @@ class TopicsController extends TopicsAppController {
 			? $this->params['named']['status']
 			: 0;
 
+		$sort = isset($this->params['named']['order_by'])
+			? (string)$this->params['named']['order_by']
+			: null;
+		if ($sort === 'modified') {
+			$options['order'] = [
+				$this->Topic->alias . '.modified' => 'desc',
+				$this->Topic->alias . '.publish_start' => 'desc',
+				$this->Topic->alias . '.id' => 'desc'
+			];
+		}
+
 		$this->Paginator->settings = array(
 			'Topic' => $this->Topic->getQueryOptions($status, $options),
 		);

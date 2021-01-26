@@ -498,11 +498,13 @@ class Topic extends TopicsAppModel {
 			$options['conditions'][] = $statusConditions;
 		}
 
+		if (! isset($options['order'])) {
+			$options['order'] = [
+				$this->alias . '.publish_start' => 'desc', $this->alias . '.id' => 'desc'
+			];
+		}
 		$result = Hash::merge(array(
 			'recursive' => 0,
-			'order' => array(
-				$this->alias . '.publish_start' => 'desc', $this->alias . '.id' => 'desc'
-			),
 		), $options);
 
 		return $result;
