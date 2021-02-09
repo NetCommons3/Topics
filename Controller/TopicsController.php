@@ -77,6 +77,7 @@ class TopicsController extends TopicsAppController {
  *
  * 速度改善の修正に伴って発生したため抑制
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 	public function index() {
 		$topicFrameSetting = $this->viewVars['topicFrameSetting'];
