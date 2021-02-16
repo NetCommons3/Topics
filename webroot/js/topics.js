@@ -117,7 +117,7 @@ NetCommonsApp.controller('TopicsController',
           $location.hash(
               'page:' + ($scope.paging['page']) + '&' + 'frame_id:' + $scope.params['frame_id']
           );
-          $window.location.href = $event.target.href;
+          $window.location.href = $event.currentTarget.href;
           $event.preventDefault();
         };
 
