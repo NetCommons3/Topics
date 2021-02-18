@@ -77,10 +77,18 @@ class TopicsController extends TopicsAppController {
  *
  * 速度改善の修正に伴って発生したため抑制
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 	public function index() {
 		$topicFrameSetting = $this->viewVars['topicFrameSetting'];
 		$displayType = $this->viewVars['topicFrameSetting']['display_type'];
+
+		$unitType = isset($this->params['named']['unit_type'])
+			? (string)$this->params['named']['unit_type']
+			: null;
+		if (TopicFrameSetting::UNIT_TYPE_NUMBERS === $unitType) {
+			$topicFrameSetting['unit_type'] = $unitType;
+		}
 
 		$conditions = array();
 
@@ -170,6 +178,17 @@ class TopicsController extends TopicsAppController {
 		$status = isset($this->params['named']['status'])
 			? $this->params['named']['status']
 			: 0;
+
+		$sort = isset($this->params['named']['order_by'])
+			? (string)$this->params['named']['order_by']
+			: null;
+		if ($sort === 'modified') {
+			$options['order'] = [
+				$this->Topic->alias . '.modified' => 'desc',
+				$this->Topic->alias . '.publish_start' => 'desc',
+				$this->Topic->alias . '.id' => 'desc'
+			];
+		}
 
 		$this->Paginator->settings = array(
 			'Topic' => $this->Topic->getQueryOptions($status, $options),
