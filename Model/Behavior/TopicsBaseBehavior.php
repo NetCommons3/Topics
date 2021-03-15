@@ -213,7 +213,8 @@ class TopicsBaseBehavior extends ModelBehavior {
 			foreach ($matches[1] as $imgUrl) {
 				$imgUrl = str_replace(WysiwygBehavior::REPLACE_BASE_URL, '', $imgUrl);
 				$imgUrl = str_replace($baseUrl, '', $imgUrl);
-				if (substr($imgUrl, 0, 1) !== '/') {
+				if (substr($imgUrl, 0, 1) !== '/' ||
+						strpos($imgUrl, 'img/title_icon') !== false) {
 					continue;
 				}
 				$imgUrl = parse_url($imgUrl, PHP_URL_PATH);
