@@ -68,7 +68,7 @@
 		<?php if ($topicFrameSetting['display_thumbnail'] && !empty($item['Topic']['thumbnail_url'])) : ?>
 			<div class="media-right">
 				<a href="<?php echo $item['Topic']['url']; ?>" ng-click="link($event)">
-					<img src="<?php echo h($item['Topic']['thumbnail_url']); ?>" alt="" />
+					<img class="topic-thumbnail" src="<?php echo h($item['Topic']['thumbnail_url']); ?>" alt="" />
 				</a>
 			</div>
 		<?php endif; ?>

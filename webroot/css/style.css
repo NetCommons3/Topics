@@ -53,6 +53,11 @@ article .topic-status.small > .label {
     -webkit-line-clamp: 3;
 }
 
+.topic-thumbnail {
+	max-width: 80px;
+	max-height: 80px;
+}
+
 .frame.nc-content-list article h2.topic-plugin-name,
 .frame.nc-content-list article h2.topic-room-name {
 	margin-top: 16px;
