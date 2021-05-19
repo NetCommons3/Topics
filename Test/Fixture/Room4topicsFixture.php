@@ -53,6 +53,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '1',
 			'page_layout_permitted' => '1',
 			'theme' => 'Default',
+			'sort_key' => '~00000001-00000001',
 		),
 		//パブリックスペース、パブリックルーム(room_id=5)
 		array(
@@ -68,6 +69,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => true,
 			'page_layout_permitted' => true,
 			'theme' => null,
+			'sort_key' => '~00000001-00000001-00000001',
 		),
 
 		//プライベート
@@ -84,6 +86,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => '0',
 			'theme' => 'Default',
+			'sort_key' => '~00000001-00000002',
 		),
 		//プライベートルーム、管理者(room_id=6)
 		array(
@@ -99,6 +102,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => '0',
 			'theme' => null,
+			'sort_key' => '~00000001-00000002-00000001',
 		),
 		//プライベートルーム、編集長(room_id=7)
 		array(
@@ -114,6 +118,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => '0',
 			'theme' => null,
+			'sort_key' => '~00000001-00000002-00000002',
 		),
 		//プライベートルーム、編集者(room_id=8)
 		array(
@@ -129,6 +134,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => '0',
 			'theme' => null,
+			'sort_key' => '~00000001-00000002-00000003',
 		),
 		//プライベートルーム、一般1(room_id=9)
 		array(
@@ -144,6 +150,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => '0',
 			'theme' => null,
+			'sort_key' => '~00000001-00000002-00000004',
 		),
 		//プライベートルーム、ゲスト(room_id=10)
 		array(
@@ -159,6 +166,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => '0',
 			'theme' => null,
+			'sort_key' => '~00000001-00000002-00000005',
 		),
 		//プライベートルーム、一般2(room_id=13)
 		array(
@@ -174,6 +182,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => '0',
 			'theme' => null,
+			'sort_key' => '~00000001-00000002-00000006',
 		),
 
 		//コミュニティスペース
@@ -190,6 +199,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '1',
 			'page_layout_permitted' => '1',
 			'theme' => 'Default',
+			'sort_key' => '~00000001-00000003',
 		),
 		//コミュニティスペース、ルーム1(room_id=11)
 		array(
@@ -205,6 +215,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => null,
 			'theme' => null,
+			'sort_key' => '~00000001-00000003-00000001',
 		),
 		//コミュニティスペース、ルーム2(room_id=12)
 		array(
@@ -220,6 +231,7 @@ class Room4topicsFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => null,
 			'theme' => null,
+			'sort_key' => '~00000001-00000003-00000002',
 		),
 	);
 }

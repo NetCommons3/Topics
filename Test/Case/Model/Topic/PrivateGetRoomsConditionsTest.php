@@ -155,8 +155,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					0 => array(
 						'Topic.room_id' => array(
 							0 => '2',
-							1 => '4',
-							2 => '5',
+							1 => '5',
+							2 => '4',
 							3 => '11',
 							4 => '12',
 						),
@@ -197,8 +197,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					2 => array(
 						'Block.room_id' => array(
 							0 => '2',
-							1 => '4',
-							2 => '5',
+							1 => '5',
+							2 => '4',
 							3 => '11',
 							4 => '12',
 						),
@@ -217,8 +217,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					0 => array(
 						'Topic.room_id' => array(
 							0 => '2',
-							1 => '4',
-							2 => '5',
+							1 => '5',
+							2 => '4',
 							3 => '11',
 							4 => '12',
 						),
@@ -259,8 +259,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					2 => array(
 						'Block.room_id' => array(
 							0 => '2',
-							1 => '4',
-							2 => '5',
+							1 => '5',
+							2 => '4',
 							3 => '11',
 						),
 					),
@@ -279,8 +279,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 					0 => array(
 						'Topic.room_id' => array(
 							0 => '2',
-							1 => '4',
-							2 => '5',
+							1 => '5',
+							2 => '4',
 							3 => '11',
 						),
 						'Topic.is_latest' => true,
@@ -362,8 +362,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 						'OR' => array(
 							'Topic.room_id' => array(
 								0 => '2',
-								1 => '4',
-								2 => '5',
+								1 => '5',
+								2 => '4',
 								3 => '12',
 							),
 							'TopicReadable.user_id' => $userId,
@@ -429,8 +429,8 @@ class PrivateTopicGetRoomsConditionsTest extends NetCommonsModelTestCase {
 						'OR' => array(
 							'Topic.room_id' => array(
 								0 => '2',
-								1 => '4',
-								2 => '5',
+								1 => '5',
+								2 => '4',
 							),
 							'TopicReadable.user_id' => $userId,
 						),
