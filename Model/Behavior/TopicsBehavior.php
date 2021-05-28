@@ -245,6 +245,8 @@ class TopicsBehavior extends TopicsBaseBehavior {
 
 		$this->saveTopics($model);
 
+		$this->__notifyDataServerToFetch($model);
+
 		return parent::afterSave($model, $created, $options);
 	}
 
@@ -270,6 +272,7 @@ class TopicsBehavior extends TopicsBaseBehavior {
  */
 	public function afterDelete(Model $model) {
 		$this->afterDeleteTopics($model);
+		$this->__notifyDataServerToFetch($model);
 	}
 
 /**
@@ -341,4 +344,36 @@ class TopicsBehavior extends TopicsBaseBehavior {
 		$this->settings[$model->alias]['data'][$key] = $value;
 	}
 
+/**
+ * DataServer に更新を通知する
+ *
+ * @param Model $model 呼び出し元のモデル
+ * @return void
+ */
+	private function __notifyDataServerToFetch(Model $model) {
+		file_put_contents(APP . 'tmp/watura-debug.log', '---------' . "\n", FILE_APPEND);
+		if (!empty($model->data[$model->Topic->alias])) {
+			$hasActive = array_reduce($model->data[$model->Topic->alias], function ($prev, $value) {
+				return $prev || $value['is_active'];
+			}, false);
+
+			if (!$hasActive && empty($this->_deleteRow)) {
+				return;
+			}
+		}
+
+		$model->loadModels([
+			'SchoolInformation' => 'SchoolInformations.SchoolInformation',
+		]);
+
+		$edmKey = $model->SchoolInformation->getSchoolInformation()['SchoolInformation']['edumap_key'];
+		if (empty($edmKey)) {
+			$edmKey = 'sample_school';
+			// return;
+		}
+		$curl = curl_init('http://data:3000/topics/fetch/specific-hostname?hostname=' . $edmKey);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_exec($curl);
+		curl_close($curl);
+	}
 }
