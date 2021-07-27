@@ -306,7 +306,12 @@ class TopicsBaseBehavior extends ModelBehavior {
 			$pathKey = $setting[$field];
 		}
 
-		if (array_key_exists($field, $data) || Hash::get($model->data, $pathKey) !== null) {
+		list($modleByData, $fieldByData) = pluginSplit($pathKey);
+
+		if (array_key_exists($field, $data) ||
+				isset($model->data[$modleByData]) &&
+					array_key_exists($fieldByData, $model->data[$modleByData]) ||
+				Hash::get($model->data, $pathKey) !== null) {
 			return true;
 		} else {
 			return false;
@@ -332,8 +337,13 @@ class TopicsBaseBehavior extends ModelBehavior {
 			$pathKey = $setting[$field];
 		}
 
+		list($modleByData, $fieldByData) = pluginSplit($pathKey);
+
 		if (array_key_exists($field, $data)) {
 			return Hash::get($data, $field);
+		} elseif (isset($model->data[$modleByData]) &&
+					array_key_exists($fieldByData, $model->data[$modleByData])) {
+			return $model->data[$modleByData][$fieldByData];
 		} elseif (Hash::get($model->data, $pathKey, false) !== false) {
 			return Hash::get($model->data, $pathKey);
 		} else {
