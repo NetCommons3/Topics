@@ -29,7 +29,7 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
   $scope.initBlocks = function(blocks, topicFramesBlock) {
     $scope.blocks = blocks;
     $scope.topicFramesBlock = topicFramesBlock['topicFramesBlock'];
-		$scope.blockKey = $scope.topicFramesBlock.blockKey;
+    $scope.blockKey = $scope.topicFramesBlock.blockKey;
   };
 
   /**
