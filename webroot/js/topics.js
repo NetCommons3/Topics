@@ -29,6 +29,7 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
   $scope.initBlocks = function(blocks, topicFramesBlock) {
     $scope.blocks = blocks;
     $scope.topicFramesBlock = topicFramesBlock['topicFramesBlock'];
+		$scope.blockKey = $scope.topicFramesBlock.blockKey;
   };
 
   /**
@@ -41,7 +42,7 @@ NetCommonsApp.controller('TopicSettingsController', ['$scope', function($scope) 
 
     if (angular.isDefined($scope.blocks[pluginKey])) {
       if (angular.isDefined($scope.blocks[pluginKey][$scope.blockKey])) {
-        var blockKey = $scope.topicFramesBlock.blockKey;
+        var blockKey = $scope.blockKey;
       } else {
         var blockKey = null;
         angular.forEach($scope.blocks[pluginKey], function(value, key) {
