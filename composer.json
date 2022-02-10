@@ -20,7 +20,6 @@
         "netcommons/plugin-manager": "@dev",
         "netcommons/roles": "@dev",
         "netcommons/rooms": "@dev",
-        "netcommons/topics": "@dev",
         "netcommons/users": "@dev",
         "netcommons/workflow": "@dev"
     },
