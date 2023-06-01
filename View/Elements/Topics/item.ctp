@@ -57,6 +57,9 @@
 			</div>
 		<?php endif; ?>
 	</div>
+
+	<?php if ($topicFrameSetting['display_summary'] ||
+			$topicFrameSetting['display_thumbnail'] && !empty($item['Topic']['thumbnail_url'])) : ?>
 	<div class="media">
 		<div class="media-body">
 			<?php if ($topicFrameSetting['display_summary']) : ?>
@@ -73,4 +76,5 @@
 			</div>
 		<?php endif; ?>
 	</div>
+	<?php endif; ?>
 </article>
