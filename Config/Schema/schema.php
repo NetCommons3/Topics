@@ -239,8 +239,8 @@ class TopicsSchema extends CakeSchema {
 			'search' => array('column' => array('search_contents'), 'type' => 'fulltext'),
 			'idx1_p_topics' => array('column' => array('category_id'), 'unique' => 0),
 			'idx2_p_topics' => array('column' => array('frame_id'), 'unique' => 0),
-			'idx3_p_topics' => array('column' => array('language_id', 'room_id','is_latest','is_active','is_in_room','created_user','public_type','publish_start','publish_end'), 'unique' => 0),
-			'idx4_p_topics' => array('column' => array('is_active', 'room_id','public_type','publish_start','publish_end','created_user','id','`plugin_key`(191)'), 'unique' => 0),
+			'idx3_p_topics' => array('column' => array('language_id', 'room_id', 'is_latest', 'is_active', 'is_in_room', 'created_user', 'public_type', 'publish_start', 'publish_end'), 'unique' => 0),
+			'idx4_p_topics' => array('column' => array('is_active', 'room_id', 'public_type', 'publish_start', 'publish_end', 'created_user', 'id', '`plugin_key`(191)'), 'unique' => 0),
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'Mroonga', 'comment' => 'engine "InnoDB"')
 	);

@@ -1,8 +1,12 @@
 <?php
 /**
+ * AddIndex
+ */
+
+/**
  * インデックス追加のみ。
  *
- * @package Researchmap\RmNetCommons\Config\Migration
+ * @package NetCommons\Topics\Config\Migration
  */
 class AddIndex1769652195 extends CakeMigration {
 
@@ -25,8 +29,8 @@ class AddIndex1769652195 extends CakeMigration {
 					'indexes' => array(
 						'idx1_p_topics' => array('column' => array('category_id'), 'unique' => 0),
 						'idx2_p_topics' => array('column' => array('frame_id'), 'unique' => 0),
-						'idx3_p_topics' => array('column' => array('language_id', 'room_id','is_latest','is_active','is_in_room','created_user','public_type','publish_start','publish_end'), 'unique' => 0),
-						'idx4_p_topics' => array('column' => array('is_active', 'room_id','public_type','publish_start','publish_end','created_user','id','`plugin_key`(191)'), 'unique' => 0),
+						'idx3_p_topics' => array('column' => array('language_id', 'room_id', 'is_latest', 'is_active', 'is_in_room', 'created_user', 'public_type', 'publish_start', 'publish_end'), 'unique' => 0),
+						'idx4_p_topics' => array('column' => array('is_active', 'room_id', 'public_type', 'publish_start', 'publish_end', 'created_user', 'id', '`plugin_key`(191)'), 'unique' => 0),
 					),
 				),
 			),
